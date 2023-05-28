@@ -1,6 +1,7 @@
 package org.example.model.ingame.castle.details;
 
 public enum Durability {
+
     VERY_LOW(5000),
     LOW(20000),
     MEDIUM(40000),

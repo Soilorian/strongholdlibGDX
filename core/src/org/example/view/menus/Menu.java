@@ -14,7 +14,5 @@ public interface Menu {
 
     void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException;
 
-    default void showAvailableCommands() {
 
-    }
 }

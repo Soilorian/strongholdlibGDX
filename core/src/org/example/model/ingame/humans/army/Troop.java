@@ -6,7 +6,6 @@ import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.details.Status;
-import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 
@@ -46,7 +45,7 @@ public class Troop {
         int currentX = currentTile.getX();
         int currentY = currentTile.getY();
         Troop enemy;
-        Map map = Controller.getCurrentMap();
+        java.util.Map map = Controller.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= 3 * a; i++) {
             for (int j = 0; j <= i; j++) {
@@ -91,7 +90,7 @@ public class Troop {
         int currentX = currentTile.getX();
         int currentY = currentTile.getY();
         Troop enemy;
-        Map map = Controller.getCurrentMap();
+        java.util.Map map = Controller.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= range * a; i++) {
             for (int j = 0; j <= i; j++) {
@@ -166,7 +165,7 @@ public class Troop {
         if (destination == null)
             return;
         des = convertToMapId(destination.getX(), destination.getY());
-        Map currentMap = Controller.getCurrentMap();
+        java.util.Map currentMap = Controller.getCurrentMap();
         int count = currentMap.getGroundHeight() * currentMap.getGroundWidth();
         printShortestDistance(currentMap.getGraph(), src, des, count, isPatrol);
     }

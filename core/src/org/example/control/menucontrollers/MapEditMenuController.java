@@ -267,7 +267,7 @@ public class MapEditMenuController {
             return MapEditorMenuMessages.ALREADY_BUILDING.toString();
         }
         Buildings buildings;
-        if ((buildings = Buildings.getBuildingsEnumByName(type)) == null) {
+        if ((buildings = getBuildingsEnumByName(type)) == null) {
             return MapEditorMenuMessages.INVALID_BUILDING.toString();
         }
         Map map = Controller.getCurrentMap();

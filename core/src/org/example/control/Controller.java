@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 public class Controller {
 
+
     private static Scanner mainScanner;
     private static Map currentMap;
     private static Menus currentMenu;

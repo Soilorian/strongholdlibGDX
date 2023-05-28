@@ -70,7 +70,7 @@ public class EntranceMenu implements Menu {
             do {
                 System.out.println("please re enter your password");
                 passwordConfirmation = scanner.nextLine();
-            } while (!EntranceMenuController.isConfirmationEqual(password, passwordConfirmation));
+            } while (EntranceMenuController.isConfirmationNotEqual(password, passwordConfirmation));
         } else
             passwordConfirmation = Controller.removeQuotes(matcher.group("PasswordConfirmation"));
         if (type == 2) {

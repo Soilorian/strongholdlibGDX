@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SoundPlayer {
+
     private static Clip clip;
     private static AudioInputStream audioInputStream;
     private static String filePath;

@@ -49,8 +49,8 @@ public class EntranceMenuController {
         return true;
     }
 
-    public static boolean isConfirmationEqual(String str, String confirmation) {
-        return str.equals(confirmation);
+    public static boolean isConfirmationNotEqual(String str, String confirmation) {
+        return !str.equals(confirmation);
     }
 
     public static boolean isQuestionNumCorrect(int questionNum) {
@@ -105,7 +105,7 @@ public class EntranceMenuController {
             return EntranceMenuMessages.USERNAME_ALREADY_EXISTS.toString();
         if (isPasswordWeak(password))
             return findPasswordProblem(password);
-        if (!isConfirmationEqual(password, passwordConfirmation))
+        if (isConfirmationNotEqual(password, passwordConfirmation))
             return EntranceMenuMessages.INVALID_CONFIRMATION.toString();
         if (isEmailInvalid(email))
             return EntranceMenuMessages.INVALID_EMAIL.toString();
@@ -131,13 +131,13 @@ public class EntranceMenuController {
         int questionNumber = Integer.parseInt(questionNum);
         if (!isQuestionNumCorrect(questionNumber))
             return EntranceMenuMessages.INVALID_QUESTION_NUMBER.toString();
-        if (!isConfirmationEqual(answer, answerConfirmation))
+        if (isConfirmationNotEqual(answer, answerConfirmation))
             return EntranceMenuMessages.INVALID_CONFIRMATION.toString();
         Player player = DataBase.getLastPlayer();
         switch (questionNumber) {
-            case 1 -> player.setSecurityQuestion("What is the first game you played?");
-            case 2 -> player.setSecurityQuestion("When did you meet Mossayeb?");
-            case 3 -> player.setSecurityQuestion("What is your favorite patoq in university?");
+            case 1 : player.setSecurityQuestion("What is the first game you played?");
+            case 2 : player.setSecurityQuestion("When did you meet Mossayeb?");
+            case 3 : player.setSecurityQuestion("What is your favorite patoq in university?");
         }
         player.setSecurityQuestionAnswer(answer);
         return EntranceMenuMessages.SUCCEED.toString();
@@ -203,8 +203,7 @@ public class EntranceMenuController {
     }
 
     static public String randomPassword() {
-        String password = random.ints(2, 65, 90)
-                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        String password = random.ints(2, 65, 90).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
         password += random.ints(2, 48, 57)
                 .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
         password += random.ints(2, 97, 122)

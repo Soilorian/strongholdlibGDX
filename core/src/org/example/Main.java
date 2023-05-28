@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package org.example;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.example.control.Controller;
