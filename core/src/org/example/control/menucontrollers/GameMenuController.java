@@ -30,6 +30,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 
 import static org.example.control.Controller.isFieldEmpty;
@@ -47,18 +48,29 @@ public class GameMenuController {
     }
 
     public static boolean canLadder(Troop troop) {
-        return switch (troop.getType()) {
-            case "Spearman", "Maceman", "LadderMan" -> true;
-            default -> false;
-        };
-
+        switch (troop.getType()) {
+            case "Spearman":
+            case "Maceman":
+            case "LadderMan":
+                return true;
+            default:
+                return false;
+        }
     }
 
     public static boolean isWall(Building building) {
-        return switch (building.getBuildingName()) {
-            case "Lookout Tower", "Perimeter Tower", "TURRET", "Wall", "Stair", "Square Tower", "Circle Tower" -> true;
-            default -> false;
-        };
+        switch (building.getBuildingName()) {
+            case "Lookout Tower":
+            case "Perimeter Tower":
+            case "TURRET":
+            case "Wall":
+            case "Stair":
+            case "Square Tower":
+            case "Circle Tower":
+                return true;
+            default:
+                return false;
+        }
     }
 
     public static boolean isFearValid(int fear) {
@@ -114,7 +126,7 @@ public class GameMenuController {
 
 
     public static GameMenuMessages fight(int x, int y) {
-        selectedTroops.removeIf(Troop::isDead);
+        removeDeads(selectedTroops);
         int totalDamage = getTotalDamage(selectedTroops);
         if (totalDamage == 0) return GameMenuMessages.NOTHING_SELECTED;
         if (!currentGame.getCurrentMap().isInRange(x, y)) return GameMenuMessages.NOT_IN_RANGE;
@@ -135,9 +147,16 @@ public class GameMenuController {
         return GameMenuMessages.SUCCEED;
     }
 
+    private static void removeDeads(ArrayList<Troop> troops) {
+        for (Iterator<Troop> iterator = troops.iterator(); iterator.hasNext() ;) {
+            if ((iterator.next()).isDead())
+                iterator.remove();
+        }
+    }
+
 
     public static GameMenuMessages attackBuilding(int x, int y) {
-        selectedTroops.removeIf(Troop::isDead);
+        removeDeads(selectedTroops);
         int totalDamage = getTotalDamage(selectedTroops);
         if (totalDamage == 0) return GameMenuMessages.NOTHING_SELECTED;
         if (!currentGame.getCurrentMap().isInRange(x, y)) return GameMenuMessages.NOT_IN_RANGE;
@@ -258,25 +277,29 @@ public class GameMenuController {
                         int x = tile.getX();
                         int y = tile.getY();
                         switch (value) {
-                            case NORTH -> {
+                            case NORTH:{
                                 if (currentGame.getCurrentMap().isInRange(x, y - 1))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y - 1, x)));
                                 else return GameMenuMessages.CANT_GO_THERE;
+                                break;
                             }
-                            case EAST -> {
+                            case EAST: {
                                 if (currentGame.getCurrentMap().isInRange(x + 1, y))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y, x + 1)));
                                 else return GameMenuMessages.CANT_GO_THERE;
+                                break;
                             }
-                            case SOUTH -> {
+                            case SOUTH : {
                                 if (currentGame.getCurrentMap().isInRange(x, y + 1))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y + 1, x)));
                                 else return GameMenuMessages.CANT_GO_THERE;
+                                break;
                             }
-                            case WEST -> {
+                            case WEST : {
                                 if (currentGame.getCurrentMap().isInRange(x - 1, y))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y, x - 1)));
                                 else return GameMenuMessages.CANT_GO_THERE;
+                                break;
                             }
                         }
                     }
@@ -353,7 +376,7 @@ public class GameMenuController {
         Empire currentEmpire = DataBase.getCurrentEmpire();
         final Tile placedOn = selectedBuilding.getTileUnder();
         switch (getSelectedBuilding().getBuilding()) {
-            case ENGINEER_GUILD -> {
+            case ENGINEER_GUILD : {
                 if (!type.equalsIgnoreCase(Engineer.getName()))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -367,8 +390,9 @@ public class GameMenuController {
                         return GameMenuMessages.SUCCESS;
                     }
                 }
+                break;
             }
-            case TUNNELERS_GUILD -> {
+            case TUNNELERS_GUILD : {
                 if (!type.equalsIgnoreCase(Tunneler.getName()))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -382,8 +406,9 @@ public class GameMenuController {
                         return GameMenuMessages.SUCCESS;
                     }
                 }
+                break;
             }
-            case BARRACK -> {
+            case BARRACK : {
                 if (TrainingPlace.BARRACK.doesntHaveUnit(type))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -399,6 +424,7 @@ public class GameMenuController {
                         placedOn.getTroops().add(new Troop(troop, currentEmpire, placedOn));
                     return GameMenuMessages.SUCCESS;
                 }
+                break;
             }
             case MERCENARY_POST -> {
                 if (TrainingPlace.MERCENARY_POST.doesntHaveUnit(type))
