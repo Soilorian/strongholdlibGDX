@@ -1,0 +1,226 @@
+package org.example.control.menucontrollers;
+
+
+import org.example.control.Controller;
+import org.example.control.enums.EntranceMenuMessages;
+import org.example.model.Captcha;
+import org.example.model.DataBase;
+import org.example.model.Player;
+import org.example.view.enums.Menus;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import static org.example.control.Controller.isFieldEmpty;
+
+public class EntranceMenuController {
+
+    private static final Random random = new Random();
+    private static int passwordMiss = 0;
+
+    public static boolean isUsernameInvalid(String username) {
+        return !username.matches("[\\w\\s]+");
+    }
+
+    public static boolean isUsernameExist(String username) {
+        return DataBase.getPlayerByUsername(username) != null;
+    }
+
+    public static boolean isEmailInvalid(String email) {
+        return !email.matches("[\\w.]+@[\\w.]+\\.[\\w.]+");
+    }
+
+    public static boolean isEmailExist(String email) {
+        return DataBase.getPlayerByEmail(email) != null;
+    }
+
+    public static boolean isPasswordWeak(String password) {
+        return !password.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{6,}");
+    }
+
+    public static boolean isDigit(String... str) {
+        for (String s : str)
+            if (!s.matches("-?\\d+"))
+                return false;
+        return true;
+    }
+
+    public static boolean isConfirmationEqual(String str, String confirmation) {
+        return str.equals(confirmation);
+    }
+
+    public static boolean isQuestionNumCorrect(int questionNum) {
+        return questionNum <= 3 && questionNum >= 1;
+    }
+
+    public static boolean isPasswordIncorrect(Player player, String entryPassword) {
+        return !player.checkPassword(entryPassword);
+    }
+
+    private static String checkEmpty(String username, String password, String passwordConfirmation,
+                                     String nickname, String email, String slogan) {
+        if (isFieldEmpty(username)) {
+            return EntranceMenuMessages.EMPTY_USERNAME.toString();
+        } else if (isFieldEmpty(nickname)) {
+            return EntranceMenuMessages.EMPTY_NICKNAME.toString();
+        } else if (isFieldEmpty(slogan)) {
+            return EntranceMenuMessages.EMPTY_SLOGAN.toString();
+        } else if (isFieldEmpty(password)) {
+            return EntranceMenuMessages.EMPTY_PASSWORD.toString();
+        } else if (isFieldEmpty(passwordConfirmation)) {
+            return EntranceMenuMessages.EMPTY_PASSWORD_CONFIRMATION.toString();
+        } else if (isFieldEmpty(email)) {
+            return EntranceMenuMessages.EMPTY_EMAIL.toString();
+        }
+        return null;
+    }
+
+
+    public static String findPasswordProblem(String password) {
+        if (Controller.getMatcher(password, "^.*[a-z]+.*$") == null)
+            return EntranceMenuMessages.LOWERCASE_PASSWORD.toString();
+        if (Controller.getMatcher(password, "^.*[A-Z]+.*$") == null)
+            return EntranceMenuMessages.UPPERCASE_PASSWORD.toString();
+        if (Controller.getMatcher(password, "^.*[0-9]+.*$") == null)
+            return EntranceMenuMessages.DIGIT_PASSWORD.toString();
+        if (Controller.getMatcher(password, "^.*[^a-zA-Z0-9]+.*$") == null)
+            return EntranceMenuMessages.SYMBOl_PASSWORD.toString();
+        return EntranceMenuMessages.LENGTH_PASSWORD.toString();
+    }
+
+
+    static public String createNewUser(String username, String password, String passwordConfirmation,
+                                       String nickname, String email, String slogan) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        String result;
+        if ((result = checkEmpty(username, password, passwordConfirmation, nickname, email, slogan)) != null) {
+            return result;
+        }
+        if (isUsernameInvalid(username))
+            return EntranceMenuMessages.USERNAME_INVALID.toString();
+        if (isUsernameExist(username))
+            return EntranceMenuMessages.USERNAME_ALREADY_EXISTS.toString();
+        if (isPasswordWeak(password))
+            return findPasswordProblem(password);
+        if (!isConfirmationEqual(password, passwordConfirmation))
+            return EntranceMenuMessages.INVALID_CONFIRMATION.toString();
+        if (isEmailInvalid(email))
+            return EntranceMenuMessages.INVALID_EMAIL.toString();
+        if (isEmailExist(email))
+            return EntranceMenuMessages.EMAIL_ALREADY_EXISTS.toString();
+        Player player = new Player(username, password, nickname, email, slogan);
+        DataBase.addPlayer(player);
+        DataBase.updatePlayersXS();
+        return EntranceMenuMessages.SUCCEED.toString();
+    }
+
+
+    static public String pickSecurityQuestion(String questionNum, String answer, String answerConfirmation) {
+        if (isFieldEmpty(questionNum)) {
+            return EntranceMenuMessages.EMPTY_QUESTION_NUM.toString();
+        } else if (isFieldEmpty(answer)) {
+            return EntranceMenuMessages.EMPTY_ANSWER.toString();
+        } else if (isFieldEmpty(answerConfirmation)) {
+            return EntranceMenuMessages.EMPTY_ANSWER_CONFIRMATION.toString();
+        }
+        if (!isDigit(questionNum))
+            return EntranceMenuMessages.IS_DIGIT.toString();
+        int questionNumber = Integer.parseInt(questionNum);
+        if (!isQuestionNumCorrect(questionNumber))
+            return EntranceMenuMessages.INVALID_QUESTION_NUMBER.toString();
+        if (!isConfirmationEqual(answer, answerConfirmation))
+            return EntranceMenuMessages.INVALID_CONFIRMATION.toString();
+        Player player = DataBase.getLastPlayer();
+        switch (questionNumber) {
+            case 1 -> player.setSecurityQuestion("What is the first game you played?");
+            case 2 -> player.setSecurityQuestion("When did you meet Mossayeb?");
+            case 3 -> player.setSecurityQuestion("What is your favorite patoq in university?");
+        }
+        player.setSecurityQuestionAnswer(answer);
+        return EntranceMenuMessages.SUCCEED.toString();
+    }
+
+    public static Captcha createCaptcha() {
+        return new Captcha();
+    }
+
+
+    static public String login(String username, String password, boolean stayLogged) throws IOException {
+        if (isFieldEmpty(username)) {
+            return EntranceMenuMessages.EMPTY_USERNAME.toString();
+        } else if (isFieldEmpty(password)) {
+            return EntranceMenuMessages.EMPTY_PASSWORD.toString();
+        }
+        Player player;
+        if ((player = DataBase.getPlayerByUsername(username)) == null)
+            return EntranceMenuMessages.USERNAME_NOT_EXIST.toString();
+        if (isPasswordIncorrect(player, password)) {
+            passwordMiss++;
+            passwordDelay();
+            return EntranceMenuMessages.INCORRECT_PASSWORD.toString();
+        }
+        passwordMiss = 0;
+        DataBase.setCurrentPlayer(player);
+        if (stayLogged)
+            DataBase.addStayLoggedPlayed(player);
+        Controller.setCurrentMenu(Menus.MAIN_MENU);
+        return EntranceMenuMessages.SUCCEED.toString();
+    }
+
+    public static void stayLogged() {
+        DataBase.setStayLoggedIn(true);
+    }
+
+    public static void passwordDelay() {
+        int timeToWait = 5 * passwordMiss; //second
+        try {
+            for (int i = 0; i < timeToWait; i++) {
+                Thread.sleep(1000);
+                // TODO: 5/11/2023 move this to view if possible
+                System.out.println("Wait " + (timeToWait - i) + " Second(s)");
+            }
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    static public String changePassword(String username, String newPassword) {
+        Player player = DataBase.getPlayerByUsername(username);
+        assert player != null;
+        if (isPasswordWeak(newPassword))
+            return findPasswordProblem(newPassword);
+        player.setPassword(newPassword);
+        return EntranceMenuMessages.SUCCEED.toString();
+    }
+
+    public static String checkForUsername(String username) {
+        if (!isUsernameExist(username))
+            return EntranceMenuMessages.USERNAME_NOT_EXIST.toString();
+        return EntranceMenuMessages.SUCCEED.toString();
+    }
+
+    static public String randomPassword() {
+        String password = random.ints(2, 65, 90)
+                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        password += random.ints(2, 48, 57)
+                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        password += random.ints(2, 97, 122)
+                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        password += random.ints(2, 33, 47)
+                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        return password;
+    }
+
+    public static String getSecurityQuestion(String username) {
+        return Objects.requireNonNull(DataBase.getPlayerByUsername(username)).getSecurityQuestion();
+    }
+
+    public static boolean checkSecurityAnswer(String username, String answer) {
+        Player player = DataBase.getPlayerByUsername(username);
+        if (player == null) return false;
+        return player.checkSecurityQuestion(answer);
+    }
+}
