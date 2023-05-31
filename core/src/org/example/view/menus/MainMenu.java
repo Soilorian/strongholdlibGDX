@@ -1,6 +1,23 @@
 package org.example.view.menus;
 
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.menucontrollers.MainMenuController;
@@ -19,13 +36,91 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class MainMenu implements Menu {
+public class MainMenu extends ApplicationAdapter implements Menu , ApplicationListener {
 
+    private PerspectiveCamera camera;
+    private CameraInputController cameraInputController;
+    private ModelBatch modelBatch;
+    private Model model;
+    private Model model1;
+    private ModelInstance modelInstance;
+    private ModelInstance modelInstance1;
+    private Array<ModelInstance> instances = new Array<>();
+
+    private Environment environment;
+    private AnimationController controller;
+
+//	private Array<ModelInstance> instances;
+//	private Asset
+
+
+    public void create() {
+        camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        camera.position.set(210, 150, 270);
+        camera.lookAt(0, 210, 0);
+
+        camera.near = 0.1f;
+        camera.far = 3000f;
+
+        cameraInputController = new CameraInputController(camera);
+
+        Gdx.input.setInputProcessor(cameraInputController);
+
+
+        modelBatch = new ModelBatch();
+
+        // fbx g3dj g3db
+
+        UBJsonReader ubJsonReader = new UBJsonReader();
+
+        G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
+
+        model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
+        model1 = modelLoader.loadModel(Gdx.files.getFileHandle("Model/BlenderRetroIso.g3db", Files.FileType.Internal));
+
+        modelInstance = new ModelInstance(model);
+        modelInstance.transform.translate(200,0,155);
+//        modelInstance.transform.ro
+        modelInstance1 = new ModelInstance(model1);
+        modelInstance1.transform.translate(200,0,0);
+        instances.add(modelInstance);
+        instances.add(modelInstance1);
+
+        environment = new Environment();
+
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        controller = new AnimationController(modelInstance);
+        controller.setAnimation("mixamo.com", 1);
+    }
+
+    @Override
+    public void dispose() {
+        modelBatch.dispose();
+        model.dispose();
+
+    }
+
+    @Override
+    public void render() {
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        camera.update();
+        controller.update(Gdx.graphics.getDeltaTime());
+
+        modelBatch.begin(camera);
+        modelBatch.render(instances, environment);
+        modelBatch.end();
+    }
     @Override
     public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException, CoordinatesOutOfMap, NotInStoragesException {
         System.out.println("entered " + Menus.getNameByObj(this));
         do {
-            String input = scanner.nextLine();
+            String input ;
             if (MainMenuCommands.getMatcher(input, MainMenuCommands.START_GAME) != null) {
                 startNewGame();
                 break;
