@@ -54,15 +54,17 @@ public class Peasant extends Troop {
 
     public GameMenuMessages update() throws CoordinatesOutOfMap, NotInStoragesException {
         switch (status) {
-            case RECEIVING -> {
+            case RECEIVING : {
                 if (takeFromStockpile()) status = Status.ON_THE_WAY;
                 else return GameMenuMessages.NOT_ENOUGH_RESOURCE;
+                break;
             }
-            case DELIVERING -> {
+            case DELIVERING : {
                 if (deliverGoods()) status = Status.RECEIVING;
                 else return GameMenuMessages.STORAGE_FULL;
+                break;
             }
-            case ON_THE_WAY -> {
+            case ON_THE_WAY : {
                 moveAndPatrol();
                 if (destinationBuilding.atBuilding(getCurrentTile().getX(), getCurrentTile().getY())) {
                     if (destinationBuilding.equals(workplace)) {
@@ -70,6 +72,7 @@ public class Peasant extends Troop {
                         movingResource = null;
                     } else status = Status.DELIVERING;
                 }
+                break;
             }
         }
         return null;

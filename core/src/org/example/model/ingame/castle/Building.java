@@ -145,27 +145,32 @@ public class Building {
         if (onFire) takeDamage(100);
         final ArrayList<Troop> troops = GameMenuController.lookAround(tileUnder.getX(), tileUnder.getY(), owner, 5);
         switch (buildingStatus) {
-            case WAITING_FOR_RESOURCE -> {
+            case WAITING_FOR_RESOURCE : {
                 if (holder.getResourceName().equals(consumingResource)) BuildingStatus.goNext(buildingStatus);
                 else employ();
+                break;
             }
-            case STARTING_PRODUCTION, IN_THE_MIDDLE_OF_PRODUCTION, FINISHING_PRODUCTION -> {
+            case STARTING_PRODUCTION: case IN_THE_MIDDLE_OF_PRODUCTION:case FINISHING_PRODUCTION : {
                 if (isWorking()) BuildingStatus.goNext(buildingStatus);
                 else employ();
+                break;
             }
-            case DELIVERING_GOODS -> {
+            case DELIVERING_GOODS : {
                 if (isWorking()) {
                     if (!workers.isEmpty())
                         workers.get(0).sendToGet(new Resource(consumingResource, 1), new Resource(producingResource, producingAmount));
                 } else employ();
+                break;
             }
-            case OPEN -> {
+            case OPEN : {
                 if (!troops.isEmpty())
                     GameMenuController.getCurrentGame().getCurrentMap().closeGate(tileUnder.getX(), tileUnder.getY(), direction);
+                break;
             }
-            case CLOSE -> {
+            case CLOSE : {
                 if (troops.isEmpty())
                     GameMenuController.getCurrentGame().getCurrentMap().openGate(tileUnder.getX(), tileUnder.getY(), direction);
+                break;
             }
         }
     }

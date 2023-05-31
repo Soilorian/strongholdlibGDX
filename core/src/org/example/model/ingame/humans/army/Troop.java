@@ -6,10 +6,12 @@ import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.details.Status;
+import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 
 import java.util.*;
+
 
 public class Troop {
     private final int damage;
@@ -45,7 +47,7 @@ public class Troop {
         int currentX = currentTile.getX();
         int currentY = currentTile.getY();
         Troop enemy;
-        java.util.Map map = Controller.getCurrentMap();
+        Map map = Controller.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= 3 * a; i++) {
             for (int j = 0; j <= i; j++) {
@@ -90,7 +92,7 @@ public class Troop {
         int currentX = currentTile.getX();
         int currentY = currentTile.getY();
         Troop enemy;
-        java.util.Map map = Controller.getCurrentMap();
+        Map map = Controller.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= range * a; i++) {
             for (int j = 0; j <= i; j++) {
@@ -136,12 +138,20 @@ public class Troop {
         if (building == null) {
             return 1;
         }
-        return switch (building.getBuilding()) {
-            case KEEP -> 3;
-            case BIG_STONE_GATEHOUSE, SQUARE_TOWER, CIRCLE_TOWER, TURRET, PERIMETER_TOWER -> 2;
-            case LOOKOUT_TOWER -> 4;
-            default -> 1;
-        };
+        switch (building.getBuilding()) {
+            case KEEP:
+                return 3;
+            case BIG_STONE_GATEHOUSE:
+            case SQUARE_TOWER:
+            case CIRCLE_TOWER:
+            case TURRET:
+            case PERIMETER_TOWER:
+                return 2;
+            case LOOKOUT_TOWER:
+                return 4;
+            default:
+                return 1;
+        }
     }
 
     public void giveDamage(Troop enemy) {
@@ -165,7 +175,7 @@ public class Troop {
         if (destination == null)
             return;
         des = convertToMapId(destination.getX(), destination.getY());
-        java.util.Map currentMap = Controller.getCurrentMap();
+        Map currentMap = Controller.getCurrentMap();
         int count = currentMap.getGroundHeight() * currentMap.getGroundWidth();
         printShortestDistance(currentMap.getGraph(), src, des, count, isPatrol);
     }
@@ -312,8 +322,8 @@ public class Troop {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Troop troop1)) return false;
-        return troop == troop1.troop;
+        if (!(o instanceof Troop)) return false;
+        return troop == ((Troop) o).troop;
     }
 
     @Override

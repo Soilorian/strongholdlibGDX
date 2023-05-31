@@ -94,10 +94,22 @@ public class MapViewMenu implements Menu {
         int lastY = MapViewMenuController.getViewingY();
         for (String move : moves) {
             switch (move) {
-                case "up" -> lastY--;
-                case "down" -> lastY++;
-                case "left" -> lastX--;
-                case "right" -> lastX++;
+                case "up" :{
+                    lastY--;
+                    break;
+                }
+                case "down" :{
+                    lastY++;
+                    break;
+                }
+                case "left" :{
+                    lastX--;
+                    break;
+                }
+                case "right" : {
+                    lastX++;
+                    break;
+                }
             }
         }
         if (!Controller.getCurrentMap().isInRange(lastX, lastY))

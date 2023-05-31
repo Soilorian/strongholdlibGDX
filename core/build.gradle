@@ -1,4 +1,9 @@
 sourceCompatibility = 1.7
+dependencies {
+    implementation 'com.thoughtworks.xstream:xstream:1.4.20'
+    implementation 'com.thoughtworks.xstream:xstream:1.4.17'
+    implementation 'com.thoughtworks.xstream:xstream:1.4.17'
+}
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]

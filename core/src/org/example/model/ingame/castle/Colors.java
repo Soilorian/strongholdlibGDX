@@ -20,19 +20,19 @@ public enum Colors {
 
     public static Colors getColor(String color) {
         color = color.toLowerCase();
-        return switch (color) {
-            case "yellow" -> YELLOW;
-            case "red" -> RED;
-            case "black" -> BLACK;
-            case "blue" -> BLUE;
-            case "white" -> WHITE;
-            case "green" -> GREEN;
-            case "purple" -> PURPLE;
-            case "orange" -> ORANGE;
-            case "gray" -> GRAY;
-            case "brown" -> BROWN;
-            default -> null;
-        };
+         switch (color) {
+             case "yellow" :return YELLOW;
+            case "red" :return RED;
+            case "black" :return BLACK;
+            case "blue" :return BLUE;
+            case "white" :return WHITE;
+            case "green" :return GREEN;
+            case "purple" :return PURPLE;
+            case "orange" :return ORANGE;
+            case "gray" :return GRAY;
+            case "brown" :return BROWN;
+            default :return null;
+        }
     }
 
     public static String list() {

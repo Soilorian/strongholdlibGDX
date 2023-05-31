@@ -7,6 +7,7 @@ import org.example.model.ingame.castle.Castle;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
+import sun.swing.StringUIClientPropertyKey;
 
 public class MapViewMenuController {
     private static int viewingX;
@@ -38,15 +39,15 @@ public class MapViewMenuController {
 
     private static String printBorders() {
         StringBuilder map = new StringBuilder();
-        map.append("-".repeat(4)).append("|");
-        for (int i = 0; i < 9; i++) map.append("-".repeat(10)).append("|");
-        map.append("-".repeat(4)).append("\n");
+        map.append("----").append("|");
+        for (int i = 0; i < 9; i++) map.append("----------").append("|");
+        map.append("----").append("\n");
         return map.toString();
     }
 
     private static String printHalfRow(Tile tile) {
-        if (tile == null) return "⌧".repeat(2);
-        return tile.toString().repeat(2);
+        if (tile == null) return "⌧⌧";
+        return tile.toString() + tile;
     }
 
     public static String printRow(Tile tile, int rowNum) {
@@ -54,11 +55,11 @@ public class MapViewMenuController {
         StringBuilder row = new StringBuilder();
         String pattern = tile.getTile().toString();
         switch (rowNum) {
-            case 1 -> {
+            case 1 : {
                 if (tile.getRock() != null) {
                     row.append(pattern);
                     pattern = tile.getRock().toString();
-                    row.append(pattern.repeat(3));
+                    row.append(pattern).append(pattern).append(pattern);
                     pattern = tile.getTile().toString();
                     row.append(pattern);
                     return row.toString();
@@ -88,30 +89,32 @@ public class MapViewMenuController {
                             break;
                         }
                     row.append(pattern);
-                } else row.append(tile.toString().repeat(3));
+                } else row.append(tile.toString()).append(tile).append(tile);
                 if (tile.isWall()) {
                     row.append(" ⌝");
                 } else row.append(tile);
+                break;
             }
-            case 2 -> {
+            case 2 : {
                 if (tile.getRock() != null) {
                     pattern = tile.getRock().toString();
-                    row.append(pattern.repeat(5));
+                    row.append(pattern).append(pattern).append(pattern).append(pattern).append(pattern);
                 } else {
-                    row.append(pattern.repeat(2));
+                    row.append(pattern).append(pattern);
                     if (tile.getBuilding() != null) if (tile.getBuilding() instanceof Castle) pattern = "\uD83C\uDFF0";
                     else pattern = "⌂⌂";
                     else if (tile.getTree() != null) pattern = tile.getTree().toString();
                     row.append(pattern);
                     pattern = tile.getTile().toString();
-                    row.append(pattern.repeat(2));
+                    row.append(pattern).append(pattern);
                 }
+                break;
             }
-            case 3 -> {
+            case 3 : {
                 if (tile.getRock() != null) {
                     row.append(pattern);
                     pattern = tile.getRock().toString();
-                    row.append(pattern.repeat(3));
+                    row.append(pattern).append(pattern).append(pattern);
                     pattern = tile.getTile().toString();
                     row.append(pattern);
                     return row.toString();
@@ -122,12 +125,13 @@ public class MapViewMenuController {
                 if (!tile.getTroops().isEmpty()) {
                     pattern = "\uD83E\uDDCD\uD83E\uDDCD\uD83E\uDDCD\uD83E\uDDCD";
                     row.append(pattern);
-                } else row.append(tile.toString().repeat(3));
+                } else row.append(tile).append(tile).append(tile);
                 if (tile.isWall()) {
                     row.append(" ⟓");
                 } else row.append(tile);
+                break;
             }
-            default -> {
+            default : {
                 return null;
             }
         }

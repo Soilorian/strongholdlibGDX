@@ -38,7 +38,7 @@ public class DogCage extends Building implements Trap {
         final ArrayList<Troop> troops = GameMenuController.lookAround(tileUnder.getX(), tileUnder.getY(), owner, 5);
         //noinspection SwitchStatementWithTooFewBranches
         switch (buildingStatus) {
-            case NOT_ACTIVE -> {
+            case NOT_ACTIVE : {
                 if (!troops.isEmpty())
                     ((Trap) this).doEffect(troops.get(0));
             }

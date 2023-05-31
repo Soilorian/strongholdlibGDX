@@ -203,14 +203,19 @@ public class EntranceMenuController {
     }
 
     static public String randomPassword() {
-        String password = random.ints(2, 65, 90).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
-        password += random.ints(2, 48, 57)
-                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
-        password += random.ints(2, 97, 122)
-                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
-        password += random.ints(2, 33, 47)
-                .mapToObj(i -> String.valueOf((char) i)).collect(Collectors.joining());
+        String password = getRandomChar(65, 90);
+        password += getRandomChar(48, 57);
+        password += getRandomChar(97, 122);
+        password += getRandomChar(33, 47);
         return password;
+    }
+
+    private static String getRandomChar(int randomNumberOrigin, int randomNumberBound) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 2; i++) {
+            result.append(random.nextInt(randomNumberOrigin, randomNumberBound));
+        }
+        return result.toString();
     }
 
     public static String getSecurityQuestion(String username) {

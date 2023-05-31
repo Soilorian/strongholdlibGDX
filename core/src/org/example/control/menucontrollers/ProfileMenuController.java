@@ -6,6 +6,8 @@ import org.example.control.enums.ProfileMenuMessages;
 import org.example.model.DataBase;
 import org.example.model.Player;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 import static org.example.control.menucontrollers.EntranceMenuController.*;
@@ -98,7 +100,7 @@ public class ProfileMenuController {
     }
 
     public static String showRank() {
-        DataBase.getPlayers().sort(new PlayerComparator());
+        Collections.sort(DataBase.getPlayers(), new PlayerComparator());
         return "your in game rank is: " + (DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer()) + 1);
     }
 
@@ -106,7 +108,8 @@ public class ProfileMenuController {
         String slogan;
         Player player = DataBase.getCurrentPlayer();
         slogan = player.getSlogan();
-        return "slogan: " + Objects.requireNonNullElse(slogan, "Slogan is empty!");
+        if (slogan.isEmpty()) return "slogan is empty";
+        return "slogan: " + slogan;
     }
 
     public static String showUsername() {
@@ -119,25 +122,25 @@ public class ProfileMenuController {
 
     public static String showProfile(String all) {
         switch (all.toLowerCase()) {
-            case "all" -> {
+            case "all" : {
                 return showUsername() + "\n" + showNickname() + "\n" + showRank() + "\n" + showSlogan() + "\n" + showMaxScore();
             }
-            case "username" -> {
+            case "username" : {
                 return showUsername();
             }
-            case "nickname" -> {
+            case "nickname" : {
                 return showNickname();
             }
-            case "rank" -> {
+            case "rank" : {
                 return showRank();
             }
-            case "slogan" -> {
+            case "slogan" : {
                 return showSlogan();
             }
-            case "max score" -> {
+            case "max score" : {
                 return showMaxScore();
             }
-            default -> {
+            default : {
                 return ProfileMenuMessages.WRONG_FIELD.toString();
             }
         }

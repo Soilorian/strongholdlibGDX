@@ -114,11 +114,8 @@ public class EntranceMenu implements Menu {
     private void pickSecurityQuestion() {
         String command;
         while (true) {
-            System.out.println("""
-                    Pick your security question:
-                    1. What is the first game you played?
-                    2. When did you meet mossayeb?
-                    3. What is your favorite patoq in university?""");
+            System.out.println(" Pick your security question:\n1. What is the first game you played?\n" +
+                    "2. When did you meet mossayeb?\n3. What is your favorite patoq in university");
             command = scanner.nextLine();
             Matcher matcher;
             if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.PICK_QUESTION)) != null) {

@@ -225,9 +225,18 @@ public class Empire {
 
     public void addBuilding(Building building) {
         if (building.getCapacity() != 0) switch (building.getBuildingName()) {
-            case "stockpile" -> stockpiles.add(building);
-            case "granary" -> granaries.add(building);
-            case "armoury" -> armouries.add(building);
+            case "stockpile" :{
+                stockpiles.add(building);
+                break;
+            }
+            case "granary" :{
+                granaries.add(building);
+                break;
+            }
+            case "armoury" :{
+                armouries.add(building);
+                break;
+            }
         }
         buildings.add(building);
         building.setOwner(this);

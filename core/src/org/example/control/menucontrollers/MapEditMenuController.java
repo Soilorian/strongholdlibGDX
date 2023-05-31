@@ -61,17 +61,30 @@ public class MapEditMenuController {
     }
 
     private static boolean isSea(TileTypes tile) {
-        return switch (tile) {
-            case SWAMP, PLAIN, SHALLOW_WATER, RIVER, SMALL_POND, BIG_POND, BEACH, SEA -> true;
-            default -> false;
-        };
+        switch (tile) {
+            case SWAMP:
+            case PLAIN:
+            case SHALLOW_WATER:
+            case RIVER:
+            case SMALL_POND:
+            case BIG_POND:
+            case BEACH:
+            case SEA:
+                return true;
+            default:
+                return false;
+        }
     }
 
     private static boolean isRock(TileTypes tile) {
-        return switch (tile) {
-            case ROCK, STONE, IRON_GROUND -> true;
-            default -> false;
-        };
+        switch (tile) {
+            case ROCK:
+            case STONE:
+            case IRON_GROUND:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public static boolean isPlaceable(Buildings type, Tile build) {

@@ -41,6 +41,10 @@ task dist(type: Jar) {
     with jar
 }
 
+dependencies {
+    implementation 'com.thoughtworks.xstream:xstream:1.4.20'
+}
+
 
 dist.dependsOn classes
 

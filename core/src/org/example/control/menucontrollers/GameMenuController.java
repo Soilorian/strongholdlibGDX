@@ -390,7 +390,6 @@ public class GameMenuController {
                         return GameMenuMessages.SUCCESS;
                     }
                 }
-                break;
             }
             case TUNNELERS_GUILD : {
                 if (!type.equalsIgnoreCase(Tunneler.getName()))
@@ -406,7 +405,6 @@ public class GameMenuController {
                         return GameMenuMessages.SUCCESS;
                     }
                 }
-                break;
             }
             case BARRACK : {
                 if (TrainingPlace.BARRACK.doesntHaveUnit(type))
@@ -424,9 +422,8 @@ public class GameMenuController {
                         placedOn.getTroops().add(new Troop(troop, currentEmpire, placedOn));
                     return GameMenuMessages.SUCCESS;
                 }
-                break;
             }
-            case MERCENARY_POST -> {
+            case MERCENARY_POST : {
                 if (TrainingPlace.MERCENARY_POST.doesntHaveUnit(type))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -441,7 +438,7 @@ public class GameMenuController {
                     return GameMenuMessages.SUCCESS;
                 }
             }
-            default -> {
+            default : {
                 return GameMenuMessages.CANT_PRODUCE_UNIT;
             }
         }
@@ -514,9 +511,18 @@ public class GameMenuController {
             empire.removeDeads();
             for (Troop troop : empire.getTroops()) {
                 switch (troop.getStatus()) {
-                    case DEFENSIVE -> troop.searchForEnemyWithHammingDistance(0);
-                    case OFFENSIVE -> troop.searchForEnemyWithHammingDistance(2);
-                    case NATURAL -> troop.searchForEnemyWithHammingDistance(1);
+                    case DEFENSIVE :{
+                        troop.searchForEnemyWithHammingDistance(0);
+                        break;
+                    }
+                    case OFFENSIVE :{
+                        troop.searchForEnemyWithHammingDistance(2);
+                        break;
+                    }
+                    case NATURAL :{
+                        troop.searchForEnemyWithHammingDistance(1);
+                        break;
+                    }
                 }
                 troop.moveAndPatrol();
                 troop.attack();
@@ -528,7 +534,11 @@ public class GameMenuController {
             empire.updatePopulation();
             empire.taxCollector();
         }
-        currentGame.getEmpires().removeIf(Empire::isLordDead);
+        Iterator<Empire> iterator = currentGame.getEmpires().iterator();
+        while (iterator.hasNext()){
+            if (iterator.next().isLordDead())
+                iterator.remove();
+        }
         if (currentGame.getEmpires().size() < 2) {
             endGame();
             Controller.setCurrentMenu(Menus.MAIN_MENU);

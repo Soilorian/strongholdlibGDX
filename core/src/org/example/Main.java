@@ -11,8 +11,20 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main extends ApplicationAdapter {
-    public static void main(String[] args) throws ClassNotFoundException, IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        Scanner scanner = new Scanner(System.in);
-        Controller.run(scanner);
+    Controller controller;
+    @Override
+    public void create() {
+        controller = new Controller();
+        controller.create();
+    }
+
+    @Override
+    public void render() {
+        controller.render();
+    }
+
+    @Override
+    public void dispose() {
+        controller.dispose();
     }
 }
