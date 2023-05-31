@@ -169,7 +169,7 @@ public class Map {
         String[][] smaller = new String[groundHeight / 9][groundWidth / 9];
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < groundWidth; i += 9) stringBuilder.append("--");
-        stringBuilder.replace(groundWidth / 9 - id.length() / 2, groundWidth / 9 + Math.ceilDiv(id.length(), 2), id);
+        stringBuilder.replace(groundWidth / 9 - id.length() / 2, (int) (groundWidth / 9 + Math.ceil((double) id.length() / 2)), id);
         stringBuilder.append('\n');
         for (int i = 0; i < groundHeight / 9; i++)
             for (int j = 0; j < groundWidth / 9; j++) smaller[i][j] = tiles[i * 9][j * 9].toString();

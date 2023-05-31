@@ -54,6 +54,9 @@ public class Controller extends Game {
         Controller.currentMap = currentMap;
     }
 
+    public static void setCurrentMenu(Menus menus) {
+    }
+
     public void changeMenu(){
         
     }

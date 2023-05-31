@@ -39,7 +39,7 @@ public class GameStartUpMenuController {
                     && map.getGroundWidth() == Controller.getCurrentMap().getGroundWidth())
                 stringBuilder.append(map).append('\n');
         }
-        if (stringBuilder.isEmpty())
+        if (stringBuilder.toString().isEmpty())
             stringBuilder.append("no saved maps for chosen size");
         return stringBuilder.toString();
     }
