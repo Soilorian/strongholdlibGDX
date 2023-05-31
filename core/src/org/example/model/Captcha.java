@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Captcha {
     String[] picture = {"", "", "", "", "", "", ""};
+
     String[][] NumbersPicture = {
             {"  ###   ",
                     " #   #  ",
