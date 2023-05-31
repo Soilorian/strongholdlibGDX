@@ -20,10 +20,9 @@ import java.util.regex.Matcher;
 public class SiegeTentMenu implements Menu {
 
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        String input;
+    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
+            CoordinatesOutOfMap, NotInStoragesException {
         do {
-            input = scanner.nextLine();
             Matcher matcher;
             if ((matcher = GameMenuCommands.getMatcher(input, GameMenuCommands.BUILD_EQUIPMENT)) != null)
                 build(matcher);

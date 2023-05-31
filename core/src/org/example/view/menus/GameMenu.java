@@ -21,11 +21,9 @@ import java.util.regex.Matcher;
 
 public class GameMenu implements Menu {
 
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        String command;
+    public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
         while (true) {
-            command = scanner.nextLine();
             if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.MOVE_UNIT)) != null)
                 moveUnit(matcher);
             else if (command.equalsIgnoreCase("show menu"))
@@ -58,8 +56,10 @@ public class GameMenu implements Menu {
                 pourOil(matcher);
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.DISBAND) != null)
                 disbandUnit();
-            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TRADE) != null)
-                Menus.TRADE_MENU.getMenu().run();
+            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TRADE) != null){
+                controller.setScreen(Menus.TRADE_MENU.getMenu());
+                controller.changeMenu(this);
+            }
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.NEXT_TURN) != null) {
                 if (nextTurn())
                     break;
@@ -81,9 +81,10 @@ public class GameMenu implements Menu {
                 infiniteHealth();
             else if ((GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_PLAYER)) != null)
                 showCurrentPlayer();
-            else if ((command.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else if (command.equalsIgnoreCase("show castle coordinates"))
+            else if ((command.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else if (command.equalsIgnoreCase("show castle coordinates"))
                 System.out.println(GameMenuController.showCastleCoordinates());
             else {
                 SoundPlayer.play(Sounds.AKHEY);
@@ -116,7 +117,8 @@ public class GameMenu implements Menu {
     }
 
     private void showMap() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        Menus.MAP_VIEW_MENU.getMenu().run();
+        controller.setScreen(Menus.MAP_VIEW_MENU.getMenu());
+        controller.changeMenu(this);
     }
 
     private void infiniteHealth() {

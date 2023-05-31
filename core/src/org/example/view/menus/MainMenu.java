@@ -117,16 +117,17 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
         modelBatch.end();
     }
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException, CoordinatesOutOfMap, NotInStoragesException {
+    public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
+            CoordinatesOutOfMap, NotInStoragesException {
         System.out.println("entered " + Menus.getNameByObj(this));
         do {
-            String input ;
             if (MainMenuCommands.getMatcher(input, MainMenuCommands.START_GAME) != null) {
                 startNewGame();
                 break;
-            } else if ((input.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else if (input.equalsIgnoreCase("show menu")) {
+            } else if ((input.equalsIgnoreCase("open music player"))) {
+                Menu.controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                Menu.controller.changeMenu(this);
+            }else if (input.equalsIgnoreCase("show menu")) {
                 System.out.println(Menus.getNameByObj(this));
             } else if (MainMenuCommands.getMatcher(input, MainMenuCommands.PROFILE) != null) {
                 profile();
@@ -154,18 +155,17 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
     private void mapEditor() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {
         System.out.println("please select the size of your map");
         do {
-            String input = scanner.nextLine();
+            String input = ""; // TODO: 6/1/2023 new menu
             Matcher matcher;
             if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
-                if (GameStartUpMenu.selectSize(matcher))
-                    break;
+                ; // TODO: 6/1/2023 select size menu first
             } else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.BACK) != null)
                 return;
             else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.NO) != null)
                 break;
             else System.out.println("invalid input!");
         } while (true);
-        Menus.MAP_EDIT_MENU.getMenu().run();
+        Menu.controller.setScreen(Menus.MAP_EDIT_MENU.getMenu());
     }
 
     public void startNewGame() {

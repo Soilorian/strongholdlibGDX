@@ -22,12 +22,11 @@ import static org.example.view.enums.commands.ProfileMenuCommands.*;
 public class ProfileMenu implements Menu {
 
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
+    public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
+            CoordinatesOutOfMap, NotInStoragesException {
         System.out.println("entered " + Menus.getNameByObj(this));
-        String command;
         Matcher matcher;
         while (true) {
-            command = scanner.nextLine();
             if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_USERNAME)) != null) {
                 changeUsername(matcher);
             } else if (command.equalsIgnoreCase("show menu")) {
@@ -50,9 +49,10 @@ public class ProfileMenu implements Menu {
             } else if (EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.EXIT) != null) {
                 Controller.setCurrentMenu(null);
                 break;
-            } else if ((command.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else {
+            } else if ((command.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command");
             }

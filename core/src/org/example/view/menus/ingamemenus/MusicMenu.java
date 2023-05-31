@@ -15,14 +15,12 @@ public class MusicMenu implements Menu {
 
 
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        String input;
+    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         do {
-            input = scanner.nextLine();
             if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.RANDOM_SONG) != null)
                 playRandomSong();
             else if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.RESUME) != null)
-                resume();
+                resumeMusic();
             else if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.PAUSE) != null)
                 pause();
             else if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.SHOW_SONGS) != null)
@@ -48,7 +46,7 @@ public class MusicMenu implements Menu {
         MusicMenuController.pause();
     }
 
-    public void resume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public void resumeMusic() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         MusicMenuController.resume();
     }
 

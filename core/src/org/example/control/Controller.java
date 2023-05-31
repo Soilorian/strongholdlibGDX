@@ -2,26 +2,20 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
-import org.example.model.ingame.humans.Peasant;
-import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
 import org.example.view.menus.Menu;
+import org.example.view.menus.minimenus.SelectMapMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller extends Game {
-    private static Scanner mainScanner;
     private static Map currentMap;
     private static Menus currentMenu;
 
@@ -57,26 +51,27 @@ public class Controller extends Game {
     public static void setCurrentMenu(Menus menus) {
     }
 
-    public void changeMenu(){
+    public void changeMenu(Menu menu){
         
     }
 
     @Override
     public void create() {
-        DataBase.generateInfoFromJson();
-        if (DataBase.isStayLogged())
-            currentMenu = Menus.MAIN_MENU;
-        else
-            currentMenu = Menus.ENTRANCE_MENU;
-        do {
-            try {
-                SoundPlayer.play(Sounds.BENAZAM);
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                System.out.println("can't play sound");
-                throw new RuntimeException(e);
-            }
-            setScreen(currentMenu.getMenu());
-        } while (currentMenu != null);
+//        DataBase.generateInfoFromJson();
+//        if (DataBase.isStayLogged())
+//            currentMenu = Menus.MAIN_MENU;
+//        else
+//            currentMenu = Menus.ENTRANCE_MENU;
+//        do {
+//            try {
+//                SoundPlayer.play(Sounds.BENAZAM);
+//            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+//                System.out.println("can't play sound");
+//                throw new RuntimeException(e);
+//            }
+//            setScreen(currentMenu.getMenu());
+//        } while (currentMenu != null);
+        setScreen(new SelectMapMenu());
     }
 
     @Override
@@ -96,5 +91,9 @@ public class Controller extends Game {
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Skin getSkin() {
+        return null;
     }
 }

@@ -17,11 +17,9 @@ import java.util.regex.Matcher;
 public class TradeMenu implements Menu {
 
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        String commands;
+    public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
         while (true) {
-            commands = scanner.nextLine();
             if ((matcher = InGameMenuCommands.getMatcher(commands, InGameMenuCommands.SEND_NEW_TRADE)) != null)
                 sendNewTrade(matcher);
             else if ((matcher = InGameMenuCommands.getMatcher(commands, InGameMenuCommands.TRADE_ACCEPT)) != null)

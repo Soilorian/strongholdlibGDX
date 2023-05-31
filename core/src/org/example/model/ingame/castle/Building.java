@@ -1,5 +1,6 @@
 package org.example.model.ingame.castle;
 
+import org.example.Main;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
@@ -133,7 +134,7 @@ public class Building {
             }
             return stringBuilder.toString();
         } else
-            menu.getMenu().run();
+            Main.getController().setScreen(menu.getMenu()); Main.getController().changeMenu(Menus.GAME_MENU.getMenu());
         return "hp: " + hp;
     }
 

@@ -19,10 +19,9 @@ import java.util.regex.Matcher;
 
 public class MapViewMenu implements Menu {
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         System.out.println("tell me where do you want to view");
         do {
-            String input = scanner.nextLine();
             Matcher matcher;
             if (input.equalsIgnoreCase("show menu"))
                 System.out.println(Menus.getNameByObj(this) + " first do while");
@@ -35,8 +34,7 @@ public class MapViewMenu implements Menu {
                 System.out.println("invalid command");
             }
         } while (true);
-        do {
-            String input = scanner.nextLine();
+        do {// TODO: 6/1/2023 split to 2 menus
             Matcher matcher;
             if ((matcher = InGameMenuCommands.getMatcher(input, InGameMenuCommands.MOVE_MAP)) != null)
                 moveMap(matcher);

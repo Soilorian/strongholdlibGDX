@@ -19,9 +19,8 @@ import java.util.regex.Matcher;
 public class UnitCreatingMenu implements Menu {
 
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         do {
-            String input = scanner.nextLine();
             Matcher matcher;
             if ((matcher = InGameMenuCommands.getMatcher(input, InGameMenuCommands.CREATE_UNIT)) != null)
                 createUnit(matcher);

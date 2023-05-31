@@ -1,6 +1,7 @@
 package org.example.control.menucontrollers;
 
 
+import org.example.Main;
 import org.example.control.Controller;
 import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.model.DataBase;
@@ -46,12 +47,10 @@ public class GameStartUpMenuController {
 
     public static GameStartUpMenuMessages selectMap(String id) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         if (id.equals("blank")) {
-            Controller.setCurrentMenu(Menus.MAP_EDIT_MENU);
-            Menus.MAP_EDIT_MENU.getMenu().run();
-            Controller.setCurrentMenu(Menus.GAME_START_UP_MENU);
+            Main.getController().setScreen(Menus.MAP_EDIT_MENU.getMenu());
             GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
         } else if (id.equals("random")) {
-            Menus.MAP_BUILDER_MENU.getMenu().run();
+            Main.getController().setScreen(Menus.MAP_BUILDER_MENU.getMenu());
             GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
         } else {
             Map map = DataBase.getMapById(id);

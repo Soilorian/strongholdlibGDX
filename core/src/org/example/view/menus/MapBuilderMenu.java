@@ -21,20 +21,20 @@ import static org.example.control.menucontrollers.MapBuilderMenuController.*;
 
 public class MapBuilderMenu implements Menu {
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        String command;
+    public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
+            CoordinatesOutOfMap, NotInStoragesException {
         System.out.println("Choose a map");
         while (true) {
-            command = scanner.nextLine();
             if (MapBuilderMenuCommands.getMatcher(command, MapBuilderMenuCommands.ROCK_LAND) != null) {
                 createRockLand();
                 Map map = Controller.getCurrentMap();
                 System.out.println(map);
                 exit();
                 break;
-            } else if ((command.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else if (command.matches("show menu"))
+            } else if ((command.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else if (command.matches("show menu"))
                 System.out.println(Menus.getNameByObj(this));
             else if (MapBuilderMenuCommands.getMatcher(command, MapBuilderMenuCommands.ISLAND) != null) {
                 createIsland();
@@ -61,7 +61,7 @@ public class MapBuilderMenu implements Menu {
     private boolean exit() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("do you want to save the map?");
         do {
-            String input = scanner.nextLine();
+            String input = ""; // TODO: 6/1/2023 save window
             Matcher matcher;
             if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SAVE)) != null) {
                 if (save(matcher))

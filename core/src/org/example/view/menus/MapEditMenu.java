@@ -18,35 +18,35 @@ import java.util.regex.Matcher;
 public class MapEditMenu implements Menu {
 
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        String command;
+    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
         while (true) {
-            command = scanner.nextLine();
-            if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.SET_TEXTURE)) != null) {
+            if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SET_TEXTURE)) != null) {
                 setTexture(matcher);
-            } else if (command.equalsIgnoreCase("show menu")) {
+            } else if (input.equalsIgnoreCase("show menu")) {
                 System.out.println(Menus.getNameByObj(this));
-            } else if (command.equalsIgnoreCase("view map")) {
-                Menus.MAP_VIEW_MENU.getMenu().run();
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.SET_TEXTURE_RECTANGLE)) != null) {
+            } else if (input.equalsIgnoreCase("view map")) {
+                controller.setScreen(Menus.MAP_VIEW_MENU.getMenu());
+                controller.changeMenu(this);
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SET_TEXTURE_RECTANGLE)) != null) {
                 setTextureRectangle(matcher);
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.CLEAR)) != null) {
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.CLEAR)) != null) {
                 clear(matcher);
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.DROP_ROCK)) != null) {
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.DROP_ROCK)) != null) {
                 dropRock(matcher);
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.DROP_TREE)) != null) {
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.DROP_TREE)) != null) {
                 dropTree(matcher);
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.DROP_BUILDING)) != null) {
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.DROP_BUILDING)) != null) {
                 dropBuilding(matcher);
-            } else if ((matcher = MapEditorMenuCommands.getMatcher(command, MapEditorMenuCommands.DROP_UNIT)) != null) {
+            } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.DROP_UNIT)) != null) {
                 dropUnit(matcher);
-            } else if (command.equals("back")) {
+            } else if (input.equals("back")) {
                 if (exit())
                     break;
-            } else if ((command.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else {
+            } else if ((input.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command");
             }
@@ -62,7 +62,7 @@ public class MapEditMenu implements Menu {
         }
         System.out.println("do you want to save the map?");
         do {
-            String input = scanner.nextLine();
+            String input = ""; // TODO: 6/1/2023 save window
             Matcher matcher;
             if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SAVE)) != null) {
                 if (save(matcher))

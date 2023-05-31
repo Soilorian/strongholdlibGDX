@@ -20,33 +20,30 @@ import java.util.regex.Matcher;
 
 public class EntranceMenu implements Menu {
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        String command;
+    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
         while (true) {
-            command = scanner.nextLine();
-            if (command.isEmpty()) continue;
-            if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.CREATE_USER)) != null) {
+            if (input.isEmpty()) continue;
+            if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.CREATE_USER)) != null) {
                 createNewUser(matcher, 1);
-            } else if ((command.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else if (command.equalsIgnoreCase("show menu")) {
-                System.out.println(Controller.getCurrentMenu().getMenuName());
-            } else if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.CREATE_USER_WITHOUT_SLOGAN)) != null) {
+            } else if ((input.equalsIgnoreCase("open music player"))){
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.CREATE_USER_WITHOUT_SLOGAN)) != null) {
                 createNewUser(matcher, 2);
-            } else if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.CREATE_USER_WITH_RANDOM_PASSWORD)) != null) {
+            } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.CREATE_USER_WITH_RANDOM_PASSWORD)) != null) {
                 createNewUser(matcher, 3);
-            } else if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.LOGIN)) != null) {
+            } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.LOGIN)) != null) {
                 if (login(matcher, false))
                     break;
-            } else if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.FORGOT_PASSWORD)) != null) {
+            } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.FORGOT_PASSWORD)) != null) {
                 forgetPassword(matcher);
-            } else if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.LOGIN_STAY_IN)) != null) {
+            } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.LOGIN_STAY_IN)) != null) {
                 if (login(matcher, true)) {
                     EntranceMenuController.stayLogged();
                     break;
                 }
-            } else if (EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.EXIT) != null) {
+            } else if (EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.EXIT) != null) {
                 Controller.setCurrentMenu(null);
                 break;
             } else {
@@ -69,7 +66,7 @@ public class EntranceMenu implements Menu {
             System.out.println("your random password is: " + password);
             do {
                 System.out.println("please re enter your password");
-                passwordConfirmation = scanner.nextLine();
+                passwordConfirmation = ""; // TODO: 6/1/2023 move to new menu
             } while (EntranceMenuController.isConfirmationNotEqual(password, passwordConfirmation));
         } else
             passwordConfirmation = Controller.removeQuotes(matcher.group("PasswordConfirmation"));
@@ -97,7 +94,7 @@ public class EntranceMenu implements Menu {
             Captcha captcha = EntranceMenuController.createCaptcha();
             captcha.printPicture();
             do {
-                input = scanner.nextLine();
+                input = ""; // TODO: 6/1/2023 move to screen
                 if (EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.NEW_CAPTCHA) != null)
                     break;
                 if (!EntranceMenuController.isDigit(input))
@@ -116,7 +113,7 @@ public class EntranceMenu implements Menu {
         while (true) {
             System.out.println(" Pick your security question:\n1. What is the first game you played?\n" +
                     "2. When did you meet mossayeb?\n3. What is your favorite patoq in university");
-            command = scanner.nextLine();
+            command = ""; // TODO: 6/1/2023 move to screen
             Matcher matcher;
             if ((matcher = EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.PICK_QUESTION)) != null) {
                 String questionNumber = matcher.group("QuestionNumber");
@@ -158,7 +155,7 @@ public class EntranceMenu implements Menu {
             String commands;
             //noinspection ConditionalBreakInInfiniteLoop
             do {
-                commands = scanner.nextLine();
+                commands = ""; // TODO: 6/1/2023 create new menu
                 if (commands.matches("^back$"))
                     return;
                 if (EntranceMenuController.checkSecurityAnswer(username, commands))
@@ -168,7 +165,7 @@ public class EntranceMenu implements Menu {
             } while (true);
             System.out.println("that was right, now enter your new password");
             do {
-                commands = scanner.nextLine();
+                commands = ""; // TODO: 6/1/2023 create new menu
                 if (commands.matches("^back$"))
                     return;
                 result = EntranceMenuController.changePassword(username, commands);

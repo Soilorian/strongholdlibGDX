@@ -17,11 +17,9 @@ import java.util.regex.Matcher;
 public class TaxMenu implements Menu {
 
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        String commands;
+    public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
         do {
-            commands = scanner.nextLine();
             if ((matcher = InGameMenuCommands.getMatcher(commands, InGameMenuCommands.CHANGE_TAX_RATE)) != null)
                 setTax(matcher);
             else if (InGameMenuCommands.getMatcher(commands, InGameMenuCommands.SHOW_TAX_RATE) != null)

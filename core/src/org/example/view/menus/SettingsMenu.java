@@ -14,18 +14,18 @@ import java.util.regex.Matcher;
 
 public class SettingsMenu implements Menu {
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException, CoordinatesOutOfMap, NotInStoragesException {
-        String commands;
+    public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
+            CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
         while (true) {
-            commands = scanner.nextLine();
             if ((InGameMenuCommands.getMatcher(commands, InGameMenuCommands.BACK)) != null) {
                 return;
             } else if (commands.equalsIgnoreCase("show menu"))
                 System.out.println(Menus.getNameByObj(this));
-            else if ((commands.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else {
+            else if ((commands.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command!");
             }

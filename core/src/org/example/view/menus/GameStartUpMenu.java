@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 
 
 public class GameStartUpMenu implements Menu {
-    private static boolean isNotDigit(String str) {
+    public static boolean isNotDigit(String str) {
         return !str.matches("\\d+");
     }
 
@@ -33,58 +33,27 @@ public class GameStartUpMenu implements Menu {
         return false;
     }
 
-    static boolean selectSize(Matcher matcher) {
-        String widthInString = Controller.removeQuotes(matcher.group("Width"));
-        String heightInString = Controller.removeQuotes(matcher.group("Height"));
-        if (Controller.isFieldEmpty(widthInString) || Controller.isFieldEmpty(heightInString))
-            System.out.println(GameStartUpMenuMessages.EMPTY_FIELD);
-        else if (isNotDigit(widthInString))
-            System.out.println("not valid width\nwidth should only contain digits");
-        else if (isNotDigit(heightInString))
-            System.out.println("not valid height!\nheight should only contain digits");
-        else {
-            int width = Integer.parseInt(widthInString);
-            int height = Integer.parseInt(heightInString);
-            if (width < 200 || width > 400)
-                System.out.println("width not in valid range!");
-            else if (height < 200 || height > 400)
-                System.out.println("height not in valid range!");
-            else {
-                GameStartUpMenuController.selectSize(width, height);
-                System.out.println("map size " + width + " x " + height + " selected!");
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     @Override
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
+    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
+            CoordinatesOutOfMap, NotInStoragesException {
         GameStartUpMenuController.startMakingGame();
-        do {
-            if (selectMapSize()) {
-                if (selectMapMenu()) {
-                    if ((gameStartUp())) {
-                        GameStartUpMenuController.enterGameMenu();
-                        break;
-                    }
-                }
-            } else return;
-        } while (true);
     }
 
-    private boolean gameStartUp() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {
+    private boolean gameStartUp(String input) throws UnsupportedAudioFileException, CoordinatesOutOfMap,
+            LineUnavailableException, NotInStoragesException, IOException {
         do {
             Matcher matcher;
-            String input = scanner.nextLine();
             if (input.equalsIgnoreCase("show menu"))
                 System.out.println(Menus.getNameByObj(this));
             else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.CANCEL) != null) {
                 cancel();
                 return false;
-            } else if ((input.equalsIgnoreCase("open music player")))
-                Menus.MUSIC_CONTROL_MENU.getMenu().run();
-            else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.NEXT) != null) {
+            } else if ((input.equalsIgnoreCase("open music player"))) {
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
+            }else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.NEXT) != null) {
                 if (next())
                     return true;
             } else if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.ADD_PLAYER)) != null)
@@ -97,31 +66,12 @@ public class GameStartUpMenu implements Menu {
         } while (true);
     }
 
-    private boolean selectMapSize() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        System.out.println("please select the size of the map you want to play on");
-        do {
-            Matcher matcher;
-            String input = scanner.nextLine();
-            if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
-                if (selectSize(matcher))
-                    return true;
-            } else if (input.equalsIgnoreCase("show menu"))
-                System.out.println(Menus.getNameByObj(this));
-            else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.CANCEL) != null) {
-                cancel();
-                return false;
-            } else {
-                SoundPlayer.play(Sounds.AKHEY);
-                System.out.println("invalid command");
-            }
-        } while (true);
-    }
 
-    private boolean selectMapMenu() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {
+    private boolean selectMapMenu(String input) throws UnsupportedAudioFileException, CoordinatesOutOfMap,
+            LineUnavailableException, NotInStoragesException, IOException {
         System.out.println("select the map you want");
         do {
             Matcher matcher;
-            String input = scanner.nextLine();
             if (input.equalsIgnoreCase("show menu"))
                 System.out.println(Menus.getNameByObj(this));
             else if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_MAP)) != null) {
@@ -140,9 +90,6 @@ public class GameStartUpMenu implements Menu {
     }
 
 
-    private void cancel() {
-        GameStartUpMenuController.cancel();
-    }
 
     private void showMaps() {
         System.out.println(GameStartUpMenuController.showAllMap());
@@ -188,5 +135,10 @@ public class GameStartUpMenu implements Menu {
             System.out.println("castle number should be a digit!");
         else
             System.out.println(GameStartUpMenuController.selectCastle(Integer.parseInt(castle)));
+    }
+
+
+    private void cancel() {
+        GameStartUpMenuController.cancel();
     }
 }

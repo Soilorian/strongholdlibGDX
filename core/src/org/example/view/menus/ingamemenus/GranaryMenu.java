@@ -15,11 +15,9 @@ import java.util.regex.Matcher;
 
 public class GranaryMenu implements Menu {
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        String commands;
+    public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
         while (true) {
-            commands = scanner.nextLine();
             if (InGameMenuCommands.getMatcher(commands, InGameMenuCommands.SHOW_FOODLIST) != null)
                 GranaryMenuController.showFoodList();
             else if (InGameMenuCommands.getMatcher(commands, InGameMenuCommands.SHOW_FOOD_RATE) != null)

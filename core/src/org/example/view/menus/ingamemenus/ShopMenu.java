@@ -17,11 +17,9 @@ import java.util.regex.Matcher;
 public class ShopMenu implements Menu {
 
     @Override
-    public void run() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        String commands;
+    public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
         while (true) {
-            commands = scanner.nextLine();
             if ((matcher = InGameMenuCommands.getMatcher(commands, InGameMenuCommands.SHOW_SHOP_PRICES)) != null)
                 showPriceList();
             else if ((matcher = InGameMenuCommands.getMatcher(commands, InGameMenuCommands.BUY_ITEM)) != null)
