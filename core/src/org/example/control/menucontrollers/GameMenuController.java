@@ -582,4 +582,14 @@ public class GameMenuController {
     public static boolean isChurch(Buildings building) {
         return building.equals(Buildings.CATHEDRAL) || building.equals(Buildings.CHURCH);
     }
+
+    public static void removeSubsetFromTroop(ArrayList<Troop> main, ArrayList<Troop> subset) {
+        for (Troop troop : subset)
+            main.remove(troop);
+    }
+
+    public static void removeSubsetFromPeasant(ArrayList<Peasant> main, ArrayList<Peasant> subset) {
+        for (Peasant peasant : subset)
+            main.remove(peasant);
+    }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main extends ApplicationAdapter {
-    Controller controller;
+    static Controller controller;
     @Override
     public void create() {
         controller = new Controller();
@@ -26,5 +26,9 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         controller.dispose();
+    }
+
+    public static Controller getController() {
+        return controller;
     }
 }

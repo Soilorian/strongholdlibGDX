@@ -69,7 +69,7 @@ public class Empire {
                 subset.add(peasant);
                 pop++;
             }
-            Controller.removeSubsetFromPeasant(peasants, subset);
+            GameMenuController.removeSubsetFromPeasant(peasants, subset);
         }
     }
 
@@ -293,7 +293,7 @@ public class Empire {
                 deads.add(peasant);
             }
         }
-        Controller.removeSubsetFromTroop(troops, deads);
+        GameMenuController.removeSubsetFromTroop(troops, deads);
     }
 
     public void addTroop(Troop troop1) {
