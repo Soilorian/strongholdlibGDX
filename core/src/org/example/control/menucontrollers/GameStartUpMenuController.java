@@ -50,7 +50,7 @@ public class GameStartUpMenuController {
             Main.getController().setScreen(Menus.MAP_EDIT_MENU.getMenu());
             GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
         } else if (id.equals("random")) {
-            Main.getController().setScreen(Menus.MAP_BUILDER_MENU.getMenu());
+            Main.getController().setScreen(Menus.RANDOM_MAP_MENU.getMenu());
             GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
         } else {
             Map map = DataBase.getMapById(id);

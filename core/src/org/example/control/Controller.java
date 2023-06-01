@@ -6,11 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
-import org.example.view.menus.EntranceMenu;
-import org.example.view.menus.MainMenu;
-import org.example.view.menus.Menu;
+import org.example.view.menus.*;
+import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
+import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -74,7 +73,28 @@ public class Controller extends Game {
 //            }
 //            setScreen(currentMenu.getMenu());
 //        } while (currentMenu != null);
-        super.setScreen(new EntranceMenu());
+        createMenus();
+        super.setScreen(new MainMenu());
+    }
+
+    private void createMenus() {
+        Menus.MUSIC_CONTROL_MENU.setMenu(new MusicMenu());
+        Menus.MAP_EDIT_MENU.setMenu(new MapEditMenu());
+        Menus.TRADE_MENU.setMenu(new TradeMenu());
+        Menus.MAP_VIEW_MENU.setMenu(new MapViewMenu());
+        Menus.GAME_START_UP_MENU.setMenu(new GameStartUpMenu());
+        Menus.ENTRANCE_MENU.setMenu(new EntranceMenu());
+        Menus.GAME_MENU.setMenu(new GameMenu());
+        Menus.GRANARY_MENU.setMenu(new GranaryMenu());
+        Menus.MAIN_MENU.setMenu(new MainMenu());
+        Menus.RANDOM_MAP_MENU.setMenu(new RandomMapMenu());
+        Menus.PROFILE_MENU.setMenu(new ProfileMenu());
+        Menus.SETTINGS_MENU.setMenu(new SettingsMenu());
+        Menus.SHOP_MENU.setMenu(new ShopMenu());
+        Menus.TAX_MENU.setMenu(new TaxMenu());
+        Menus.UNIT_CREATING_MENU.setMenu(new UnitCreatingMenu());
+        Menus.SELECT_MAP_MENU.setMenu(new SelectMapMenu());
+        Menus.SELECT_SIZE_MENU.setMenu(new SelectSizeMenu());
     }
 
     @Override

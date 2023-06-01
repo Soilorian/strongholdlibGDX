@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.ScreenUtils;
 import org.example.Main;
 import org.example.control.Controller;
@@ -25,9 +26,11 @@ public abstract class Menu implements Screen {
     protected ModelBatch batch = new ModelBatch();
     protected Camera camera = new PerspectiveCamera();
     protected CameraInputController cameraInput = new CameraInputController(camera);
+    protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
 
-    final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
-            "cancel", controller.getSkin());
+        "cancel", controller.getSkin());
+    protected final Window errorWindow = new Window("error", controller.getSkin());
+
     protected abstract void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException;
 

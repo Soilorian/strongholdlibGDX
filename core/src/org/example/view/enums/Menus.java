@@ -6,7 +6,7 @@ public enum Menus {
     ENTRANCE_MENU("entrance menu"),
     MAIN_MENU("main menu"),
     MAP_EDIT_MENU("map edit menu"),
-    MAP_BUILDER_MENU("map random "),
+    RANDOM_MAP_MENU("random map menu"),
     PROFILE_MENU("profile menu"),
     GAME_MENU("game menu"),
     GAME_START_UP_MENU("game start up menu"),
@@ -17,7 +17,10 @@ public enum Menus {
     MAP_VIEW_MENU("map view menu"),
     GRANARY_MENU("granary menu"),
     UNIT_CREATING_MENU("unit creating menu"),
+
     MUSIC_CONTROL_MENU("music control menu"),
+    SELECT_SIZE_MENU("select size menu"),
+    SELECT_MAP_MENU("select map menu")
 
     ;
 

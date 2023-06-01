@@ -2,13 +2,6 @@ package org.example;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.example.control.Controller;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class Main extends ApplicationAdapter {
     static Controller controller;
