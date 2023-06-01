@@ -4,6 +4,7 @@ package org.example.control;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
+import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
 import org.example.view.menus.*;

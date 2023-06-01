@@ -14,7 +14,7 @@ public enum Troops {
             Damage.LOW, new ArrayList<>(List.of(new Resource[]{new Resource(Resources.CROSSBOW, 1), new Resource(Resources.LEATHER_VEST, 1)}))),
     SPEARMAN("Spearman", Speed.MEDIUM, Price.FREE, HP.VERY_LOW, Range.VERY_LOW,
             Damage.MEDIUM, new ArrayList<>(List.of(new Resource[]{new Resource(Resources.SPEAR, 1)}))),
-    PIKEMAN("Pikeman", Speed.SLOW, Price.FREE, HP.HIGH, Range.VERY_LOW,
+    PIKEMAN("Pikeman", Speed.SLOW, Price.FREE,   HP.HIGH, Range.VERY_LOW,
             Damage.MEDIUM, new ArrayList<>(List.of(new Resource[]{new Resource(Resources.PIKE, 1), new Resource(Resources.CHESTPLATE, 1)}))),
     MACEMAN("Maceman", Speed.MEDIUM, Price.FREE, HP.MEDIUM, Range.VERY_LOW,
             Damage.HIGH, new ArrayList<>(List.of(new Resource[]{new Resource(Resources.MACE, 1), new Resource(Resources.MACE, 1)}))),
