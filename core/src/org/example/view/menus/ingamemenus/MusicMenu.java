@@ -11,7 +11,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
-public class MusicMenu implements Menu {
+public class MusicMenu extends Menu {
 
 
     @Override

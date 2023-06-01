@@ -18,7 +18,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class EntranceMenu implements Menu {
+public class EntranceMenu extends Menu {
+
+    public EntranceMenu() {
+        System.out.println("1");
+    }
+
     @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;

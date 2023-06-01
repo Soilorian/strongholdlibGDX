@@ -1,33 +1,32 @@
 package org.example.view.enums;
 
 import org.example.view.menus.*;
-import org.example.view.menus.ingamemenus.*;
 
 public enum Menus {
-    ENTRANCE_MENU("entrance menu", new EntranceMenu()),
-    MAIN_MENU("main menu", new MainMenu()),
-    MAP_EDIT_MENU("map edit menu", new MapEditMenu()),
-    MAP_BUILDER_MENU("map random ", new MapBuilderMenu()),
-    PROFILE_MENU("profile menu", new ProfileMenu()),
-    GAME_MENU("game menu", new GameMenu()),
-    GAME_START_UP_MENU("game start up menu", new GameStartUpMenu()),
-    SETTINGS_MENU("settings menu", new SettingsMenu()),
-    TRADE_MENU("trade menu", new TradeMenu()),
-    TAX_MENU("tax menu", new TaxMenu()),
-    SHOP_MENU("shop menu", new ShopMenu()),
-    MAP_VIEW_MENU("map view menu", new MapViewMenu()),
-    GRANARY_MENU("granary menu", new GranaryMenu()),
-    UNIT_CREATING_MENU("unit creating menu", new UnitCreatingMenu()),
-    MUSIC_CONTROL_MENU("music control menu", new MusicMenu()),
+    ENTRANCE_MENU("entrance menu"),
+    MAIN_MENU("main menu"),
+    MAP_EDIT_MENU("map edit menu"),
+    MAP_BUILDER_MENU("map random "),
+    PROFILE_MENU("profile menu"),
+    GAME_MENU("game menu"),
+    GAME_START_UP_MENU("game start up menu"),
+    SETTINGS_MENU("settings menu"),
+    TRADE_MENU("trade menu"),
+    TAX_MENU("tax menu"),
+    SHOP_MENU("shop menu"),
+    MAP_VIEW_MENU("map view menu"),
+    GRANARY_MENU("granary menu"),
+    UNIT_CREATING_MENU("unit creating menu"),
+    MUSIC_CONTROL_MENU("music control menu"),
 
     ;
 
     private final String menuName;
-    private final Menu menu;
 
-    Menus(String menuName, Menu menu) {
+    private Menu menu;
+
+    Menus(String menuName) {
         this.menuName = menuName;
-        this.menu = menu;
     }
 
     public static String getNameByObj(Menu menu) {
@@ -36,6 +35,10 @@ public enum Menus {
                 return value.getMenuName();
         }
         return null;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public String getMenuName() {

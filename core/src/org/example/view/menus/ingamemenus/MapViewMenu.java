@@ -17,7 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class MapViewMenu implements Menu {
+public class MapViewMenu extends Menu {
     @Override
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         System.out.println("tell me where do you want to view");

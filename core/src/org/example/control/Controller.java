@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
+import org.example.view.enums.Sounds;
+import org.example.view.menus.EntranceMenu;
+import org.example.view.menus.MainMenu;
 import org.example.view.menus.Menu;
 import org.example.view.menus.minimenus.SelectMapMenu;
 
@@ -71,7 +74,7 @@ public class Controller extends Game {
 //            }
 //            setScreen(currentMenu.getMenu());
 //        } while (currentMenu != null);
-        setScreen(new SelectMapMenu());
+        super.setScreen(new EntranceMenu());
     }
 
     @Override

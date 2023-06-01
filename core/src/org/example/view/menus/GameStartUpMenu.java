@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 
 
-public class GameStartUpMenu implements Menu {
+public class GameStartUpMenu extends Menu {
     public static boolean isNotDigit(String str) {
         return !str.matches("\\d+");
     }

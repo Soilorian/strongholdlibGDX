@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 
 import static org.example.view.enums.commands.ProfileMenuCommands.*;
 
-public class ProfileMenu implements Menu {
+public class ProfileMenu extends Menu {
 
     @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,

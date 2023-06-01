@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 
 import static org.example.control.menucontrollers.MapBuilderMenuController.*;
 
-public class MapBuilderMenu implements Menu {
+public class MapBuilderMenu extends Menu {
     @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {

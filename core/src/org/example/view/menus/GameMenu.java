@@ -19,7 +19,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class GameMenu implements Menu {
+public class GameMenu extends Menu {
 
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;

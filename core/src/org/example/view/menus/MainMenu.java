@@ -1,7 +1,6 @@
 package org.example.view.menus;
 
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -36,7 +35,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class MainMenu extends ApplicationAdapter implements Menu , ApplicationListener {
+public class MainMenu extends Menu implements ApplicationListener {
 
     private PerspectiveCamera camera;
     private CameraInputController cameraInputController;
@@ -48,7 +47,7 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
     private Array<ModelInstance> instances = new Array<>();
 
     private Environment environment;
-    private AnimationController controller;
+    private AnimationController animationController;
 
 //	private Array<ModelInstance> instances;
 //	private Asset
@@ -92,8 +91,8 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-        controller = new AnimationController(modelInstance);
-        controller.setAnimation("mixamo.com", 1);
+        animationController = new AnimationController(modelInstance);
+        animationController.setAnimation("mixamo.com", 1);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-        controller.update(Gdx.graphics.getDeltaTime());
+        animationController.update(Gdx.graphics.getDeltaTime());
 
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
@@ -125,8 +124,8 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
                 startNewGame();
                 break;
             } else if ((input.equalsIgnoreCase("open music player"))) {
-                Menu.controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                Menu.controller.changeMenu(this);
+                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
+                controller.changeMenu(this);
             }else if (input.equalsIgnoreCase("show menu")) {
                 System.out.println(Menus.getNameByObj(this));
             } else if (MainMenuCommands.getMatcher(input, MainMenuCommands.PROFILE) != null) {
@@ -165,7 +164,7 @@ public class MainMenu extends ApplicationAdapter implements Menu , ApplicationLi
                 break;
             else System.out.println("invalid input!");
         } while (true);
-        Menu.controller.setScreen(Menus.MAP_EDIT_MENU.getMenu());
+        controller.setScreen(Menus.MAP_EDIT_MENU.getMenu());
     }
 
     public void startNewGame() {

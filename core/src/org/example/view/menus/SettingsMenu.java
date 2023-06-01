@@ -12,7 +12,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class SettingsMenu implements Menu {
+public class SettingsMenu extends Menu {
     @Override
     public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
             CoordinatesOutOfMap, NotInStoragesException {

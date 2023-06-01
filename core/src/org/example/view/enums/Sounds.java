@@ -2,7 +2,7 @@ package org.example.view.enums;
 
 public enum Sounds {
     WAIT_A_MOMENT("src\\\\main\\\\resources\\\\Project-Voices\\Jeopardy Theme - DJ Lunatique.wav"),
-    BENAZAM("src\\main\\resources\\Project-Voices\\Benazam.wav"),
+    BENAZAM("Project-Voices\\Benazam.wav"),
     ESHQ("src\\main\\resources\\Project-Voices\\eshq.wav"),
     AKHEY("src\\main\\resources\\Project-Voices\\Akey.wav"),
     ARAB_FIRE_THROWER("src\\main\\resources\\Project-Voices\\Arab-Fire-Thrower.wav"),

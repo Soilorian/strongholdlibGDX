@@ -19,20 +19,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Scanner;
 
-public interface Menu extends Screen {
-    Controller controller = Main.getController();
-    Stage stage = new Stage();
-    ModelBatch batch = new ModelBatch();
-    Camera camera = new PerspectiveCamera();
-    CameraInputController cameraInput = new CameraInputController(camera);
+public abstract class Menu implements Screen {
+    protected Controller controller = Main.getController();
+    protected Stage stage = new Stage();
+    protected ModelBatch batch = new ModelBatch();
+    protected Camera camera = new PerspectiveCamera();
+    protected CameraInputController cameraInput = new CameraInputController(camera);
 
     final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
             "cancel", controller.getSkin());
-    void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
+    protected abstract void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException;
 
     @Override
-    default void render(float delta){
+    public void render(float delta){
         ScreenUtils.clear(Color.BLACK);
         stage.draw();
         stage.act();
@@ -42,33 +42,33 @@ public interface Menu extends Screen {
     }
 
     @Override
-    default void dispose(){
+    public void dispose(){
         stage.dispose();
         batch.dispose();
     }
 
     @Override
-    default void resize(int width, int height) {
+    public void resize(int width, int height) {
 
     }
 
     @Override
-    default void hide() {
+    public void hide() {
 
     }
 
     @Override
-    default void pause() {
+    public void pause() {
 
     }
 
     @Override
-    default void resume() {
+    public void resume() {
 
     }
 
     @Override
-    default void show(){
+    public void show(){
 
     }
 }

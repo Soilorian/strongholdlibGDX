@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import static com.badlogic.gdx.Gdx.graphics;
 import static org.example.view.menus.GameStartUpMenu.isNotDigit;
 
-public class SelectMapMenu implements Menu {
+public class SelectMapMenu extends Menu {
     private final Window window;
     private final Slider xSlider, ySlider;
 
