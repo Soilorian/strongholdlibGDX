@@ -79,7 +79,7 @@ public class Controller extends Game {
 //        } while (currentMenu != null);
         manageAssets();
         createMenus();
-        super.setScreen(Menus.SELECT_SIZE_MENU.getMenu());
+        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
     }
 
     private void manageAssets() {

@@ -1,6 +1,11 @@
 package org.example.view.menus;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.utils.ScreenUtils;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.EntranceMenuMessages;
@@ -15,14 +20,52 @@ import org.example.view.enums.commands.EntranceMenuCommands;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
 import java.io.IOException;
 import java.util.regex.Matcher;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class EntranceMenu extends Menu {
 
+    private TextField loginUsername,loginPassword;
+
+    private Label loginUsernameLabel,loginPasswordLabel,loginLabel,registerLabel
+            ,loginResult,
+    private Button loginSubmit;
+    private CheckBox stayLogged;
+
+
     public EntranceMenu() {
-        System.out.println("1");
+        super();
+        createComponents();
+
     }
+
+
+    public void createComponents() {
+        loginUsername = new TextField("",controller.getSkin());
+        loginUsername.setX(1200);
+        loginUsername.setY(500);
+        loginUsername.setWidth(150);
+        loginUsername.setHeight(100);
+        loginUsername.setDisabled(false);
+
+        stage.addActor(loginUsername);
+    }
+
+
+    public void render(float delta){
+        ScreenUtils.clear(Color.WHITE);
+        batch.begin(camera);
+        timerSlider.setValue(timerSlider.getValue()+1);
+        timerSlider.updateVisualValue();
+        stage.draw();
+        stage.act();
+        batch.end();
+    }
+
+
 
     @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {

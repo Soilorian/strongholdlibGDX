@@ -36,7 +36,7 @@ public abstract class Menu implements Screen {
     protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
 
         "cancel", controller.getSkin());
-    private final Slider timerSlider = new Slider(0, 500, 1, false,controller.getSkin());
+    protected final Slider timerSlider = new Slider(0, 500, 1, false,controller.getSkin());
     protected final Window messageWindow = new Window("", controller.getSkin());
     protected final Label messageLabel = new Label("", controller.getSkin());
 
