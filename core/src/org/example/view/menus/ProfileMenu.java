@@ -25,9 +25,11 @@ import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.EntranceMenuCommands;
 import org.example.view.enums.commands.ProfileMenuCommands;
+import sun.tools.jconsole.inspector.XTextField;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.*;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
@@ -45,39 +47,8 @@ public class ProfileMenu extends Menu {
 
 
     public ProfileMenu() {
-        changeUser = new TextField("trtr",Main.getController().getSkin());
-        changePass = new TextField("trtr",Main.getController().getSkin());
-        submit = new TextButton("Submit Changes",Main.getController().getSkin());
-        logout = new TextButton("Logout", Main.getController().getSkin());
-        delete = new TextButton("Delete Account", Main.getController().getSkin());
-        error = new Label("",Main.getController().getSkin());
-        back = new TextButton("Back", Main.getController().getSkin());
-//        profileMenu();
-    }
-    @Override
-    public void create() {
-        changeUser.setPosition(230, 430);
-        changeUser.setSize(250,50);
-        changePass.setPosition(230, 370);
-        changePass.setSize(250,50);
-        submit.setPosition(230,290);
-        submit.setSize(250,50);
-        logout.setPosition(230,170);
-        logout.setSize(250,50);
-        delete.setPosition(230,110);
-        delete.setSize(250,50);
-        error.setPosition(290,70);
-        back.setPosition(230,230);
-        back.setSize(250,50);
-        stage.clear();
-        stage.addActor(changeUser);
-        stage.addActor(changePass);
-        stage.addActor(logout);
-        stage.addActor(delete);
-        //stage.addActor(imageButton);
-        stage.addActor(submit);
-        stage.addActor(error);
-        stage.addActor(back);
+        super();
+        profileMenu();
     }
     @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
@@ -104,9 +75,6 @@ public class ProfileMenu extends Menu {
             } else if (command.equals("back")) {
                 Controller.setCurrentMenu(Menus.MAIN_MENU);
                 break;
-            } else if (EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.EXIT) != null) {
-                Controller.setCurrentMenu(null);
-                break;
             } else if ((command.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
                 controller.changeMenu(this, this);
@@ -115,6 +83,11 @@ public class ProfileMenu extends Menu {
                 System.out.println("invalid command");
             }
         }
+    }
+
+    @Override
+    public void create() {
+        Gdx.input.setInputProcessor(stage);
     }
 
 
@@ -164,6 +137,17 @@ public class ProfileMenu extends Menu {
             System.out.println(ProfileMenuController.showProfile("all"));
     }
     private void profileMenu(){
+        changeUser = new TextField("",controller.getSkin());
+        changePass = new TextField("",controller.getSkin());
+        submit = new TextButton("Submit Changes",controller.getSkin());
+        error = new Label("",controller.getSkin());
+        back = new TextButton("Back", controller.getSkin());
+        addActor(changeUser,230,430,250,50);
+        addActor(changePass,230,370,250,50);
+        addActor(submit,230,290,250,50);
+        error.setPosition(290,70);
+        stage.addActor(error);
+        addActor(back,230,230,250,50);
         changeUser.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -178,24 +162,13 @@ public class ProfileMenu extends Menu {
                 changePassword();
             }
         });
-//        submit.addListener(new ClickListener(){
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                super.clicked(event, x, y);
-//                if(!DataBase.getCurrentPlayer().isPassChanged() && !DataBase.getCurrentPlayer().isUserChanged()
-//                        && !DataBase.getCurrentPlayer().isProfChanged()) {
-//                    error.setText("No Changes!");
-//                }else {
-//                    DataBase.getCurrentPlayer().setPassChanged(false);
-//                    DataBase.getCurrentPlayer().setUserChanged(false);
-//                    DataBase.getCurrentPlayer().setProfChanged(false);
-//                    controller.setScreen(new MainMenu(controller));
-//                }
-//            }
-//        });
-
-        butListener(logout);
-        butListener(delete);
+        submit.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                controller.setScreen(new MainMenu());
+            }
+        });
 //        int type = DataBase.getCurrentPlayer().getProfImage();
 //        ImageButton imageButton = new ImageButtons(ImageButtons.getPic(type),ImageButtons.getPic(type),type);
 //        imageButton.setPosition(280,500);
@@ -215,18 +188,11 @@ public class ProfileMenu extends Menu {
                 controller.setScreen(new MainMenu());
             }
         });
-        stage.clear();
-        stage.addActor(changeUser);
-        stage.addActor(changePass);
-        stage.addActor(logout);
-        stage.addActor(delete);
-        //stage.addActor(imageButton);
-        stage.addActor(submit);
-        stage.addActor(error);
-        stage.addActor(back);
     }
-    private void profileMenuCreate(){
-
+    private void addActor(Actor actor,int x,int y,int width,int height){
+        actor.setPosition(x,y);
+        actor.setSize(width,height);
+        stage.addActor(actor);
     }
     private void changeUsername(){
         stage.clear();
@@ -251,56 +217,33 @@ public class ProfileMenu extends Menu {
     }
     private void changePassword(){
         stage.clear();
-//        new Dialog("Change Password",Main.getController().getSkin()){
-//            {
-//
-//                text("lala");
-//            }
-//        }.show(stage);
-        //                password = new TextField("", Main.getController().getSkin());
-//                password.setMessageText("Old Password");
-//                newCheck = new TextField("",Main.getController().getSkin());
-//                newCheck.setMessageText("New Password");
-//                password.setPasswordMode(true);
-//                password.setPasswordCharacter('*');
-//                newCheck.setPasswordMode(true);
-//                newCheck.setPasswordCharacter('*');
-        password = new TextField("",Main.getController().getSkin());
+        Window window = new Window("Change Password",controller.getSkin());
+        password = new TextField("",controller.getSkin());
+        newCheck = new TextField("",controller.getSkin());
+        showPass = new CheckBox("Show Password", controller.getSkin());
+        showNew = new CheckBox("Show New Password", Main.getController().getSkin());
+        changePassBut = new TextButton("Change", Main.getController().getSkin());
+        back = new TextButton("Back", Main.getController().getSkin());
+        error = new Label("",Main.getController().getSkin());
         password.setMessageText("Old Password");
-        newCheck = new TextField("",Main.getController().getSkin());
         newCheck.setMessageText("New Password");
-        password.setPosition(230, 500);
-        password.setSize(250,50);
+        window.add(password).pad(10, 0, 10, 0).row();
         password.setPasswordMode(true);
         password.setPasswordCharacter('*');
-        newCheck.setPosition(230, 400);
-        newCheck.setSize(250,50);
+        window.add(showPass).pad(10,0,10,0).row();
+        window.add(newCheck).pad(10, 0, 10, 0).row();
         newCheck.setPasswordMode(true);
         newCheck.setPasswordCharacter('*');
-        showPass = new CheckBox("Show Password", Main.getController().getSkin());
-        showPass.setPosition(230,470);
-        showNew = new CheckBox("Show New Password", Main.getController().getSkin());
-        showNew.setPosition(230,370);
+        window.add(showNew).pad(10,0,10,0).row();
         passListener2(showPass);
         passListener2(showNew);
-        changePassBut = new TextButton("Change", Main.getController().getSkin());
-        changePassBut.setPosition(230,250);
-        changePassBut.setSize(150,60);
+        window.add(changePassBut).pad(10, 0, 10, 0).row();
         goProfile(changePassBut);
-        back = new TextButton("Back", Main.getController().getSkin());
-        back.setPosition(400,250);
-        back.setSize(150,60);
+        window.add(back).pad(10, 0, 10, 0).row();
         goProfile(back);
-        error = new Label("",Main.getController().getSkin());
-        error.setPosition(180,600);
-        stage.addActor(password);
-        stage.addActor(newCheck);
-        stage.addActor(showPass);
-        stage.addActor(newCheck);
-        stage.addActor(showNew);
-        stage.addActor(changePassBut);
-        stage.addActor(back);
-        stage.addActor(error);
+        window.add(error).pad(10, 0, 10, 0).row();
+        window.setBounds(700,200,500, 500);
+        stage.addActor(window);
     }
     private void butListener(Button button){
 //        final String type = button.toString();
