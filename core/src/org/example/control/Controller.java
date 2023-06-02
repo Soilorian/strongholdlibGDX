@@ -2,13 +2,19 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.example.model.DataBase;
+import org.example.model.exceptions.CoordinatesOutOfMap;
+import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
+import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
@@ -16,6 +22,7 @@ import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +32,12 @@ public class Controller extends Game {
     private static Menus currentMenu;
     private final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
+    private final String userAvatar = "EntranceAssets/users.png";
+    private final String lock = "EntranceAssets/lock.png";
+    private final String defaultMapAddress = "pictures/default-map.jpeg";
+    private final String allMapIconAddress = "pictures/all-map-icon.png";
+    private final String randomMapIcon = "pictures/random-map.png";
+    private final String blankMapIconAddress = "pictures/blank-map.png";
     private final String userAvatarPath = "EntranceAssets/users.png";
     private final String lockPath = "EntranceAssets/lock.png";
     private final String captchaPath = "EntranceAssets/captcha.png";
@@ -74,27 +87,24 @@ public class Controller extends Game {
 
     @Override
     public void create() {
-//        DataBase.generateInfoFromJson();
+        DataBase.generateInfoFromJson();
 //        if (DataBase.isStayLogged())
 //            currentMenu = Menus.MAIN_MENU;
 //        else
 //            currentMenu = Menus.ENTRANCE_MENU;
-//        do {
-//            try {
-//                SoundPlayer.play(Sounds.BENAZAM);
-//            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-//                System.out.println("can't play sound");
-//                throw new RuntimeException(e);
-//            }
-//            setScreen(currentMenu.getMenu());
-//        } while (currentMenu != null);
         manageAssets();
         createMenus();
-        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
+        super.setScreen(Menus.SELECT_MAP_MENU.getMenu());
     }
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
+        manager.load(userAvatar, Texture.class);
+        manager.load(lock, Texture.class);
+        manager.load(defaultMapAddress, Texture.class);
+        manager.load(allMapIconAddress, Texture.class);
+        manager.load(randomMapIcon, Texture.class);
+        manager.load(blankMapIconAddress, Texture.class);
         manager.load(userAvatarPath, Texture.class);
         manager.load(lockPath, Texture.class);
         manager.load(captchaPath, Texture.class);
@@ -157,7 +167,7 @@ public class Controller extends Game {
     }
 
     public Texture resizer(float width, float height, Texture texture){
-        if (texture.getTextureData().isPrepared())
+        if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap200 =texture.getTextureData().consumePixmap();
         Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
@@ -169,5 +179,21 @@ public class Controller extends Game {
         pixmap200.dispose();
         pixmap100.dispose();
         return result;
+    }
+
+    public Texture getDefaultMap() {
+        return manager.get(defaultMapAddress);
+    }
+
+    public Texture getRandomMapIcon() {
+        return manager.get(randomMapIcon);
+    }
+
+    public Texture getShowAllMapsIcon() {
+        return manager.get(allMapIconAddress);
+    }
+
+    public Texture getBlankMapIcon() {
+        return manager.get(blankMapIconAddress);
     }
 }

@@ -41,19 +41,20 @@ public class SelectSizeMenu extends Menu {
         //body
         window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
         window.setHeight(graphics.getHeight() * getPercentage(hieghtSlider.getValue()));
-        window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
-        window.setY((float) graphics.getHeight() / 2 - window.getHeight() / 2);
+        window.setPosition((float) graphics.getWidth() / 2 - window.getWidth() / 2,
+                (float) graphics.getHeight() / 2 - window.getHeight() / 2);
+        widthSlider.setPosition((float) graphics.getWidth() / 2 - (graphics.getWidth() * 0.7f) / 2,
+                (float) graphics.getHeight() / 10);
 
-        widthSlider.setX((float) graphics.getWidth() / 2 - (graphics.getWidth() * 0.7f) / 2);
-        widthSlider.setY((float) graphics.getHeight() / 10);
+
         widthSlider.setWidth(graphics.getWidth() * 0.7f);
         widthSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 window.setWidth(widthSlider.getValue());
-                window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
+                window.setPosition((float) graphics.getWidth() / 2 - window.getWidth() / 2,
+                        (float) graphics.getWidth() / 2 - window.getWidth() / 2);
                 window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
-                window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
             }
         });
 

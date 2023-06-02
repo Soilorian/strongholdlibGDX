@@ -1,201 +1,305 @@
 package org.example.view.menus;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.example.control.Controller;
-import org.example.control.SoundPlayer;
-import org.example.control.enums.EntranceMenuMessages;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.example.Main;
+import org.example.control.enums.ProfileMenuMessages;
 import org.example.control.menucontrollers.ProfileMenuController;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
-import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
-import org.example.view.enums.commands.EntranceMenuCommands;
-import org.example.view.enums.commands.ProfileMenuCommands;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.regex.Matcher;
-
-import static com.badlogic.gdx.Gdx.app;
-import static com.badlogic.gdx.Gdx.graphics;
-import static org.example.view.enums.commands.ProfileMenuCommands.*;
 
 public class ProfileMenu extends Menu {
-    private final Window window;
-    private final Slider widthSlider, hieghtSlider;
+    private TextField changeUser,changePass,changeEmail,changeSlogan,changeNick;
+    private TextField oldPass, newPass;
+    private CheckBox showPass, showNew;
+    private Label error;
+    private Button changePassBut,back,backPass,submit;
+    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5;
+    private Texture editPic = new Texture("pictures/edit.png");
+    private  Texture trashPic = new Texture("pictures/trash.png");;
 
 
     public ProfileMenu() {
-        //begin
         super();
-        window = new Window("", controller.getSkin());
-        widthSlider = new Slider(200, 400, 1, false, controller.getSkin());
-        hieghtSlider = new Slider(200, 400, 1, true, controller.getSkin());
-
-        //body
-        window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
-        window.setHeight(graphics.getHeight() * getPercentage(hieghtSlider.getValue()));
-        window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
-        window.setY((float) graphics.getHeight() / 2 - window.getHeight() / 2);
-
-        widthSlider.setX((float) graphics.getWidth() / 2 - (graphics.getWidth() * 0.7f) / 2);
-        widthSlider.setY((float) graphics.getHeight() / 10);
-        widthSlider.setWidth(graphics.getWidth() * 0.7f);
-        widthSlider.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                window.setWidth(widthSlider.getValue());
-                window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
-                window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
-                window.setX((float) graphics.getWidth() / 2 - window.getWidth() / 2);
-            }
-        });
-
-        hieghtSlider.setX((float) graphics.getWidth() / 10);
-        hieghtSlider.setY(window.getHeight());
-        hieghtSlider.setHeight(graphics.getHeight() * 0.7f);
-        hieghtSlider.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                window.setHeight(hieghtSlider.getValue());
-                window.setY((float) graphics.getHeight() / 2 - window.getHeight() / 2);
-                window.setHeight(graphics.getHeight() * getPercentage(hieghtSlider.getValue()));
-                window.setY((float) graphics.getHeight() / 2 - window.getHeight() / 2);
-            }
-        });
-
-        okButton.setX((float) graphics.getHeight() / 20);
-        okButton.setY((float) graphics.getWidth() / 20);
-        okButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                try {
-                    run("select size -w " + widthSlider.getValue() + " -h " + hieghtSlider);
-                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | CoordinatesOutOfMap |
-                         NotInStoragesException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        cancelButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                app.exit();
-            }
-        });
-
-        //end
-        stage.clear();
-        stage.addActor(window);
-        stage.addActor(widthSlider);
-        stage.addActor(hieghtSlider);
-        stage.addActor(okButton);
-        TextField type = new TextField("type", controller.getSkin());
-        type.setX(100);
-        stage.addActor(type);
-        stage.addActor(cancelButton);
+        profileMenu();
     }
-
-    public float getPercentage(float length) {
-        float derivative = (float) (70 - 30) / (400 - 200);
-        return (derivative * (length - 200) + 30)/100;
-    }
-
     @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {
-        System.out.println("entered " + Menus.getNameByObj(this));
-        Matcher matcher;
-        while (true) {
-            if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_USERNAME)) != null) {
-                changeUsername(matcher);
-            } else if (command.equalsIgnoreCase("show menu")) {
-                System.out.println(Menus.getNameByObj(this));
-            } else if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_NICKNAME)) != null) {
-                changeNickname(matcher);
-            } else if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_EMAIL)) != null) {
-                changeEmail(matcher);
-            } else if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_PASSWORD)) != null) {
-                changePassword(matcher);
-            } else if ((matcher = ProfileMenuCommands.getMatcher(command, CHANGE_SLOGAN)) != null) {
-                changeSlogan(matcher);
-            } else if ((ProfileMenuCommands.getMatcher(command, REMOVE_SLOGAN)) != null) {
-                System.out.println(ProfileMenuController.removeSlogan());
-            } else if ((matcher = ProfileMenuCommands.getMatcher(command, DISPLAY_PROFILE)) != null) {
-                showProfile(matcher);
-            } else if (command.equals("back")) {
-                Controller.setCurrentMenu(Menus.MAIN_MENU);
-                break;
-            } else if (EntranceMenuCommands.getMatcher(command, EntranceMenuCommands.EXIT) != null) {
-                Controller.setCurrentMenu(null);
-                break;
-            } else if ((command.equalsIgnoreCase("open music player"))) {
-                controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this, this);
-            }else {
-                SoundPlayer.play(Sounds.AKHEY);
-                System.out.println("invalid command");
-            }
-        }
     }
-
     @Override
     public void create() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
-    private void changeUsername(Matcher matcher) {
-        String username = Controller.removeQuotes(matcher.group("Username"));
-        System.out.println(ProfileMenuController.changeUsername(username));
-    }
 
-    private void changeNickname(Matcher matcher) {
-        String nickname = Controller.removeQuotes(matcher.group("Nickname"));
-        System.out.println(ProfileMenuController.changeNickname(nickname));
-    }
-
-    private void changeEmail(Matcher matcher) {
-        String email = Controller.removeQuotes(matcher.group("Email"));
-        System.out.println(ProfileMenuController.changeEmail(email));
-    }
-
-    private void changePassword(Matcher matcher) {
-        String oldPassword = Controller.removeQuotes(matcher.group("OldPassword"));
-        String newPassword = Controller.removeQuotes(matcher.group("NewPassword"));
-        System.out.println(ProfileMenuController.changePassword(oldPassword, newPassword));
-    }
-
-    private void changeSlogan(Matcher matcher) {
-        String slogan = Controller.removeQuotes(matcher.group("Slogan"));
-        System.out.println(ProfileMenuController.changeSlogan(slogan));
-    }
-
-    private void showProfile(Matcher matcher) {
-        String field = null;
-        String option = null;
-        try {
-            option = matcher.group("Option1");
-        } catch (Exception ignored) {
+    private void changeUsername() {
+        String message = ProfileMenuController.changeUsername(changeUser.getText());
+        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+            error.setText(message);
+            return;
         }
-        try {
-            field = matcher.group("Field");
-        } catch (Exception ignored) {
+        stage.clear();
+        profileMenu();
+    }
+
+    private void changeNickname() {
+        String message = ProfileMenuController.changeNickname(changeNick.getText());
+        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+            error.setText(message);
+            return;
         }
-        if (option != null) {
-            if (field == null || Controller.isFieldEmpty(field))
-                System.out.println(EntranceMenuMessages.EMPTY_FIELD);
-            else
-                System.out.println(ProfileMenuController.showProfile(field));
-        } else
-            System.out.println(ProfileMenuController.showProfile("all"));
+        stage.clear();
+        profileMenu();
+    }
+
+    private void changeEmail() {
+        String message = ProfileMenuController.changeEmail(changeEmail.getText());
+        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+            error.setText(message);
+            return;
+        }
+        stage.clear();
+        profileMenu();
+    }
+
+    private void changePassword() {
+        String message = ProfileMenuController.changePassword(oldPass.getText(), newPass.getText());
+        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+            error.setText(message);
+            return;
+        }
+        stage.clear();
+        profileMenu();
+    }
+
+    private void changeSlogan() {
+        String message = ProfileMenuController.changeSlogan(changeSlogan.getText());
+        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+            error.setText(message);
+            return;
+        }
+        stage.clear();
+        profileMenu();
+    }
+
+    private void profileMenu(){
+        changeUser = new TextField("",controller.getSkin());
+        changeNick = new TextField("",controller.getSkin());
+        changePass = new TextField("",controller.getSkin());
+        changeEmail = new TextField("",controller.getSkin());
+        changeSlogan = new TextField("",controller.getSkin());
+        submit = new TextButton("Submit Changes",controller.getSkin());
+        error = new Label("",controller.getSkin());
+        back = new TextButton("Back", controller.getSkin());
+        addActor(changeUser,230,610,250,50);
+        addActor(changeNick,230,550,250,50);
+        addActor(changePass,230,490,250,50);
+        addActor(changeEmail,230,430,250,50);
+        addActor(changeSlogan,230,370,250,50);
+        addActor(submit,230,290,250,50);
+        error.setPosition(230,170);
+        stage.addActor(error);
+        addActor(back,230,230,250,50);
+        textListener(changeUser);
+        textListener(changeNick);
+        textListener(changePass);
+        textListener(changeEmail);
+        textListener(changeSlogan);
+        backListener(submit);
+        Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
+        editBut1 = new ImageButton(edit);
+        addActor(editBut1,440,620,30,30);
+        editBut2 = new ImageButton(edit);
+        addActor(editBut2,440,560,30,30);
+        editBut3 = new ImageButton(edit);
+        addActor(editBut3,440,500,30,30);
+        editBut4 = new ImageButton(edit);
+        addActor(editBut4,440,440,30,30);
+        editBut5 = new ImageButton(edit);
+        addActor(editBut5,440,380,30,30);
+        imageListener(editBut1);
+        imageListener(editBut2);
+        imageListener(editBut3);
+        imageListener(editBut4);
+        imageListener(editBut5);
+        backListener(back);
+    }
+    private void changePass(){
+        stage.clear();
+        Window window = new Window("Change Password",controller.getSkin());
+        oldPass = new TextField("",controller.getSkin());
+        newPass = new TextField("",controller.getSkin());
+        showPass = new CheckBox("Show Password", controller.getSkin());
+        showNew = new CheckBox("Show New Password", Main.getController().getSkin());
+        changePassBut = new TextButton("Change", Main.getController().getSkin());
+        backPass = new TextButton("Back", Main.getController().getSkin());
+        error = new Label("",Main.getController().getSkin());
+        oldPass.setMessageText("Old Password");
+        newPass.setMessageText("New Password");
+        window.add(oldPass).pad(10, 0, 10, 0).row();
+        oldPass.setPasswordMode(true);
+        oldPass.setPasswordCharacter('*');
+        window.add(showPass).pad(10,0,10,0).row();
+        window.add(newPass).pad(10, 0, 10, 0).row();
+        newPass.setPasswordMode(true);
+        newPass.setPasswordCharacter('*');
+        window.add(showNew).pad(10,0,10,0).row();
+        passListener2(showPass);
+        passListener2(showNew);
+        window.add(changePassBut).pad(10, 0, 10, 0).row();
+        butListener(changePassBut,"password");
+        backListener(backPass);
+        window.add(backPass).pad(10, 0, 10, 0).row();
+        window.add(error).pad(10, 0, 10, 0).row();
+        window.setBounds(700,200,500, 500);
+        stage.addActor(window);
+    }
+
+    private void passListener2(final CheckBox box) {
+        box.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (box.isChecked()) {
+                    if (box.equals(showPass)) {
+                        oldPass.setPasswordMode(false);
+                    } else {
+                        newPass.setPasswordMode(false);
+                    }
+                } else if (!box.isChecked()) {
+                    if (box.equals(showPass)) {
+                        oldPass.setPasswordMode(true);
+                        oldPass.setPasswordCharacter('*');
+                    } else {
+                        newPass.setPasswordMode(true);
+                        newPass.setPasswordCharacter('*');
+                    }
+                }
+            }
+        });
+    }
+    private void addActor(Actor actor,int x,int y,int width,int height){
+        actor.setPosition(x,y);
+        actor.setSize(width,height);
+        stage.addActor(actor);
+    }
+    private void textListener(TextField textField){
+        textField.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (textField.equals(changeUser)) {
+                    changeUsername();
+                } else if (textField.equals(changeNick)) {
+                    changeNickname();
+                } else if (textField.equals(changePass)) {
+                    changePass();
+                } else if (textField.equals(changeEmail)) {
+                    changeEmail();
+                } else if (textField.equals(changeSlogan)) {
+                    changeSlogan();
+                }
+            }
+        });
+    }
+    private void butListener(Button button,String type){
+        button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if(type.equals("Username")){
+                    changeUsername();
+                } else if (type.equals("Nickname")) {
+                    changeNickname();
+                } else if(type.equals("password")){
+                    changePassword();
+                } else if (type.equals("Email")) {
+                    changeEmail();
+                } else if (type.equals("Slogan")) {
+                    changeSlogan();
+                }
+            }
+        });
+    }
+    private void backListener(Button button){
+        button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (button.equals(backPass)) {
+                    stage.clear();
+                    profileMenu();
+                } else if (button.equals(back)) {
+                    controller.setScreen(new MainMenu());
+                } else if (button.equals(submit)) {
+                    controller.setScreen(new MainMenu());
+                }
+            }
+        });
+    }
+    private void imageListener(ImageButton imageButton){
+        imageButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if(imageButton.equals(editBut1)){
+                    Window window = new Window("Change Username",controller.getSkin());
+                    changes(window,"Username");
+                }else if (imageButton.equals(editBut2)) {
+                    Window window = new Window("Change Nickname",controller.getSkin());
+                    changes(window,"Nickname");
+                }else if (imageButton.equals(editBut3)) {
+                    changePass();
+                }else if (imageButton.equals(editBut4)) {
+                    Window window = new Window("Change Email",controller.getSkin());
+                    changes(window,"Email");
+                }else if (imageButton.equals(editBut5)) {
+                    Window window = new Window("Change Slogan",controller.getSkin());
+                    changes(window,"Slogan");
+                }
+            }
+        });
+    }
+    private void changes(Window window,String type){
+        stage.clear();
+        TextField news = new TextField("",controller.getSkin());
+        news.setMessageText("New " + type);
+        Button changeBut = new TextButton("Change " + type, Main.getController().getSkin());
+        backPass = new TextButton("Back", Main.getController().getSkin());
+        error = new Label("",Main.getController().getSkin());
+        window.add(news).pad(10, 0, 10, 0);
+        if(type.equals("Slogan")){
+            Drawable delete = new TextureRegionDrawable(new TextureRegion(trashPic));
+            ImageButton delBut = new ImageButton(delete);
+            window.add(delBut).pad(10,0,10,0);
+            delBut.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    ProfileMenuController.removeSlogan();
+                }
+            });
+        }
+        window.row();
+        window.add(changeBut).pad(10, 0, 10, 0).row();
+        butListener(changeBut,type);
+        window.add(backPass).pad(10, 0, 10, 0).row();
+        backListener(backPass);
+        window.add(error).pad(10, 0, 10, 0).row();
+        window.setBounds(700,200,500, 500);
+        stage.addActor(window);
     }
 }

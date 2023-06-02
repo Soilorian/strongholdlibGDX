@@ -1,5 +1,7 @@
 package org.example.model.ingame.map.enums;
 
+import com.badlogic.gdx.graphics.Pixmap;
+
 public enum Direction {
     NORTH("north", 0),
     EAST("east", 1),
