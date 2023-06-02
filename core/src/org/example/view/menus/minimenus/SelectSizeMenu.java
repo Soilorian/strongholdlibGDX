@@ -88,6 +88,13 @@ public class SelectSizeMenu extends Menu {
         stage.addActor(hieghtSlider);
     }
 
+
+    public double getPercentage(int width , int height) {
+        int x = width * height;
+        int derivative =(70-30) / ((400*400) - (200*200));
+        return derivative*(x-(200*200)) + 30;
+    }
+
     void selectSize(Matcher matcher) {
         String widthInString = Controller.removeQuotes(matcher.group("Width"));
         String heightInString = Controller.removeQuotes(matcher.group("Height"));
