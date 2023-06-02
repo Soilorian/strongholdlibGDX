@@ -14,7 +14,7 @@ public enum EntranceMenuCommands {
             + "| (-p) (?<Password>(\\S*)|(\"[^\"]*\"))()| (-n) (?<Nickname>(\\S*)|(\"[^\"]*\"))()"
             + "| (-e) (?<Email>(\\S*)|(\"[^\"]*\"))()| (-s) (?<Slogan>(\\S*)|(\"[^\"]*\"))()){5}\\5\\10\\15\\20\\25$"),
     FORGOT_PASSWORD("^forgot my password (-u) (?<Username>(\\S*)|(\"[^\"]*\"))$"),
-    LOGIN("^login user(?: (-u) (?<Username>(\\S*)|(\"[^\"]*\"))()| (-p) (?<Password>(\\S*)|(\"[^\"]*\"))()){2}\\5\\10$"),
+    LOGIN("^login user(?: (-u) (?<Username>(\\S*)|(\"[^\"]*\"))()| (-p) (?<Password>(\\S*)|(\"[^\"]*\"))()){2}\\5\\100$"),
     LOGIN_STAY_IN("^login\\s+user(?: (-u) (?<Username>(\\S*)|(\"[^\"]*\"))()" +
             "| (-p) (?<Password>(\\S*)|(\"[^\"]*\"))()| (-L)(?<StayLoggedIn>(\\S*)|(\"[^\"]*\"))()){3}\\5\\10\\15$"),
     NEW_CAPTCHA("^new captcha$"),

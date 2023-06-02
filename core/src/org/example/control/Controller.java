@@ -27,6 +27,9 @@ public class Controller extends Game {
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private final String userAvatarPath = "EntranceAssets/users.png";
     private final String lockPath = "EntranceAssets/lock.png";
+    private final String captchaPath = "EntranceAssets/captcha.png";
+    private final String refresh = "EntranceAssets/captcha.png";
+
 
 
     public static String removeQuotes(String string) {
@@ -34,6 +37,10 @@ public class Controller extends Game {
         if (string.charAt(0) == '\"' && string.charAt(string.length() - 1) == '\"')
             return string.substring(1, string.length() - 1);
         return string;
+    }
+
+    public static String addQuotes(String string) {
+        return "\""+string+"\"";
     }
 
     public static Matcher getMatcher(String input, String regex) {
@@ -90,6 +97,7 @@ public class Controller extends Game {
         manager.load(jsonSkinAddress, Skin.class);
         manager.load(userAvatarPath, Texture.class);
         manager.load(lockPath, Texture.class);
+        manager.load(captchaPath, Texture.class);
         manager.finishLoading();
     }
 
@@ -144,6 +152,9 @@ public class Controller extends Game {
         return manager.get(lockPath);
     }
 
+    public Texture getCaptchaPath() {
+        return manager.get(captchaPath);
+    }
 
     public Texture resizer(float width, float height, Texture texture){
         if (texture.getTextureData().isPrepared())
