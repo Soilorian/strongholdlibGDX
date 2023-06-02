@@ -1,7 +1,7 @@
 package org.example.view.enums;
 
 public enum Sounds {
-    WAIT_A_MOMENT("src\\\\main\\\\resources\\\\Project-Voices\\Jeopardy Theme - DJ Lunatique.wav"),
+    WAIT_A_MOMENT("Project-Voices\\Jeopardy Theme - DJ Lunatique.wav"),
     BENAZAM("Project-Voices\\Benazam.wav"),
     ESHQ("src\\main\\resources\\Project-Voices\\eshq.wav"),
     AKHEY("src\\main\\resources\\Project-Voices\\Akey.wav"),
@@ -16,7 +16,7 @@ public enum Sounds {
     SLAVE("src\\main\\resources\\Project-Voices\\Slave.wav"),
     SLINGERS("src\\main\\resources\\Project-Voices\\Slingers.wav"),
     SPEARMEN("src\\main\\resources\\Project-Voices\\Spearmen.wav"),
-    DONE("src\\main\\resources\\Project-Voices\\Ding.wav");
+    DONE("Project-Voices\\Ding.wav");
 
 
     private final String filePath;

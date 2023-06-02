@@ -4,17 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -37,7 +32,7 @@ public abstract class Menu implements Screen {
 
         "cancel", controller.getSkin());
     protected final Slider timerSlider = new Slider(0, 500, 1, false,controller.getSkin());
-    protected final Window messageWindow = new Window("", controller.getSkin());
+    protected final Dialog messageDialog = new Dialog("", controller.getSkin());
     protected final Label messageLabel = new Label("", controller.getSkin());
 
     protected abstract void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
@@ -46,27 +41,40 @@ public abstract class Menu implements Screen {
     public abstract void create();
     public Menu() {
         messageLabel.setColor(Color.BLACK);
-        messageWindow.add(messageLabel);
-        messageWindow.setX(Gdx.graphics.getHeight() / 4f);
-        messageWindow.setY(Gdx.graphics.getWidth() / 4f);
-        messageWindow.setWidth(Gdx.graphics.getWidth() / 2f);
-        messageWindow.setHeight(Gdx.graphics.getHeight() / 2f);
-        messageWindow.setVisible(false);
+        messageDialog.add(messageLabel);
+        messageDialog.setX(Gdx.graphics.getHeight() / 10f);
+        messageDialog.setY(Gdx.graphics.getWidth() / 10f);
+        messageDialog.setWidth(Gdx.graphics.getWidth() / 10f);
+        messageDialog.setHeight(Gdx.graphics.getHeight() / 10f);
+        messageDialog.setVisible(false);
+        messageDialog.add(okButton).expand().bottom();
+        messageDialog.row();
+        messageDialog.add(timerSlider).expand().top();
+
+        okButton.setHeight(80);
+        okButton.setWidth(150);
+        okButton.setX(Gdx.graphics.getWidth() / 20f * 19 - okButton.getWidth());
         okButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                messageWindow.setVisible(false);
+                messageDialog.setVisible(false);
             }
         });
+
+        cancelButton.setHeight(80);
+        cancelButton.setWidth(150);
+        cancelButton.setX(Gdx.graphics.getWidth() / 20f);
+
         timerSlider.setDisabled(true);
         timerSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (((Slider) actor).isOver()){
-                    messageWindow.setVisible(false);
+                    messageDialog.setVisible(false);
                 }
             }
         });
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -78,7 +86,7 @@ public abstract class Menu implements Screen {
         timerSlider.setValue(timerSlider.getValue()+1);
         timerSlider.updateVisualValue();
         stage.draw();
-        stage.act();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.end();
     }
 
@@ -92,9 +100,9 @@ public abstract class Menu implements Screen {
         timerSlider.setValue(0);
         messageLabel.setColor(new Color(0,0.3f,0,1));
         messageLabel.setText(message);
-        messageWindow.setVisible(true);
-        messageWindow.add(timerSlider).align(Align.top);
-        messageWindow.add(okButton).align(Align.bottom).pad(20);
+        messageDialog.setVisible(true);
+        messageDialog.add(timerSlider).align(Align.top);
+        messageDialog.add(okButton).align(Align.bottom).pad(20);
     }
 
     @Override

@@ -13,6 +13,8 @@ import org.example.view.enums.commands.Slogans;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class DataBase {
@@ -95,7 +97,6 @@ public class DataBase {
     }
 
     public static String hashWithApacheCommons(final String originalString) {
-        // TODO: 5/11/2023 don't forget to hash passwords
         return DigestUtils.sha256Hex(originalString);
     }
 
@@ -106,7 +107,7 @@ public class DataBase {
     public static void updatePlayersXS() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         SoundPlayer.play(Sounds.WAIT_A_MOMENT);
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                new FileOutputStream("players.txt"));
+                Files.newOutputStream(Paths.get("players.txt")));
         for (Player player : players)
             objectOutputStream.writeObject(player);
         objectOutputStream.close();
@@ -116,7 +117,7 @@ public class DataBase {
     public static void updateMaps() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         SoundPlayer.play(Sounds.WAIT_A_MOMENT);
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                new FileOutputStream("maps.txt"));
+                Files.newOutputStream(Paths.get("maps.txt")));
         for (Map map : maps)
             objectOutputStream.writeObject(map);
         objectOutputStream.close();
@@ -138,7 +139,7 @@ public class DataBase {
                     new FileOutputStream(path, true));
             objectOutputStream.writeObject(object);
             ObjectInputStream objectInputStream = xstream.createObjectInputStream(
-                    new FileInputStream(path));
+                    Files.newInputStream(Paths.get(path)));
             while (true) {
                 if (bol) {
                     object = objectInputStream.readObject();
@@ -161,7 +162,7 @@ public class DataBase {
             Player player = new Player("ar", "ar", "ar", "ar", "ar");
             objectOutputStream.writeObject(player);
             ObjectInputStream objectInputStream = xstream.createObjectInputStream(
-                    new FileInputStream("stayLogged.txt"));
+                    Files.newInputStream(Paths.get("stayLogged.txt")));
             currentPlayer = (Player) objectInputStream.readObject();
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
@@ -173,14 +174,14 @@ public class DataBase {
     public static void clearStayLogged() throws IOException {
         currentPlayer = null;
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                new FileOutputStream("stayLogged.txt"));
+                Files.newOutputStream(Paths.get("stayLogged.txt")));
         objectOutputStream.writeObject(currentPlayer);
         objectOutputStream.close();
     }
 
     public static void addStayLoggedPlayed(Player player) throws IOException {
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                new FileOutputStream("stayLogged.txt"));
+                Files.newOutputStream(Paths.get("stayLogged.txt")));
         objectOutputStream.writeObject(player);
         objectOutputStream.close();
     }
