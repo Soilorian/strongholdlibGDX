@@ -53,6 +53,11 @@ public class MapViewMenu extends Menu {
         } while (true);
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private boolean showXY(Matcher matcher) {
         String xToString = Controller.removeQuotes(matcher.group("X"));
         String yToString = Controller.removeQuotes(matcher.group("Y"));

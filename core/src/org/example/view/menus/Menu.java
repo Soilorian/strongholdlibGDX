@@ -43,6 +43,7 @@ public abstract class Menu implements Screen {
     protected abstract void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException;
 
+    public abstract void create();
     public Menu() {
         messageLabel.setColor(Color.BLACK);
         messageWindow.add(messageLabel);

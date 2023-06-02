@@ -39,6 +39,11 @@ public class TradeMenu extends Menu {
         }
     }
 
+    @Override
+    public void create() {
+
+    }
+
     public void sendNewTrade(Matcher matcher) {
         String type = Controller.removeQuotes(matcher.group("Type"));
         String amount = Controller.removeQuotes(matcher.group("Amount"));

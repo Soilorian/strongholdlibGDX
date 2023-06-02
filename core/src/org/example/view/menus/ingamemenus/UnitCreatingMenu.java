@@ -18,6 +18,8 @@ import java.util.regex.Matcher;
 
 public class UnitCreatingMenu extends Menu {
 
+
+
     @Override
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         do {
@@ -33,6 +35,11 @@ public class UnitCreatingMenu extends Menu {
                 System.out.println("invalid command!");
             }
         } while (true);
+    }
+
+    @Override
+    public void create() {
+
     }
 
     public void createUnit(Matcher matcher) {

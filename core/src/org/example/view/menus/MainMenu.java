@@ -64,8 +64,6 @@ public class MainMenu extends Menu{
 
         modelBatch = new ModelBatch();
 
-        // fbx g3dj g3db
-
         UBJsonReader ubJsonReader = new UBJsonReader();
 
         G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
@@ -75,7 +73,6 @@ public class MainMenu extends Menu{
 
         modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(200,0,155);
-//        modelInstance.transform.ro
         modelInstance1 = new ModelInstance(model1);
         modelInstance1.transform.translate(200,0,0);
         instances.add(modelInstance);
@@ -146,6 +143,11 @@ public class MainMenu extends Menu{
                 System.out.println("invalid command");
             }
         } while (true);
+    }
+
+    @Override
+    public void create() {
+
     }
 
     private void mapEditor() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {

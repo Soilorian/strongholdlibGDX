@@ -95,6 +95,11 @@ public class GameMenu extends Menu {
 
     }
 
+    @Override
+    public void create() {
+        
+    }
+
     private boolean nextTurn() throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException, LineUnavailableException, IOException {
         return GameMenuController.nextTurn();
     }

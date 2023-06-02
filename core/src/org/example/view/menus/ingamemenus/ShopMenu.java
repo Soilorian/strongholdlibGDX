@@ -37,6 +37,11 @@ public class ShopMenu extends Menu {
         }
     }
 
+    @Override
+    public void create() {
+
+    }
+
     public void showPriceList() {
         System.out.println(ShopMenuController.showPriceList());
     }

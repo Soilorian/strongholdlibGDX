@@ -41,6 +41,11 @@ public class GameStartUpMenu extends Menu {
         GameStartUpMenuController.startMakingGame();
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private boolean gameStartUp(String input) throws UnsupportedAudioFileException, CoordinatesOutOfMap,
             LineUnavailableException, NotInStoragesException, IOException {
         do {

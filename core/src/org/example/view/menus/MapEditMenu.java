@@ -55,6 +55,11 @@ public class MapEditMenu extends Menu {
 
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private boolean exit() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         if (Controller.getCurrentMap().getCastles().size() < 2) {
             System.out.println("please place at least 2 castles");

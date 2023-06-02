@@ -31,4 +31,9 @@ public class SettingsMenu extends Menu {
             }
         }
     }
+
+    @Override
+    public void create() {
+
+    }
 }

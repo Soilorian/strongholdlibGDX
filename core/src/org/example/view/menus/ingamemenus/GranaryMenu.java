@@ -37,6 +37,11 @@ public class GranaryMenu extends Menu {
         }
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private void changeFoodRate(Matcher matcher) {
         String foodRate = matcher.group("Rate");
         System.out.println(GranaryMenuController.changeFoodRate(foodRate));

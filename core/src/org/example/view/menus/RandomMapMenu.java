@@ -58,6 +58,11 @@ public class RandomMapMenu extends Menu {
         }
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private boolean exit() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("do you want to save the map?");
         do {

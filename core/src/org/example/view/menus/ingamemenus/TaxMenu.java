@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 
 public class TaxMenu extends Menu {
 
+
     @Override
     public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
@@ -31,6 +32,11 @@ public class TaxMenu extends Menu {
                 System.out.println("invalid command!");
             }
         } while (InGameMenuCommands.getMatcher(commands, InGameMenuCommands.BACK) == null);
+    }
+
+    @Override
+    public void create() {
+
     }
 
     public void setTax(Matcher matcher) {

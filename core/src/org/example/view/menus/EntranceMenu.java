@@ -31,16 +31,31 @@ public class EntranceMenu extends Menu {
     private TextField loginUsername,loginPassword;
 
     private Label loginUsernameLabel,loginPasswordLabel,loginLabel,registerLabel
-            ,loginResult,
+            ,loginResult;
     private Button loginSubmit;
     private CheckBox stayLogged;
 
-
     public EntranceMenu() {
         super();
-        createComponents();
+        loginUsername = new TextField("",controller.getSkin());
+    }
+
+    public void create() {
+        loginUsername.setX(1200);
+        loginUsername.setY(500);
+        loginUsername.setWidth(150);
+        loginUsername.setHeight(100);
+        loginUsername.setDisabled(false);
+
+        TextField type = new TextField("type", controller.getSkin());
+        type.setX(100);
+        stage.addActor(type);
+
+        stage.addActor(loginUsername);
+        Gdx.input.setInputProcessor(stage);
 
     }
+
 
 
     public void createComponents() {
@@ -51,21 +66,13 @@ public class EntranceMenu extends Menu {
         loginUsername.setHeight(100);
         loginUsername.setDisabled(false);
 
+        TextField type = new TextField("type", controller.getSkin());
+        type.setX(100);
+        stage.addActor(type);
+
         stage.addActor(loginUsername);
+        Gdx.input.setInputProcessor(stage);
     }
-
-
-    public void render(float delta){
-        ScreenUtils.clear(Color.WHITE);
-        batch.begin(camera);
-        timerSlider.setValue(timerSlider.getValue()+1);
-        timerSlider.updateVisualValue();
-        stage.draw();
-        stage.act();
-        batch.end();
-    }
-
-
 
     @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {

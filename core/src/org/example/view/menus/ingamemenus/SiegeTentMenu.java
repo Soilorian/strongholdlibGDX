@@ -35,6 +35,11 @@ public class SiegeTentMenu extends Menu {
         } while (InGameMenuCommands.getMatcher(input, InGameMenuCommands.BACK) == null);
     }
 
+    @Override
+    public void create() {
+
+    }
+
     private void build(Matcher matcher) {
         String equipment = Controller.removeQuotes(matcher.group("Equipment"));
         if (Controller.isFieldEmpty(equipment))

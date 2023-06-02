@@ -36,6 +36,11 @@ public class MusicMenu extends Menu {
         } while (true);
     }
 
+    @Override
+    public void create() {
+
+    }
+
 
     public void playRandomSong() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         pause();

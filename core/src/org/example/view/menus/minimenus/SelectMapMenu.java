@@ -13,4 +13,9 @@ public class SelectMapMenu extends Menu {
     protected void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
 
     }
+
+    @Override
+    public void create() {
+
+    }
 }

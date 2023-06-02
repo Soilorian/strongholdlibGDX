@@ -12,6 +12,7 @@ import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
+import org.example.view.menus.minimenus.TestMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -23,7 +24,7 @@ public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
     private final AssetManager manager = new AssetManager();
-    private final String jsonSkinAddress = "button/skin/golden-ui-skin.json";
+    private final String jsonSkinAddress = "button/skin/sgx-ui.json";
 
     public static String removeQuotes(String string) {
         if (string.isEmpty()) return string;
