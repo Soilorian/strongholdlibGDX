@@ -83,7 +83,7 @@ public class Controller extends Game {
 //        } while (currentMenu != null);
         manageAssets();
         createMenus();
-        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
+        super.setScreen(Menus.PROFILE_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -146,7 +146,7 @@ public class Controller extends Game {
 
 
     public Texture resizer(float width, float height, Texture texture){
-        if (texture.getTextureData().isPrepared())
+        if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap200 =texture.getTextureData().consumePixmap();
         Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
