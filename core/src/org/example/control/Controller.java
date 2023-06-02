@@ -2,6 +2,7 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.humans.army.Troops;
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
 public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
+    private final AssetManager manager = new AssetManager();
+    private final String jsonSkinAddress = "button/skin/golden-ui-skin.json";
 
     public static String removeQuotes(String string) {
         if (string.isEmpty()) return string;
@@ -74,8 +77,14 @@ public class Controller extends Game {
 //            }
 //            setScreen(currentMenu.getMenu());
 //        } while (currentMenu != null);
+        manageAssets();
         createMenus();
-        super.setScreen(new MainMenu());
+        super.setScreen(Menus.SELECT_SIZE_MENU.getMenu());
+    }
+
+    private void manageAssets() {
+        manager.load(jsonSkinAddress, Skin.class);
+        manager.finishLoading();
     }
 
     private void createMenus() {
@@ -118,6 +127,6 @@ public class Controller extends Game {
     }
 
     public Skin getSkin() {
-        return null;
+        return manager.get(jsonSkinAddress);
     }
 }

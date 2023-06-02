@@ -7,10 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.example.control.Controller;
+import org.example.control.SoundPlayer;
 import org.example.control.menucontrollers.GameStartUpMenuController;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Menus;
+import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.GameStartUpMenuCommands;
 import org.example.view.menus.Menu;
 
@@ -40,6 +42,7 @@ public class SelectSizeMenu extends Menu {
 
         widthSlider.setX(window.getX());
         widthSlider.setY((float) graphics.getHeight() / 10);
+        widthSlider.setWidth(400*5);
         widthSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -63,8 +66,12 @@ public class SelectSizeMenu extends Menu {
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selectSize(Objects.requireNonNull(GameStartUpMenuCommands.getMatcher("select size -w "
-                        + widthSlider.getValue() + " -h " + hieghtSlider, GameStartUpMenuCommands.SELECT_SIZE)));
+                try {
+                    run("select size -w " + widthSlider.getValue() + " -h " + hieghtSlider);
+                } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | CoordinatesOutOfMap |
+                         NotInStoragesException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -92,19 +99,17 @@ public class SelectSizeMenu extends Menu {
 
     @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        System.out.println(input);
-        System.out.println("this input should not be printed!\nthis is old "+Menus.getNameByObj(this)+" menu");
-        //        Matcher matcher;
-//        if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
-//            selectSize(matcher);
-//        } else if (input.equalsIgnoreCase("show menu"))
-//            System.out.println(Menus.getNameByObj(this));
-//        else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.CANCEL) != null) {
-//            cancel();
-//        } else {
-//            SoundPlayer.play(Sounds.AKHEY);
-//            System.out.println("invalid command");
-//        }
+                Matcher matcher;
+        if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
+            selectSize(matcher);
+        } else if (input.equalsIgnoreCase("show menu"))
+            System.out.println(Menus.getNameByObj(this));
+        else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.CANCEL) != null) {
+            cancelSizeSelection();
+        } else {
+            SoundPlayer.play(Sounds.AKHEY);
+            System.out.println("invalid command");
+        }
     }
 
     private void cancelSizeSelection() {

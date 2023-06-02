@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -31,8 +32,7 @@ public abstract class Menu implements Screen {
     protected Controller controller = Main.getController();
     protected Stage stage = new Stage();
     protected ModelBatch batch = new ModelBatch();
-    protected Camera camera = new PerspectiveCamera();
-    protected CameraInputController cameraInput = new CameraInputController(camera);
+    protected Camera camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
 
         "cancel", controller.getSkin());
@@ -66,18 +66,19 @@ public abstract class Menu implements Screen {
                 }
             }
         });
+        Gdx.input.setInputProcessor(stage);
     }
+
 
     @Override
     public void render(float delta){
         ScreenUtils.clear(Color.BLACK);
-        stage.draw();
-        stage.act();
         batch.begin(camera);
-        controller.getScreen().render(delta);
-        batch.end();
         timerSlider.setValue(timerSlider.getValue()+1);
         timerSlider.updateVisualValue();
+        stage.draw();
+        stage.act();
+        batch.end();
     }
 
     @Override

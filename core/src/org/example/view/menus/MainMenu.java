@@ -35,10 +35,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-public class MainMenu extends Menu implements ApplicationListener {
+public class MainMenu extends Menu{
 
     private PerspectiveCamera camera;
-    private CameraInputController cameraInputController;
     private ModelBatch modelBatch;
     private Model model;
     private Model model1;
@@ -53,7 +52,7 @@ public class MainMenu extends Menu implements ApplicationListener {
 //	private Asset
 
 
-    public void create() {
+    public MainMenu() {
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(210, 150, 270);
@@ -61,10 +60,6 @@ public class MainMenu extends Menu implements ApplicationListener {
 
         camera.near = 0.1f;
         camera.far = 3000f;
-
-        cameraInputController = new CameraInputController(camera);
-
-        Gdx.input.setInputProcessor(cameraInputController);
 
 
         modelBatch = new ModelBatch();
@@ -95,15 +90,9 @@ public class MainMenu extends Menu implements ApplicationListener {
         animationController.setAnimation("mixamo.com", 1);
     }
 
-    @Override
-    public void dispose() {
-        modelBatch.dispose();
-        model.dispose();
-
-    }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -115,6 +104,14 @@ public class MainMenu extends Menu implements ApplicationListener {
         modelBatch.render(instances, environment);
         modelBatch.end();
     }
+
+    @Override
+    public void dispose() {
+        modelBatch.dispose();
+        model.dispose();
+
+    }
+
     @Override
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
             CoordinatesOutOfMap, NotInStoragesException {
