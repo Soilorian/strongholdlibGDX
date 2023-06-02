@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
@@ -25,6 +26,8 @@ public class Controller extends Game {
     private static Menus currentMenu;
     private final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
+    private final String userAvatar = "EntranceAssets/users.png";
+    private final String lock = "EntranceAssets/lock.png";
     private String defaultMapAddress = "pictures/default-map.jpeg";
     private String allMapIconAddress = "pictures/all-map-icon.jpeg";
 
@@ -82,11 +85,13 @@ public class Controller extends Game {
 //        } while (currentMenu != null);
         manageAssets();
         createMenus();
-        super.setScreen(Menus.SELECT_SIZE_MENU.getMenu());
+        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
     }
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
+        manager.load(userAvatar, Texture.class);
+        manager.load(lock, Texture.class);
         manager.load(defaultMapAddress, Texture.class);
         manager.load(allMapIconAddress, Texture.class);
         manager.finishLoading();
@@ -135,26 +140,11 @@ public class Controller extends Game {
         return manager.get(jsonSkinAddress);
     }
 
-    public Texture getDefaultMap() {
-        return manager.get(defaultMapAddress);
+    public Texture getUserAvatar() {
+        return manager.get(userAvatar);
     }
 
-    public Texture resizer(float width, float height, Texture texture){
-        if (!texture.getTextureData().isPrepared())
-            texture.getTextureData().prepare();
-        Pixmap pixmap200 = texture.getTextureData().consumePixmap();
-        Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
-        pixmap100.drawPixmap(pixmap200,
-                0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
-                0, 0, pixmap100.getWidth(), pixmap100.getHeight()
-        );
-        Texture result = new Texture(pixmap100);
-        pixmap200.dispose();
-        pixmap100.dispose();
-        return result;
-    }
-
-    public Texture getAllMapIcon() {
-        return manager.get(allMapIconAddress);
+    public Texture getLock() {
+        return manager.get(lock);
     }
 }

@@ -2,7 +2,14 @@ package org.example.view.menus;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.EntranceMenuMessages;
@@ -22,54 +29,107 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 public class EntranceMenu extends Menu {
 
-    private TextField loginUsername,loginPassword;
-
-    private Label loginUsernameLabel,loginPasswordLabel,loginLabel,registerLabel
+    private TextField loginUsernameText, loginPasswordText;
+    private Label login ,Register,
+    loginUsernameLabel,loginPasswordLabel,loginLabel,registerLabel
             ,loginResult;
-    private Button loginSubmit;
+    private TextButton loginSubmit,registerSubmit;
+    private ImageButton randomPassword,randomSlogan;
     private CheckBox stayLogged;
-
+    private Image loginUsernameImage,loginPasswordImage;
     public EntranceMenu() {
         super();
-        loginUsername = new TextField("",controller.getSkin());
+        loginUsernameText = new TextField("",controller.getSkin());
+        loginPasswordText = new TextField("",controller.getSkin());
+
+        stayLogged = new CheckBox("Remember me",controller.getSkin());
+
+        loginSubmit = new TextButton("login",controller.getSkin());
+
+        loginUsernameImage = new Image(controller.getUserAvatar());
+        loginPasswordImage = new Image(controller.getLock());
+
     }
 
     public void create() {
-        loginUsername.setX(1200);
-        loginUsername.setY(500);
-        loginUsername.setWidth(150);
-        loginUsername.setHeight(100);
-        loginUsername.setDisabled(false);
-
-        TextField type = new TextField("type", controller.getSkin());
-        type.setX(100);
-        stage.addActor(type);
-
-        stage.addActor(loginUsername);
+        createTextFields();
+        createButtons();
+        createLabels();
+        createCheckBoxes();
+        createImages();
         Gdx.input.setInputProcessor(stage);
+    }
 
+    private void createImages() {
+        loginUsernameImage.setX(1000);
+        loginUsernameImage.setY(400);
+        loginUsernameImage.setHeight(60);
+        addActor(loginUsernameImage,1000,400,60,30);
+
+
+    }
+
+    private void createLabels() {
+    }
+
+
+    public void createText(TextField textField,int x , int y , int width , int height , String text) {
+        addActor(textField,x,y,width,height);
+        textField.setDisabled(false);
+        textField.setText(text);
+    }
+
+    public void addActor(Actor actor , int x , int y , int width , int height ) {
+        actor.setX(x);
+        actor.setY(y);
+        actor.setWidth(width);
+        actor.setHeight(height);
+        stage.addActor(actor);
+    }
+
+
+    public void createTextFields() {
+        createText(loginUsernameText,1100,800,350,50,"Username");
+        createText(loginPasswordText,1100,750,350,50,"Password");
+
+        setEmpty(loginUsernameText);
+        setEmpty(loginPasswordText);
+    }
+
+    public void setEmpty (TextField textField) {
+
+        textField.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                textField.setText("");
+            }
+        }) ;
+
+    }
+
+    public void createButton(TextButton textButton , int x , int y , int width , int height) {
+        addActor(textButton,x,y,width,height);
+        textButton.setDisabled(false);
+
+    }
+
+    public void createButtons() {
+        createButton(loginSubmit,1100,670,350,50);
+    }
+
+    public void createCheckBoxes() {
+        stayLogged.setX(1100);
+        stayLogged.setY(720);
+        stage.addActor(stayLogged);
     }
 
 
 
-    public void createComponents() {
-        loginUsername = new TextField("",controller.getSkin());
-        loginUsername.setX(1200);
-        loginUsername.setY(500);
-        loginUsername.setWidth(150);
-        loginUsername.setHeight(100);
-        loginUsername.setDisabled(false);
 
-        TextField type = new TextField("type", controller.getSkin());
-        type.setX(100);
-        stage.addActor(type);
-
-        stage.addActor(loginUsername);
-        Gdx.input.setInputProcessor(stage);
-    }
 
     @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
