@@ -57,7 +57,7 @@ public class GameStartUpMenu extends Menu {
                 return false;
             } else if ((input.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else if (GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.NEXT) != null) {
                 if (next())
                     return true;

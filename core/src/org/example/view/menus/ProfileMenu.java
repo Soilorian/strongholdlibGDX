@@ -140,7 +140,7 @@ public class ProfileMenu extends Menu {
                 break;
             } else if ((command.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command");

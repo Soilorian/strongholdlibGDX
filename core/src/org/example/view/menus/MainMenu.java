@@ -1,7 +1,6 @@
 package org.example.view.menus;
 
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
@@ -119,7 +117,7 @@ public class MainMenu extends Menu{
                 break;
             } else if ((input.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else if (input.equalsIgnoreCase("show menu")) {
                 System.out.println(Menus.getNameByObj(this));
             } else if (MainMenuCommands.getMatcher(input, MainMenuCommands.PROFILE) != null) {

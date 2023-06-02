@@ -2,10 +2,7 @@ package org.example.view.menus;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.utils.ScreenUtils;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.EntranceMenuMessages;
@@ -83,7 +80,7 @@ public class EntranceMenu extends Menu {
                 createNewUser(matcher, 1);
             } else if ((input.equalsIgnoreCase("open music player"))){
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.CREATE_USER_WITHOUT_SLOGAN)) != null) {
                 createNewUser(matcher, 2);
             } else if ((matcher = EntranceMenuCommands.getMatcher(input, EntranceMenuCommands.CREATE_USER_WITH_RANDOM_PASSWORD)) != null) {

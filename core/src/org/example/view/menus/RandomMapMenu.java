@@ -33,7 +33,7 @@ public class RandomMapMenu extends Menu {
                 break;
             } else if ((command.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else if (command.matches("show menu"))
                 System.out.println(Menus.getNameByObj(this));
             else if (MapBuilderMenuCommands.getMatcher(command, MapBuilderMenuCommands.ISLAND) != null) {

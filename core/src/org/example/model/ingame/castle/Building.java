@@ -134,7 +134,7 @@ public class Building {
             }
             return stringBuilder.toString();
         } else
-            Main.getController().setScreen(menu.getMenu()); Main.getController().changeMenu(Menus.GAME_MENU.getMenu());
+            Main.getController().setScreen(menu.getMenu()); Main.getController().changeMenu(Menus.GAME_MENU.getMenu(), this);
         return "hp: " + hp;
     }
 

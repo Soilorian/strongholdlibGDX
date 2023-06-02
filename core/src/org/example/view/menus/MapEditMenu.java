@@ -27,7 +27,7 @@ public class MapEditMenu extends Menu {
                 System.out.println(Menus.getNameByObj(this));
             } else if (input.equalsIgnoreCase("view map")) {
                 controller.setScreen(Menus.MAP_VIEW_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SET_TEXTURE_RECTANGLE)) != null) {
                 setTextureRectangle(matcher);
             } else if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.CLEAR)) != null) {
@@ -45,7 +45,7 @@ public class MapEditMenu extends Menu {
                     break;
             } else if ((input.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command");

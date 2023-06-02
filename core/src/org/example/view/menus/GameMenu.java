@@ -58,7 +58,7 @@ public class GameMenu extends Menu {
                 disbandUnit();
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TRADE) != null){
                 controller.setScreen(Menus.TRADE_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.NEXT_TURN) != null) {
                 if (nextTurn())
@@ -83,7 +83,7 @@ public class GameMenu extends Menu {
                 showCurrentPlayer();
             else if ((command.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else if (command.equalsIgnoreCase("show castle coordinates"))
                 System.out.println(GameMenuController.showCastleCoordinates());
             else {
@@ -123,7 +123,7 @@ public class GameMenu extends Menu {
 
     private void showMap() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         controller.setScreen(Menus.MAP_VIEW_MENU.getMenu());
-        controller.changeMenu(this);
+        controller.changeMenu(this, this);
     }
 
     private void infiniteHealth() {

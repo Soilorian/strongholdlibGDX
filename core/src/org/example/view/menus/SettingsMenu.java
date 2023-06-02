@@ -24,7 +24,7 @@ public class SettingsMenu extends Menu {
                 System.out.println(Menus.getNameByObj(this));
             else if ((commands.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
-                controller.changeMenu(this);
+                controller.changeMenu(this, this);
             }else {
                 SoundPlayer.play(Sounds.AKHEY);
                 System.out.println("invalid command!");
