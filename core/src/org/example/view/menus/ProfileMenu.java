@@ -2,10 +2,14 @@ package org.example.view.menus;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.example.Main;
 import org.example.control.enums.ProfileMenuMessages;
 import org.example.control.menucontrollers.ProfileMenuController;
@@ -22,6 +26,8 @@ public class ProfileMenu extends Menu {
     private CheckBox showPass, showNew;
     private Label error;
     private Button changePassBut,back,backPass,submit;
+    private ImageButton edit,trash;
+    private Texture editPic,trashPic;
 
 
     public ProfileMenu() {
@@ -32,7 +38,11 @@ public class ProfileMenu extends Menu {
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {
     }
-
+    @Override
+    public void show(){
+        editPic = new Texture("pictures/edit.png");
+        trashPic = new Texture("pictures/trash.png");
+    }
     @Override
     public void create() {
         Gdx.input.setInputProcessor(stage);
@@ -113,10 +123,9 @@ public class ProfileMenu extends Menu {
         textListener(changeEmail);
         textListener(changeSlogan);
         butListener(submit);
-//        int type = DataBase.getCurrentPlayer().getProfImage();
-//        ImageButton imageButton = new ImageButtons(ImageButtons.getPic(type),ImageButtons.getPic(type),type);
-//        imageButton.setPosition(280,500);
-//        imageButton.setSize(150,150);
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(editPic));
+        ImageButton editBut1 = new ImageButton(drawable);
+        addActor(editBut1,540,545,40,40);
 
 //        imageButton.textListener(new ClickListener(){
 //            @Override
