@@ -65,9 +65,6 @@ public class EntranceMenu extends Menu {
     }
 
     private void createImages() {
-        loginUsernameImage.setX(1000);
-        loginUsernameImage.setY(400);
-        loginUsernameImage.setHeight(60);
         addActor(loginUsernameImage,1000,400,60,30);
 
 

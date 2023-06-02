@@ -89,6 +89,9 @@ public class TestMenu extends Menu {
         stage.addActor(widthSlider);
         stage.addActor(hieghtSlider);
         stage.addActor(okButton);
+        TextField type = new TextField("type", controller.getSkin());
+        type.setX(100);
+        stage.addActor(type);
         stage.addActor(cancelButton);
     }
 

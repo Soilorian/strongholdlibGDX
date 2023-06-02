@@ -2,10 +2,8 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
@@ -15,7 +13,6 @@ import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
-import org.w3c.dom.Text;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -28,10 +25,9 @@ public class Controller extends Game {
     private static Menus currentMenu;
     private final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
-    private final String userAvatar = "EntranceAssets/users.png";
-    private final String lock = "EntranceAssets/lock.png";
-    private String defaultMapAddress = "pictures/default-map.jpeg";
-    private String allMapIconAddress = "pictures/all-map-icon.jpeg";
+    private final String userAvatarPath = "EntranceAssets/users.png";
+    private final String lockPath = "EntranceAssets/lock.png";
+
 
     public static String removeQuotes(String string) {
         if (string.isEmpty()) return string;
@@ -92,10 +88,8 @@ public class Controller extends Game {
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
-        manager.load(userAvatar, Texture.class);
-        manager.load(lock, Texture.class);
-        manager.load(defaultMapAddress, Texture.class);
-        manager.load(allMapIconAddress, Texture.class);
+        manager.load(userAvatarPath, Texture.class);
+        manager.load(lockPath, Texture.class);
         manager.finishLoading();
     }
 
@@ -143,11 +137,11 @@ public class Controller extends Game {
     }
 
     public Texture getUserAvatar() {
-        return manager.get(userAvatar);
+        return manager.get(userAvatarPath);
     }
 
     public Texture getLock() {
-        return manager.get(lock);
+        return manager.get(lockPath);
     }
 
 
@@ -164,9 +158,5 @@ public class Controller extends Game {
         pixmap200.dispose();
         pixmap100.dispose();
         return result;
-    }
-
-    public Texture getDefaultMap() {
-        return manager.get(defaultMapAddress);
     }
 }

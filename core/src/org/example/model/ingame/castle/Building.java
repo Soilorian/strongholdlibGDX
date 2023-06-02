@@ -16,6 +16,7 @@ import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 import org.example.view.enums.Menus;
+import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
