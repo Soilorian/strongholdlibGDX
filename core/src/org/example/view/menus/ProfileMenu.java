@@ -26,8 +26,9 @@ public class ProfileMenu extends Menu {
     private CheckBox showPass, showNew;
     private Label error;
     private Button changePassBut,back,backPass,submit;
-    private ImageButton edit,trash;
-    private Texture editPic,trashPic;
+    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5;
+    private Texture editPic = new Texture("pictures/edit.png");
+    private  Texture trashPic = new Texture("pictures/trash.png");;
 
 
     public ProfileMenu() {
@@ -37,11 +38,6 @@ public class ProfileMenu extends Menu {
     @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {
-    }
-    @Override
-    public void show(){
-        editPic = new Texture("pictures/edit.png");
-        trashPic = new Texture("pictures/trash.png");
     }
     @Override
     public void create() {
@@ -108,8 +104,8 @@ public class ProfileMenu extends Menu {
         submit = new TextButton("Submit Changes",controller.getSkin());
         error = new Label("",controller.getSkin());
         back = new TextButton("Back", controller.getSkin());
-        addActor(changeUser,230,550,250,50);
-        addActor(changeNick,230,610,250,50);
+        addActor(changeUser,230,610,250,50);
+        addActor(changeNick,230,550,250,50);
         addActor(changePass,230,490,250,50);
         addActor(changeEmail,230,430,250,50);
         addActor(changeSlogan,230,370,250,50);
@@ -122,19 +118,24 @@ public class ProfileMenu extends Menu {
         textListener(changePass);
         textListener(changeEmail);
         textListener(changeSlogan);
-        butListener(submit);
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(editPic));
-        ImageButton editBut1 = new ImageButton(drawable);
-        addActor(editBut1,540,545,40,40);
-
-//        imageButton.textListener(new ClickListener(){
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                super.clicked(event, x, y);
-//                //controller.setScreen(new ImageMenu(controller,"Profile"));
-//            }
-//        });
-        butListener(back);
+        backListener(submit);
+        Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
+        editBut1 = new ImageButton(edit);
+        addActor(editBut1,440,620,30,30);
+        editBut2 = new ImageButton(edit);
+        addActor(editBut2,440,560,30,30);
+        editBut3 = new ImageButton(edit);
+        addActor(editBut3,440,500,30,30);
+        editBut4 = new ImageButton(edit);
+        addActor(editBut4,440,440,30,30);
+        editBut5 = new ImageButton(edit);
+        addActor(editBut5,440,380,30,30);
+        imageListener(editBut1);
+        imageListener(editBut2);
+        imageListener(editBut3);
+        imageListener(editBut4);
+        imageListener(editBut5);
+        backListener(back);
     }
     private void changePass(){
         stage.clear();
@@ -159,8 +160,8 @@ public class ProfileMenu extends Menu {
         passListener2(showPass);
         passListener2(showNew);
         window.add(changePassBut).pad(10, 0, 10, 0).row();
-        butListener(changePassBut);
-        butListener(backPass);
+        butListener(changePassBut,"password");
+        backListener(backPass);
         window.add(backPass).pad(10, 0, 10, 0).row();
         window.add(error).pad(10, 0, 10, 0).row();
         window.setBounds(700,200,500, 500);
@@ -214,14 +215,31 @@ public class ProfileMenu extends Menu {
             }
         });
     }
-    private void butListener(Button button){
+    private void butListener(Button button,String type){
         button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if(button.equals(changePassBut)){
+                if(type.equals("Username")){
+                    changeUsername();
+                } else if (type.equals("Nickname")) {
+                    changeNickname();
+                } else if(type.equals("password")){
                     changePassword();
-                } else if (button.equals(backPass)) {
+                } else if (type.equals("Email")) {
+                    changeEmail();
+                } else if (type.equals("Slogan")) {
+                    changeSlogan();
+                }
+            }
+        });
+    }
+    private void backListener(Button button){
+        button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (button.equals(backPass)) {
                     stage.clear();
                     profileMenu();
                 } else if (button.equals(back)) {
@@ -231,5 +249,57 @@ public class ProfileMenu extends Menu {
                 }
             }
         });
+    }
+    private void imageListener(ImageButton imageButton){
+        imageButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if(imageButton.equals(editBut1)){
+                    Window window = new Window("Change Username",controller.getSkin());
+                    changes(window,"Username");
+                }else if (imageButton.equals(editBut2)) {
+                    Window window = new Window("Change Nickname",controller.getSkin());
+                    changes(window,"Nickname");
+                }else if (imageButton.equals(editBut3)) {
+                    changePass();
+                }else if (imageButton.equals(editBut4)) {
+                    Window window = new Window("Change Email",controller.getSkin());
+                    changes(window,"Email");
+                }else if (imageButton.equals(editBut5)) {
+                    Window window = new Window("Change Slogan",controller.getSkin());
+                    changes(window,"Slogan");
+                }
+            }
+        });
+    }
+    private void changes(Window window,String type){
+        stage.clear();
+        TextField news = new TextField("",controller.getSkin());
+        news.setMessageText("New " + type);
+        Button changeBut = new TextButton("Change " + type, Main.getController().getSkin());
+        backPass = new TextButton("Back", Main.getController().getSkin());
+        error = new Label("",Main.getController().getSkin());
+        window.add(news).pad(10, 0, 10, 0);
+        if(type.equals("Slogan")){
+            Drawable delete = new TextureRegionDrawable(new TextureRegion(trashPic));
+            ImageButton delBut = new ImageButton(delete);
+            window.add(delBut).pad(10,0,10,0);
+            delBut.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    ProfileMenuController.removeSlogan();
+                }
+            });
+        }
+        window.row();
+        window.add(changeBut).pad(10, 0, 10, 0).row();
+        butListener(changeBut,type);
+        window.add(backPass).pad(10, 0, 10, 0).row();
+        backListener(backPass);
+        window.add(error).pad(10, 0, 10, 0).row();
+        window.setBounds(700,200,500, 500);
+        stage.addActor(window);
     }
 }
