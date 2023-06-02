@@ -2,6 +2,7 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
+import org.w3c.dom.Text;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -146,5 +148,25 @@ public class Controller extends Game {
 
     public Texture getLock() {
         return manager.get(lock);
+    }
+
+
+    public Texture resizer(float width, float height, Texture texture){
+        if (texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
+        Pixmap pixmap200 =texture.getTextureData().consumePixmap();
+        Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
+        pixmap100.drawPixmap(pixmap200,
+                0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
+                0, 0, pixmap100.getWidth(), pixmap100.getHeight()
+        );
+        Texture result = new Texture(pixmap100);
+        pixmap200.dispose();
+        pixmap100.dispose();
+        return result;
+    }
+
+    public Texture getDefaultMap() {
+        return manager.get(defaultMapAddress);
     }
 }
