@@ -21,14 +21,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 public class ProfileMenu extends Menu {
-    private TextField changeUser,changePass,changeEmail,changeSlogan,changeNick;
-    private TextField oldPass, newPass;
-    private CheckBox showPass, showNew;
+    private TextField oldPass, newPass,news;
+    private CheckBox showPass;
     private Label error;
-    private Button changePassBut,back,backPass,submit;
+    private Button back,backPass,submit;
     private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5;
-    private Texture editPic = new Texture("pictures/edit.png");
-    private  Texture trashPic = new Texture("pictures/trash.png");;
+    private final Texture editPic = new Texture("pictures/edit.png");
+    private final Texture trashPic = new Texture("pictures/trash.png");
 
 
     public ProfileMenu() {
@@ -46,7 +45,7 @@ public class ProfileMenu extends Menu {
 
 
     private void changeUsername() {
-        String message = ProfileMenuController.changeUsername(changeUser.getText());
+        String message = ProfileMenuController.changeUsername(news.getText());
         if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
             error.setText(message);
             return;
@@ -56,7 +55,7 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeNickname() {
-        String message = ProfileMenuController.changeNickname(changeNick.getText());
+        String message = ProfileMenuController.changeNickname(news.getText());
         if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
             error.setText(message);
             return;
@@ -66,7 +65,7 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeEmail() {
-        String message = ProfileMenuController.changeEmail(changeEmail.getText());
+        String message = ProfileMenuController.changeEmail(news.getText());
         if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
             error.setText(message);
             return;
@@ -86,7 +85,7 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeSlogan() {
-        String message = ProfileMenuController.changeSlogan(changeSlogan.getText());
+        String message = ProfileMenuController.changeSlogan(news.getText());
         if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
             error.setText(message);
             return;
@@ -96,11 +95,11 @@ public class ProfileMenu extends Menu {
     }
 
     private void profileMenu(){
-        changeUser = new TextField("",controller.getSkin());
-        changeNick = new TextField("",controller.getSkin());
-        changePass = new TextField("",controller.getSkin());
-        changeEmail = new TextField("",controller.getSkin());
-        changeSlogan = new TextField("",controller.getSkin());
+        TextField changeUser = new TextField("", controller.getSkin());
+        TextField changeNick = new TextField("", controller.getSkin());
+        TextField changePass = new TextField("", controller.getSkin());
+        TextField changeEmail = new TextField("", controller.getSkin());
+        TextField changeSlogan = new TextField("", controller.getSkin());
         submit = new TextButton("Submit Changes",controller.getSkin());
         error = new Label("",controller.getSkin());
         back = new TextButton("Back", controller.getSkin());
@@ -113,11 +112,6 @@ public class ProfileMenu extends Menu {
         error.setPosition(230,170);
         stage.addActor(error);
         addActor(back,230,230,250,50);
-        textListener(changeUser);
-        textListener(changeNick);
-        textListener(changePass);
-        textListener(changeEmail);
-        textListener(changeSlogan);
         backListener(submit);
         Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
         editBut1 = new ImageButton(edit);
@@ -143,8 +137,8 @@ public class ProfileMenu extends Menu {
         oldPass = new TextField("",controller.getSkin());
         newPass = new TextField("",controller.getSkin());
         showPass = new CheckBox("Show Password", controller.getSkin());
-        showNew = new CheckBox("Show New Password", Main.getController().getSkin());
-        changePassBut = new TextButton("Change", Main.getController().getSkin());
+        CheckBox showNew = new CheckBox("Show New Password", Main.getController().getSkin());
+        Button changePassBut = new TextButton("Change", Main.getController().getSkin());
         backPass = new TextButton("Back", Main.getController().getSkin());
         error = new Label("",Main.getController().getSkin());
         oldPass.setMessageText("Old Password");
@@ -196,40 +190,27 @@ public class ProfileMenu extends Menu {
         actor.setSize(width,height);
         stage.addActor(actor);
     }
-    private void textListener(TextField textField){
-        textField.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                if (textField.equals(changeUser)) {
-                    changeUsername();
-                } else if (textField.equals(changeNick)) {
-                    changeNickname();
-                } else if (textField.equals(changePass)) {
-                    changePass();
-                } else if (textField.equals(changeEmail)) {
-                    changeEmail();
-                } else if (textField.equals(changeSlogan)) {
-                    changeSlogan();
-                }
-            }
-        });
-    }
     private void butListener(Button button,String type){
         button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if(type.equals("Username")){
-                    changeUsername();
-                } else if (type.equals("Nickname")) {
-                    changeNickname();
-                } else if(type.equals("password")){
-                    changePassword();
-                } else if (type.equals("Email")) {
-                    changeEmail();
-                } else if (type.equals("Slogan")) {
-                    changeSlogan();
+                switch (type) {
+                    case "Username":
+                        changeUsername();
+                        break;
+                    case "Nickname":
+                        changeNickname();
+                        break;
+                    case "password":
+                        changePassword();
+                        break;
+                    case "Email":
+                        changeEmail();
+                        break;
+                    case "Slogan":
+                        changeSlogan();
+                        break;
                 }
             }
         });
@@ -275,7 +256,7 @@ public class ProfileMenu extends Menu {
     }
     private void changes(Window window,String type){
         stage.clear();
-        TextField news = new TextField("",controller.getSkin());
+        news = new TextField("",controller.getSkin());
         news.setMessageText("New " + type);
         Button changeBut = new TextButton("Change " + type, Main.getController().getSkin());
         backPass = new TextButton("Back", Main.getController().getSkin());

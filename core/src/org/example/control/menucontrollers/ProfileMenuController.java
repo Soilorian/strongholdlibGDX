@@ -6,9 +6,6 @@ import org.example.control.enums.ProfileMenuMessages;
 import org.example.model.DataBase;
 import org.example.model.Player;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
 
 import static org.example.control.menucontrollers.EntranceMenuController.*;
 
@@ -88,10 +85,9 @@ public class ProfileMenuController {
         return ProfileMenuMessages.SUCCEED.toString();
     }
 
-    public static String removeSlogan() {
+    public static void removeSlogan() {
         Player player = DataBase.getCurrentPlayer();
         player.setSlogan(null);
-        return ProfileMenuMessages.SUCCEED.toString();
     }
 
     public static String showMaxScore() {
@@ -99,9 +95,9 @@ public class ProfileMenuController {
         return "MaxScore: " + player.getMaxStore();
     }
 
-    public static String showRank() {
-        Collections.sort(DataBase.getPlayers(), new PlayerComparator());
-        return "your in game rank is: " + (DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer()) + 1);
+    public static int showRank() {
+        DataBase.getPlayers().sort(new PlayerComparator());
+        return DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer()) + 1;
     }
 
     public static String showSlogan() {
@@ -109,40 +105,7 @@ public class ProfileMenuController {
         Player player = DataBase.getCurrentPlayer();
         slogan = player.getSlogan();
         if (slogan.isEmpty()) return "slogan is empty";
-        return "slogan: " + slogan;
+        return "Slogan: " + slogan;
     }
 
-    public static String showUsername() {
-        return "your username is: " + DataBase.getCurrentPlayer().getUsername();
-    }
-
-    public static String showNickname() {
-        return "your nickname is: " + DataBase.getCurrentPlayer().getNickname();
-    }
-
-    public static String showProfile(String all) {
-        switch (all.toLowerCase()) {
-            case "all" : {
-                return showUsername() + "\n" + showNickname() + "\n" + showRank() + "\n" + showSlogan() + "\n" + showMaxScore();
-            }
-            case "username" : {
-                return showUsername();
-            }
-            case "nickname" : {
-                return showNickname();
-            }
-            case "rank" : {
-                return showRank();
-            }
-            case "slogan" : {
-                return showSlogan();
-            }
-            case "max score" : {
-                return showMaxScore();
-            }
-            default : {
-                return ProfileMenuMessages.WRONG_FIELD.toString();
-            }
-        }
-    }
 }

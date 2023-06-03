@@ -2,11 +2,11 @@ package org.example.control.enums;
 
 public enum ProfileMenuMessages {
     //change Username
-    EMPTY_USERNAME("username's field is empty"),
-    USERNAME_INVALID("invalid username format"),
-    USERNAME_ALREADY_EXISTS("username already exists try another one"),
+    EMPTY_USERNAME("Username's field is empty"),
+    USERNAME_INVALID("Invalid username format"),
+    USERNAME_ALREADY_EXISTS("Username already exists"),
     //change Nickname
-    EMPTY_NICKNAME("nickname's field is empty"),
+    EMPTY_NICKNAME("Nickname's field is empty"),
     NICKNAME_EXISTS("you already have this nickname bro"),
     //change Email
     EMPTY_EMAIL("email's field is empty"),
