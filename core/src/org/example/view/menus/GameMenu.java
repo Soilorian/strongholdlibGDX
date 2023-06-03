@@ -2,6 +2,7 @@ package org.example.view.menus;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -39,82 +40,27 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-import static com.badlogic.gdx.Gdx.graphics;
-import static com.badlogic.gdx.Gdx.input;
+import static com.badlogic.gdx.Gdx.*;
 
 public class GameMenu extends Menu {
-    private final PerspectiveCamera camera;
-    private final ModelBatch modelBatch;
-    private final Array<ModelInstance> instances = new Array<>();
-    private final Stage stageInput = new Stage();
-    private final Image backgroundImage;
-    private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton;
-    private Model model, model1;
-    private ModelInstance modelInstance, modelInstance1;
-    private Environment environment;
-    private AnimationController animationController;
-    CameraInputController processor;
     public GameMenu() {
-        camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
-        modelBatch = new ModelBatch();
-        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
-        processor  = new CameraInputController(camera);
-        threeDPrep();
-        startGameButton = new TextButton("start new game", controller.getSkin());
-        mapEditorButton = new TextButton("map editor", controller.getSkin());
-        settingsButton = new TextButton("settings", controller.getSkin());
-        profileButton = new TextButton("profile", controller.getSkin());
-        exitButton = new TextButton("exit", controller.getSkin());
+
+
     }
 
     private void exitApp() {
         controller.exitGame();
     }
 
-    private void threeDPrep() {
-        camera.position.set(210, 150, 270);
-        camera.lookAt(0, 210, 0);
-        camera.near = 0.1f;
-        camera.far = 3000f;
-        UBJsonReader ubJsonReader = new UBJsonReader();
-        G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
-        model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
-        model1 = modelLoader.loadModel(Gdx.files.getFileHandle("Model/BlenderRetroIso.g3db", Files.FileType.Internal));
-        modelInstance = new ModelInstance(model);
-        modelInstance.transform.translate(160, 0, -40);
-        modelInstance1 = new ModelInstance(model1);
-        modelInstance1.transform.translate(200, 0, 0);
-        instances.add(modelInstance1);
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-        animationController = new AnimationController(modelInstance);
-        animationController.setAnimation("mixamo.com", 1);
-
-        input.setInputProcessor(processor);
-    }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glViewport(0, 0, graphics.getWidth(), graphics.getHeight());
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        stage.act();
-        stage.draw();
-        camera.update();
-        animationController.update(graphics.getDeltaTime());
-        modelBatch.begin(camera);
-        modelBatch.render(instances, environment);
-        modelBatch.end();
-        stageInput.draw();
-        stageInput.act();
-        processor.update();
+
     }
 
     @Override
-    public void dispose() {
-        modelBatch.dispose();
-        model.dispose();
+    public void create() {
+        input.setInputProcessor(stage);
     }
 
 
@@ -190,11 +136,6 @@ public class GameMenu extends Menu {
         }
 
 
-    }
-
-    @Override
-    public void create() {
-        
     }
 
     private boolean nextTurn() throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException, LineUnavailableException, IOException {
