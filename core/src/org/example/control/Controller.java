@@ -2,22 +2,17 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
-import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
@@ -25,7 +20,6 @@ import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,6 +78,7 @@ public class Controller extends Game {
     }
 
     public static void setCurrentMenu(Menus menus) {
+        //currentMenu = menus;
     }
 
     public void changeMenu(Menu menu, Menu from){
@@ -93,17 +88,13 @@ public class Controller extends Game {
     @Override
     public void create() {
         DataBase.generateInfoFromJson();
-        DataBase.setCurrentPlayer(new Player("mm","mm","mm","mm","mm"));
-        setCurrentMap(new Map(200, 200, "gg"));
-        GameMenuController.setCurrentGame(new org.example.model.Game());
-        GameMenuController.getCurrentGame().setCurrentMap(currentMap);
-        if (DataBase.isStayLogged())
-            currentMenu = Menus.MAIN_MENU;
-        else
-            currentMenu = Menus.ENTRANCE_MENU;
+//        if (DataBase.isStayLogged())
+//            currentMenu = Menus.MAIN_MENU;
+//        else
+//            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.SELECT_SIZE_MENU.getMenu());
+        super.setScreen(Menus.SELECT_MAP_MENU.getMenu());
     }
 
     private void manageAssets() {
