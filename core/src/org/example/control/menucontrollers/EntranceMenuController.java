@@ -94,7 +94,8 @@ public class EntranceMenuController {
 
 
     static public String createNewUser(String username, String password, String passwordConfirmation,
-                                       String nickname, String email, String slogan) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+                                       String nickname, String email, String slogan,
+                                       String questionNum, String answer, String answerConfirmation) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         String result;
         if ((result = checkEmpty(username, password, passwordConfirmation, nickname, email, slogan)) != null) {
             return result;
@@ -113,12 +114,11 @@ public class EntranceMenuController {
             return EntranceMenuMessages.EMAIL_ALREADY_EXISTS.toString();
         Player player = new Player(username, password, nickname, email, slogan);
         DataBase.addPlayer(player);
-        DataBase.updatePlayersXS();
-        return EntranceMenuMessages.SUCCEED.toString();
+        return pickSecurityQuestion(questionNum, answer ,answerConfirmation);
     }
 
 
-    static public String pickSecurityQuestion(String questionNum, String answer, String answerConfirmation) {
+    static public String pickSecurityQuestion(String questionNum, String answer, String answerConfirmation) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (isFieldEmpty(questionNum)) {
             return EntranceMenuMessages.EMPTY_QUESTION_NUM.toString();
         } else if (isFieldEmpty(answer)) {
@@ -140,6 +140,7 @@ public class EntranceMenuController {
             case 3 : player.setSecurityQuestion("What is your favorite patoq in university?");
         }
         player.setSecurityQuestionAnswer(answer);
+        DataBase.updatePlayersXS();
         return EntranceMenuMessages.SUCCEED.toString();
     }
 
@@ -213,7 +214,7 @@ public class EntranceMenuController {
     private static String getRandomChar(int randomNumberOrigin, int randomNumberBound) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < 2; i++) {
-            result.append(random.nextInt(randomNumberOrigin, randomNumberBound));
+            result.append((char) (random.nextInt(randomNumberOrigin, randomNumberBound)));
         }
         return result.toString();
     }

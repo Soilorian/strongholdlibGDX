@@ -59,6 +59,7 @@ public class GameMenu extends Menu {
         modelBatch = new ModelBatch();
         backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         processor  = new CameraInputController(camera);
+        Gdx.input.setInputProcessor(processor);
         threeDPrep();
         startGameButton = new TextButton("start new game", controller.getSkin());
         mapEditorButton = new TextButton("map editor", controller.getSkin());
@@ -91,7 +92,6 @@ public class GameMenu extends Menu {
         animationController = new AnimationController(modelInstance);
         animationController.setAnimation("mixamo.com", 1);
 
-        input.setInputProcessor(processor);
     }
 
     @Override

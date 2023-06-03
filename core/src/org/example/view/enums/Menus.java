@@ -21,6 +21,7 @@ public enum Menus {
     MUSIC_CONTROL_MENU("music control menu"),
     SELECT_SIZE_MENU("select size menu"),
     SELECT_MAP_MENU("select map menu"),
+    FORGOT_PASSWORD("forgot password"),
     New("select map menu"),
 
     ;

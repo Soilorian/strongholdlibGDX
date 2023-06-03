@@ -7,17 +7,21 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
+import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
+import org.example.view.menus.minimenus.ForgotPassword;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,10 +40,12 @@ public class Controller extends Game {
     private final String userAvatarPath = "EntranceAssets/users.png";
     private final String lockPath = "EntranceAssets/lock.png";
     private final String captchaPath = "EntranceAssets/captcha.png";
-    private final String refresh = "EntranceAssets/captcha.png";
     private final String backgroundMainMenu = "pictures/background-main-menu.jpg";
     private final String rainSoundAddress = "sounds/rain.mp3";
     private final String gameStartUpBG = "pictures/game-start-up-background.png";
+    private final String refresh = "EntranceAssets/Refresh.png";
+    private final String showPassPath = "EntranceAssets/showPass.png";
+
 
 
     public static String removeQuotes(String string) {
@@ -92,7 +98,7 @@ public class Controller extends Game {
 //            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.GAME_MENU.getMenu());
+        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -108,8 +114,9 @@ public class Controller extends Game {
         manager.load(captchaPath, Texture.class);
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
-
         manager.load(rainSoundAddress, Music.class);
+        manager.load(refresh, Texture.class);
+        manager.load(showPassPath, Texture.class);
         manager.finishLoading();
     }
 
@@ -197,6 +204,14 @@ public class Controller extends Game {
 
     public Texture getBlankMapIcon() {
         return manager.get(blankMapIconAddress);
+    }
+
+    public Texture getRefreshPath() {
+        return manager.get(refresh);
+    }
+
+    public Texture getShowPassPath() {
+        return manager.get(showPassPath);
     }
 
     public Texture getMainMenuBackground(){
