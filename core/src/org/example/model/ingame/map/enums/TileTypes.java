@@ -4,22 +4,22 @@ import com.badlogic.gdx.graphics.Color;
 import org.example.view.enums.ConsoleColors;
 
 public enum TileTypes {
-    GROUND("ground", ConsoleColors.BLACK, "OO", Color.GREEN),
-    GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GREEN),
-    STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.GREEN),
-    ROCK("rock", ConsoleColors.BLACK, "&&", Color.GREEN),
-    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.GREEN),
-    GRASS("grass", ConsoleColors.GREEN_BOLD, "-_", Color.GREEN),
-    GRASS_LAND("grassland", ConsoleColors.GREEN_BACKGROUND, "$$", Color.GREEN),
+    GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD),
+    GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GOLD),
+    STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.DARK_GRAY),
+    ROCK("rock", ConsoleColors.BLACK, "&&", Color.GRAY),
+    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.LIGHT_GRAY),
+    GRASS("grass", ConsoleColors.GREEN_BOLD, "-_", Color.CHARTREUSE),
+    GRASS_LAND("grassland", ConsoleColors.GREEN_BACKGROUND, "$$", Color.LIME),
     DENSE_GRASS_LAND("dense grassland", ConsoleColors.GREEN_BACKGROUND_BRIGHT, "XX", Color.GREEN),
-    SWAMP("swamp", ConsoleColors.PURPLE_BACKGROUND, "@@", Color.GREEN),
-    PLAIN("plain", ConsoleColors.GREEN_BOLD, "[]", Color.GREEN),
-    SHALLOW_WATER("shallow water", ConsoleColors.CYAN, "%%", Color.GREEN),
-    RIVER("river", ConsoleColors.CYAN_BRIGHT, "UU", Color.GREEN),
-    SMALL_POND("small pond", ConsoleColors.CYAN_BACKGROUND, "oo", Color.GREEN),
-    BIG_POND("big pond", ConsoleColors.BLUE_BACKGROUND_BRIGHT, "/\\", Color.GREEN),
-    BEACH("beach", ConsoleColors.YELLOW_BACKGROUND, ";\"", Color.GREEN),
-    SEA("sea", ConsoleColors.BLUE_BACKGROUND, "MW", Color.GREEN);
+    SWAMP("swamp", ConsoleColors.PURPLE_BACKGROUND, "@@", Color.OLIVE),
+    PLAIN("plain", ConsoleColors.GREEN_BOLD, "[]", Color.FOREST),
+    SHALLOW_WATER("shallow water", ConsoleColors.CYAN, "%%", Color.SLATE),
+    RIVER("river", ConsoleColors.CYAN_BRIGHT, "UU", Color.SKY),
+    SMALL_POND("small pond", ConsoleColors.CYAN_BACKGROUND, "oo", Color.CYAN),
+    BIG_POND("big pond", ConsoleColors.BLUE_BACKGROUND_BRIGHT, "/\\", Color.BLUE),
+    BEACH("beach", ConsoleColors.YELLOW_BACKGROUND, ";\"", Color.TAN),
+    SEA("sea", ConsoleColors.BLUE_BACKGROUND, "MW", Color.NAVY);
 
     private final String type;
     private final ConsoleColors colors;
