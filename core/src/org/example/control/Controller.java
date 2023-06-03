@@ -4,12 +4,15 @@ package org.example.control;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
+import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.map.Map;
@@ -42,7 +45,9 @@ public class Controller extends Game {
     private final String lockPath = "EntranceAssets/lock.png";
     private final String captchaPath = "EntranceAssets/captcha.png";
     private final String refresh = "EntranceAssets/captcha.png";
-
+    private final String backgroundMainMenu = "pictures/background-main-menu.jpg";
+    private final String rainSoundAddress = "sounds/rain.mp3";
+    private final String gameStartUpBG = "pictures/game-start-up-background.png";
 
 
     public static String removeQuotes(String string) {
@@ -88,13 +93,17 @@ public class Controller extends Game {
     @Override
     public void create() {
         DataBase.generateInfoFromJson();
-//        if (DataBase.isStayLogged())
-//            currentMenu = Menus.MAIN_MENU;
-//        else
-//            currentMenu = Menus.ENTRANCE_MENU;
+        DataBase.setCurrentPlayer(new Player("mm","mm","mm","mm","mm"));
+        setCurrentMap(new Map(200, 200, "gg"));
+        GameMenuController.setCurrentGame(new org.example.model.Game());
+        GameMenuController.getCurrentGame().setCurrentMap(currentMap);
+        if (DataBase.isStayLogged())
+            currentMenu = Menus.MAIN_MENU;
+        else
+            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.SELECT_MAP_MENU.getMenu());
+        super.setScreen(Menus.SELECT_SIZE_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -108,6 +117,10 @@ public class Controller extends Game {
         manager.load(userAvatarPath, Texture.class);
         manager.load(lockPath, Texture.class);
         manager.load(captchaPath, Texture.class);
+        manager.load(backgroundMainMenu, Texture.class);
+        manager.load(gameStartUpBG, Texture.class);
+
+        manager.load(rainSoundAddress, Music.class);
         manager.finishLoading();
     }
 
@@ -195,5 +208,17 @@ public class Controller extends Game {
 
     public Texture getBlankMapIcon() {
         return manager.get(blankMapIconAddress);
+    }
+
+    public Texture getMainMenuBackground(){
+        return manager.get(backgroundMainMenu);
+    }
+
+    public Music getRainSound(){
+        return manager.get(rainSoundAddress);
+    }
+
+    public Texture getGameStartBG(){
+        return manager.get(gameStartUpBG);
     }
 }

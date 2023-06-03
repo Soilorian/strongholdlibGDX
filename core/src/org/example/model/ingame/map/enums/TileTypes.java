@@ -7,8 +7,8 @@ public enum TileTypes {
     GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD),
     GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GOLD),
     STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.DARK_GRAY),
-    ROCK("rock", ConsoleColors.BLACK, "&&", Color.GRAY),
-    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.LIGHT_GRAY),
+    ROCK("rock", ConsoleColors.BLACK, "&&", Color.SLATE),
+    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.RED),
     GRASS("grass", ConsoleColors.GREEN_BOLD, "-_", Color.CHARTREUSE),
     GRASS_LAND("grassland", ConsoleColors.GREEN_BACKGROUND, "$$", Color.LIME),
     DENSE_GRASS_LAND("dense grassland", ConsoleColors.GREEN_BACKGROUND_BRIGHT, "XX", Color.GREEN),
@@ -41,4 +41,7 @@ public enum TileTypes {
         return ConsoleColors.turnToColoredString(symbol, colors);
     }
 
+    public Color getColor() {
+        return color;
+    }
 }

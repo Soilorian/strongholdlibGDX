@@ -92,8 +92,14 @@ public class SelectMapMenu extends Menu {
     }
 
     private void showMaps() {
-        Image image = new Image();
-
+        Map selectedMap = getSelectedMap();
+        int scale = 2;
+        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
+                Pixmap.Format.RGBA8888);
+        selectedMap.setUpPixmap(pixmap, scale);
+        Image mapPrev = new Image(new Texture(pixmap));
+        mapPrev.setPosition(Gdx.graphics.getWidth() / 4f * 3, Gdx.graphics.getHeight() / 4f);
+        stage.addActor(mapPrev);
         ArrayList<String > fuck = new ArrayList<>();
         for (Map map : DataBase.getMaps()) {
             fuck.add(makeTextForLabel(map));
@@ -112,8 +118,12 @@ public class SelectMapMenu extends Menu {
     }
 
     private void next() {
-        GameMenuController.getCurrentGame().setCurrentMap(DataBase.getMapById(extractId(mapSelectBox.getSelected())));
+        GameMenuController.getCurrentGame().setCurrentMap(getSelectedMap());
         controller.changeMenu(Menus.GAME_START_UP_MENU.getMenu(), this);
+    }
+
+    private Map getSelectedMap() {
+        return DataBase.getMapById(extractId(mapSelectBox.getSelected()));
     }
 
     private String extractId(String selected) {
