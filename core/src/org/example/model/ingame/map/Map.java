@@ -1,5 +1,6 @@
 package org.example.model.ingame.map;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Castle;
 import org.example.model.ingame.map.enums.Direction;
@@ -231,5 +232,14 @@ public class Map {
 
     public void destroyWall(int x, int y) {
         removeAndReconnectToPassables(x, y);
+    }
+
+    public void setUpPixmap(Pixmap pixmap, int i) {
+        for (int j = 0; j < groundWidth; j++) {
+            for (int k = 0; k < groundHeight; k++) {
+                pixmap.setColor(tiles[j][k].getTile().getColor());
+                pixmap.fillRectangle(j, groundHeight - k - 1, i, i);
+            }
+        }
     }
 }

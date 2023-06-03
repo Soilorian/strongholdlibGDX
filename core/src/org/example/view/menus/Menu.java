@@ -35,9 +35,6 @@ public abstract class Menu implements Screen {
     protected final Dialog messageDialog = new Dialog("", controller.getSkin());
     protected final Label messageLabel = new Label("", controller.getSkin());
 
-    protected abstract void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
-            CoordinatesOutOfMap, NotInStoragesException;
-
     public abstract void create();
     public Menu() {
         messageLabel.setColor(Color.BLACK);
@@ -96,9 +93,9 @@ public abstract class Menu implements Screen {
         batch.dispose();
     }
 
-    protected void showSuccess(String message){
+    protected void showMessage(String message){
         timerSlider.setValue(0);
-        messageLabel.setColor(new Color(0,0.3f,0,1));
+        messageLabel.setColor(Color.TAN);
         messageLabel.setText(message);
         messageDialog.setVisible(true);
         messageDialog.add(timerSlider).align(Align.top);

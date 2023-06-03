@@ -2,6 +2,13 @@ package org.example;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.example.control.Controller;
+import org.example.model.exceptions.CoordinatesOutOfMap;
+import org.example.model.exceptions.NotInStoragesException;
+import org.example.view.menus.RandomMapMenu;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 
 public class Main extends ApplicationAdapter {
     static Controller controller;
@@ -9,7 +16,6 @@ public class Main extends ApplicationAdapter {
     public void create() {
         controller = new Controller();
         controller.create();
-
     }
 
     @Override

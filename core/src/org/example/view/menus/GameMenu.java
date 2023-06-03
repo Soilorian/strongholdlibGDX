@@ -1,5 +1,26 @@
 package org.example.view.menus;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.EntranceMenuMessages;
@@ -19,7 +40,29 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
+import static com.badlogic.gdx.Gdx.*;
+
 public class GameMenu extends Menu {
+    public GameMenu() {
+
+
+    }
+
+    private void exitApp() {
+        controller.exitGame();
+    }
+
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void create() {
+        input.setInputProcessor(stage);
+    }
+
 
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
@@ -93,11 +136,6 @@ public class GameMenu extends Menu {
         }
 
 
-    }
-
-    @Override
-    public void create() {
-        
     }
 
     private boolean nextTurn() throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException, LineUnavailableException, IOException {

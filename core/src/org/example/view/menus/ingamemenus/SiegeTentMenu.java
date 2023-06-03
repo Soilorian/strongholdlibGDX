@@ -19,7 +19,6 @@ import java.util.regex.Matcher;
 
 public class SiegeTentMenu extends Menu {
 
-    @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {
         do {

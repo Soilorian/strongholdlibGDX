@@ -72,14 +72,8 @@ public class GameStartUpMenuController {
         return GameStartUpMenuMessages.SUCCESS;
     }
 
-    public static GameStartUpMenuMessages selectColor(String color) {
-        Colors colors = Colors.getColor(color);
-        if (colors == null)
-            return GameStartUpMenuMessages.NO_COLOR;
-        if (colorChosen(colors))
-            return GameStartUpMenuMessages.ALREADY_CHOSEN;
-        DataBase.getCurrentEmpire().setColor(colors);
-        return GameStartUpMenuMessages.SUCCESS;
+    public static void selectColor(Colors color) {
+        DataBase.getCurrentEmpire().setColor(color);
     }
 
     public static void enterGameMenu() {

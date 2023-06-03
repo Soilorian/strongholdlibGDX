@@ -99,7 +99,6 @@ public class TestMenu extends Menu {
         float derivative = (float) (70 - 30) / (400 - 200);
         return (derivative * (length - 200) + 30)/100;
     }
-    @Override
     protected void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
 
     }

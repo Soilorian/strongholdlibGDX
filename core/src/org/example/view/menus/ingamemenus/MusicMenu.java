@@ -1,5 +1,7 @@
 package org.example.view.menus.ingamemenus;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import org.example.control.SoundPlayer;
 import org.example.control.menucontrollers.inGameControllers.MusicMenuController;
 import org.example.view.enums.Menus;
@@ -13,8 +15,11 @@ import java.io.IOException;
 
 public class MusicMenu extends Menu {
 
+    private Window window;
+    private Slider musicSlider;
 
-    @Override
+
+
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         do {
             if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.RANDOM_SONG) != null)

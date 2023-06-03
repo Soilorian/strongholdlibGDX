@@ -2,20 +2,27 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
+import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
+import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
+import org.example.view.menus.minimenus.ForgotPassword;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +41,11 @@ public class Controller extends Game {
     private final String userAvatarPath = "EntranceAssets/users.png";
     private final String lockPath = "EntranceAssets/lock.png";
     private final String captchaPath = "EntranceAssets/captcha.png";
-    private final String refresh = "EntranceAssets/captcha.png";
+    private final String backgroundMainMenu = "pictures/background-main-menu.jpg";
+    private final String rainSoundAddress = "sounds/rain.mp3";
+    private final String gameStartUpBG = "pictures/game-start-up-background.png";
+    private final String refresh = "EntranceAssets/Refresh.png";
+    private final String showPassPath = "EntranceAssets/showPass.png";
 
 
 
@@ -82,13 +93,13 @@ public class Controller extends Game {
     @Override
     public void create() {
         DataBase.generateInfoFromJson();
-//        if (DataBase.isStayLogged())
-//            currentMenu = Menus.MAIN_MENU;
-//        else
-//            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.PROFILE_MENU.getMenu());
+        if (DataBase.isStayLogged())
+            currentMenu = Menus.MAIN_MENU;
+        else
+            currentMenu = Menus.ENTRANCE_MENU;
+        setScreen(currentMenu.getMenu());
     }
 
     private void manageAssets() {
@@ -102,6 +113,15 @@ public class Controller extends Game {
         manager.load(userAvatarPath, Texture.class);
         manager.load(lockPath, Texture.class);
         manager.load(captchaPath, Texture.class);
+        manager.load(backgroundMainMenu, Texture.class);
+        manager.load(gameStartUpBG, Texture.class);
+        for (TileTypes value : TileTypes.values()) {
+            manager.load(value.getTextureAddress(), Texture.class);
+        }
+
+        manager.load(rainSoundAddress, Music.class);
+        manager.load(refresh, Texture.class);
+        manager.load(showPassPath, Texture.class);
         manager.finishLoading();
     }
 
@@ -189,5 +209,33 @@ public class Controller extends Game {
 
     public Texture getBlankMapIcon() {
         return manager.get(blankMapIconAddress);
+    }
+
+    public Texture getRefreshPath() {
+        return manager.get(refresh);
+    }
+
+    public Texture getShowPassPath() {
+        return manager.get(showPassPath);
+    }
+
+    public Texture getMainMenuBackground(){
+        return manager.get(backgroundMainMenu);
+    }
+
+    public Music getRainSound(){
+        return manager.get(rainSoundAddress);
+    }
+
+    public Texture getGameStartBG(){
+        return manager.get(gameStartUpBG);
+    }
+
+    public void exitGame() {
+        for (Menus value : Menus.values()) {
+            value.getMenu().dispose();
+        }
+        dispose();
+        Gdx.app.exit();
     }
 }

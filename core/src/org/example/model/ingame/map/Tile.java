@@ -1,6 +1,8 @@
 package org.example.model.ingame.map;
 
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.ingame.castle.Building;
@@ -17,6 +19,7 @@ import org.example.model.ingame.map.enums.TreeTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Tile {
     private final int x;
@@ -32,6 +35,7 @@ public class Tile {
     private boolean isPassable = true;
     private boolean isWall = false;
     private Trap trap = null;
+    private Random random =  new Random();
 
 
     private boolean isTunnel = false;
@@ -245,6 +249,25 @@ public class Tile {
     private void addTunnelers(ArrayList<Tunneler> tunnelers) {
         this.tunnelers.addAll(tunnelers);
         isTunnel = true;
+    }
+
+    public void setUpPixmap(Pixmap pixmap, int i) {
+        for (int j = 0; j < i; j++) {
+            for (int k = 0; k < i; k++) {
+
+            }
+        }
+    }
+
+    private Pixmap addQuality(Pixmap pixmap, int x, int y, int a){
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < a; j++) {
+                pixmap.setColor(tile.getColor().add(new Color(random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f,
+                        0.3f),random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f, 0.3f))));
+                pixmap.fillRectangle(x, y, 4, 4);
+            }
+        }
+        return pixmap;
     }
 
     public void addTunneler(Tunneler tunneler) {
