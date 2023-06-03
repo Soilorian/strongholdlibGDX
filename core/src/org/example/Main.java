@@ -9,6 +9,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         controller = new Controller();
         controller.create();
+
     }
 
     @Override
