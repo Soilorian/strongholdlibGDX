@@ -2,15 +2,13 @@ package org.example.control;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.example.model.DataBase;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
 import org.example.view.menus.*;
@@ -94,7 +92,7 @@ public class Controller extends Game {
 //            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.SELECT_MAP_MENU.getMenu());
+        super.setScreen(Menus.MAIN_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -211,5 +209,13 @@ public class Controller extends Game {
 
     public Texture getGameStartBG(){
         return manager.get(gameStartUpBG);
+    }
+
+    public void exitGame() {
+        for (Menus value : Menus.values()) {
+            value.getMenu().dispose();
+        }
+        dispose();
+        Gdx.app.exit();
     }
 }

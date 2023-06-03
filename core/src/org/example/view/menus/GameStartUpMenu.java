@@ -93,7 +93,7 @@ public class GameStartUpMenu extends Menu {
     private void setActors() {
 
 
-        playersWindow.setWidth(Gdx.graphics.getWidth() / 4f * 3);
+        playersWindow.setWidth(Gdx.graphics.getWidth() / 4f * 3 - 20);
         playersWindow.setHeight(Gdx.graphics.getHeight() / 2f);
         playersWindow.setPosition(0, Gdx.graphics.getHeight()/ 2f);
         Label label = new Label(makeLabelForPlayer(DataBase.getCurrentPlayer()), controller.getSkin());
