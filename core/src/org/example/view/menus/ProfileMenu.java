@@ -103,27 +103,27 @@ public class ProfileMenu extends Menu {
         submit = new TextButton("Submit Changes",controller.getSkin());
         error = new Label("",controller.getSkin());
         back = new TextButton("Back", controller.getSkin());
-        addActor(changeUser,230,610,250,50);
-        addActor(changeNick,230,550,250,50);
-        addActor(changePass,230,490,250,50);
-        addActor(changeEmail,230,430,250,50);
-        addActor(changeSlogan,230,370,250,50);
-        addActor(submit,230,290,250,50);
-        error.setPosition(230,170);
+        addActor(changeUser,250,610,250,50);
+        addActor(changeNick,250,550,250,50);
+        addActor(changePass,250,490,250,50);
+        addActor(changeEmail,250,430,250,50);
+        addActor(changeSlogan,250,370,250,50);
+        addActor(submit,250,290,250,50);
+        error.setPosition(250,170);
         stage.addActor(error);
-        addActor(back,230,230,250,50);
+        addActor(back,250,230,250,50);
         backListener(submit);
         Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
         editBut1 = new ImageButton(edit);
-        addActor(editBut1,440,620,30,30);
+        addActor(editBut1,460,620,30,30);
         editBut2 = new ImageButton(edit);
-        addActor(editBut2,440,560,30,30);
+        addActor(editBut2,460,560,30,30);
         editBut3 = new ImageButton(edit);
-        addActor(editBut3,440,500,30,30);
+        addActor(editBut3,460,500,30,30);
         editBut4 = new ImageButton(edit);
-        addActor(editBut4,440,440,30,30);
+        addActor(editBut4,460,440,30,30);
         editBut5 = new ImageButton(edit);
-        addActor(editBut5,440,380,30,30);
+        addActor(editBut5,460,380,30,30);
         imageListener(editBut1);
         imageListener(editBut2);
         imageListener(editBut3);
@@ -158,7 +158,7 @@ public class ProfileMenu extends Menu {
         backListener(backPass);
         window.add(backPass).pad(10, 0, 10, 0).row();
         window.add(error).pad(10, 0, 10, 0).row();
-        window.setBounds(700,200,500, 500);
+        window.setBounds(230,230,500, 500);
         stage.addActor(window);
     }
 
@@ -280,7 +280,7 @@ public class ProfileMenu extends Menu {
         window.add(backPass).pad(10, 0, 10, 0).row();
         backListener(backPass);
         window.add(error).pad(10, 0, 10, 0).row();
-        window.setBounds(700,200,500, 500);
+        window.setBounds(230,230,500, 500);
         stage.addActor(window);
     }
 }
