@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 
 public class SettingsMenu extends Menu {
-    @Override
     public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
             CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;

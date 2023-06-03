@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
+import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
@@ -92,13 +93,13 @@ public class Controller extends Game {
     @Override
     public void create() {
         DataBase.generateInfoFromJson();
-//        if (DataBase.isStayLogged())
-//            currentMenu = Menus.MAIN_MENU;
-//        else
-//            currentMenu = Menus.ENTRANCE_MENU;
         manageAssets();
         createMenus();
-        super.setScreen(Menus.ENTRANCE_MENU.getMenu());
+        if (DataBase.isStayLogged())
+            currentMenu = Menus.MAIN_MENU;
+        else
+            currentMenu = Menus.ENTRANCE_MENU;
+        setScreen(currentMenu.getMenu());
     }
 
     private void manageAssets() {
@@ -114,6 +115,10 @@ public class Controller extends Game {
         manager.load(captchaPath, Texture.class);
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
+        for (TileTypes value : TileTypes.values()) {
+            manager.load(value.getTextureAddress(), Texture.class);
+        }
+
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);

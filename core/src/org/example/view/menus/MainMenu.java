@@ -184,7 +184,6 @@ public class MainMenu extends Menu {
         model.dispose();
     }
 
-    @Override
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException,
             CoordinatesOutOfMap, NotInStoragesException {
         System.out.println("entered " + Menus.getNameByObj(this));
@@ -243,7 +242,7 @@ public class MainMenu extends Menu {
     }
 
     public void startNewGame() {
-        controller.changeMenu(Menus.SELECT_MAP_MENU.getMenu(), this);
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(),  this);
     }
 
     public void profile() {

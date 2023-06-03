@@ -332,12 +332,6 @@ public class EntranceMenu extends Menu {
         addActor(image, x, y, width, height);
     }
 
-    @Override
-    public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-
-    }
-
-
     private void createNewUser(Matcher matcher, int type) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
     }

@@ -4,22 +4,23 @@ import com.badlogic.gdx.graphics.Color;
 import org.example.view.enums.ConsoleColors;
 
 public enum TileTypes {
-    GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD, "faze2-assets/"),
-    GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GOLD, "faze2-assets/"),
-    STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.DARK_GRAY, "faze2-assets/"),
-    ROCK("rock", ConsoleColors.BLACK, "&&", Color.SLATE, "faze2-assets/"),
-    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.RED, "faze2-assets/"),
-    GRASS("grass", ConsoleColors.GREEN_BOLD, "-_", Color.CHARTREUSE, "faze2-assets/"),
-    GRASS_LAND("grassland", ConsoleColors.GREEN_BACKGROUND, "$$", Color.LIME, "faze2-assets/"),
-    DENSE_GRASS_LAND("dense grassland", ConsoleColors.GREEN_BACKGROUND_BRIGHT, "XX", Color.GREEN, "faze2-assets/"),
-    SWAMP("swamp", ConsoleColors.PURPLE_BACKGROUND, "@@", Color.OLIVE, "faze2-assets/"),
-    PLAIN("plain", ConsoleColors.GREEN_BOLD, "[]", Color.FOREST, "faze2-assets/"),
-    SHALLOW_WATER("shallow water", ConsoleColors.CYAN, "%%", Color.SLATE, "faze2-assets/"),
-    RIVER("river", ConsoleColors.CYAN_BRIGHT, "UU", Color.SKY, "faze2-assets/"),
-    SMALL_POND("small pond", ConsoleColors.CYAN_BACKGROUND, "oo", Color.CYAN, "faze2-assets/"),
-    BIG_POND("big pond", ConsoleColors.BLUE_BACKGROUND_BRIGHT, "/\\", Color.BLUE, "faze2-assets/"),
-    BEACH("beach", ConsoleColors.YELLOW_BACKGROUND, ";\"", Color.TAN, "faze2-assets/"),
-    SEA("sea", ConsoleColors.BLUE_BACKGROUND, "MW", Color.NAVY, "faze2-assets/");
+    GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD, "tiles/ground.jpg"),
+    GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GOLD, "tiles/gravel-ground.png"),
+    STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.DARK_GRAY, "tiles/stone.png"),
+    ROCK("rock", ConsoleColors.BLACK, "&&", Color.SLATE, "tiles/rock.png"),
+    IRON_GROUND("iron ground", ConsoleColors.RED_BACKGROUND, "==", Color.RED, "tiles/iron-ground.png"),
+    GRASS("grass", ConsoleColors.GREEN_BOLD, "-_", Color.CHARTREUSE, "tiles/grass-tile.jpg"),
+    GRASS_LAND("grassland", ConsoleColors.GREEN_BACKGROUND, "$$", Color.LIME, "tiles/grass-land.png"),
+    DENSE_GRASS_LAND("dense grassland", ConsoleColors.GREEN_BACKGROUND_BRIGHT, "XX", Color.GREEN, "tiles/dense-grass" +
+            ".png"),
+    SWAMP("swamp", ConsoleColors.PURPLE_BACKGROUND, "@@", Color.OLIVE, "tiles/swamp.png"),
+    PLAIN("plain", ConsoleColors.GREEN_BOLD, "[]", Color.FOREST, "tiles/plain.png"),
+    SHALLOW_WATER("shallow water", ConsoleColors.CYAN, "%%", Color.SLATE, "tiles/shallow-water.png"),
+    RIVER("river", ConsoleColors.CYAN_BRIGHT, "UU", Color.SKY, "tiles/river.png"),
+    SMALL_POND("small pond", ConsoleColors.CYAN_BACKGROUND, "oo", Color.CYAN, "tiles/gulf-tile.jpg"),
+    BIG_POND("big pond", ConsoleColors.BLUE_BACKGROUND_BRIGHT, "/\\", Color.BLUE, "tiles/big-pound.jpg"),
+    BEACH("beach", ConsoleColors.YELLOW_BACKGROUND, ";\"", Color.TAN, "tiles/beach.png"),
+    SEA("sea", ConsoleColors.BLUE_BACKGROUND, "MW", Color.NAVY, "tiles/sea_tile.jpg");
 
     private final String type;
     private final ConsoleColors colors;
@@ -45,5 +46,9 @@ public enum TileTypes {
 
     public Color getColor() {
         return color;
+    }
+
+    public String getTextureAddress() {
+        return textureAddress;
     }
 }

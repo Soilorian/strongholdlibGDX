@@ -34,7 +34,6 @@ public class ProfileMenu extends Menu {
         super();
         profileMenu();
     }
-    @Override
     public void run(String command) throws IOException, UnsupportedAudioFileException, LineUnavailableException,
             CoordinatesOutOfMap, NotInStoragesException {
     }

@@ -20,7 +20,6 @@ public class MusicMenu extends Menu {
 
 
 
-    @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         do {
             if (InGameMenuCommands.getMatcher(input, InGameMenuCommands.RANDOM_SONG) != null)

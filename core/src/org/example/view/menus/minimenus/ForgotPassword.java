@@ -34,7 +34,6 @@ public class ForgotPassword extends Menu {
 
     }
 
-    @Override
     protected void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
 
 

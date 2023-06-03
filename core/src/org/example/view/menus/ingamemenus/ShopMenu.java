@@ -16,7 +16,6 @@ import java.util.regex.Matcher;
 
 public class ShopMenu extends Menu {
 
-    @Override
     public void run(String commands) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         Matcher matcher;
         while (true) {

@@ -3,6 +3,7 @@ package org.example.view.menus.minimenus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -30,6 +31,7 @@ public class SelectSizeMenu extends Menu {
     private final Window window;
     private final Slider widthSlider, hieghtSlider;
     private final Label widthLabel, heightLabel;
+    private final Image backgroundImage;
 
 
     public SelectSizeMenu() {
@@ -39,6 +41,7 @@ public class SelectSizeMenu extends Menu {
         widthSlider = new Slider(200, 400, 1, false, controller.getSkin());
         hieghtSlider = new Slider(200, 400, 1, true, controller.getSkin());
         widthLabel = new Label(String.valueOf(200), controller.getSkin());
+        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         heightLabel = new Label(String.valueOf(200), controller.getSkin());
 
         //body
@@ -88,6 +91,7 @@ public class SelectSizeMenu extends Menu {
 
         //end
         stage.clear();
+        stage.addActor(backgroundImage);
         stage.addActor(window);
         stage.addActor(widthSlider);
         stage.addActor(hieghtSlider);
@@ -96,12 +100,8 @@ public class SelectSizeMenu extends Menu {
     }
 
     private void ok() {
-        try {
-            run("select size -w " + ((int) widthSlider.getValue()) + " -h " + ((int) hieghtSlider.getValue()));
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | CoordinatesOutOfMap |
-                 NotInStoragesException e) {
-            throw new RuntimeException(e);
-        }
+        GameStartUpMenuController.selectSize((int) widthSlider.getValue(), (int) hieghtSlider.getValue());
+        controller.changeMenu(Menus.SELECT_MAP_MENU.getMenu(), this);
     }
 
     private void changeHeight() {
@@ -127,11 +127,10 @@ public class SelectSizeMenu extends Menu {
         String heightInString = Controller.removeQuotes(matcher.group("Height"));
         int width = Integer.parseInt(widthInString);
         int height = Integer.parseInt(heightInString);
-        GameStartUpMenuController.selectSize(width, height);
+
         showMessage("map size " + width + " x " + height + " selected!");
     }
 
-    @Override
     public void run(String input) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
         Matcher matcher;
         if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
