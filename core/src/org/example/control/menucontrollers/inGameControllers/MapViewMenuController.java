@@ -11,7 +11,7 @@ import org.example.model.ingame.map.Tile;
 public class MapViewMenuController {
     private static int viewingX;
     private static int viewingY;
-    private static int zoom = 5;
+    public static int zoom = 7;
 
     public static String printMap() {
         int x = viewingX;
@@ -167,6 +167,10 @@ public class MapViewMenuController {
 
     public static void changeViewingY(int i) {
         viewingY += i;
+    }
+
+    public static void changeViewingX(int i) {
+        viewingX += i;
     }
 }
 

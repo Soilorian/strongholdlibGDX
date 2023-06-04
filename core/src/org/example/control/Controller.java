@@ -122,8 +122,9 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().setCurrentMap(new Map(20, 20, "adsf"));
         GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 10).setTile(TileTypes.SEA);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(11, 10).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 11).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(11, 11).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(12, 10).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 12).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
         setScreen(Menus.MAP_VIEW_MENU.getMenu());

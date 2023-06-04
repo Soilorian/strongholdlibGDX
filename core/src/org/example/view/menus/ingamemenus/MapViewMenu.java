@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
@@ -30,6 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
+import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.zoom;
+
 public class MapViewMenu extends Menu {
 
 
@@ -42,14 +43,7 @@ public class MapViewMenu extends Menu {
 
     private void addAssets() {
         int zoom = MapViewMenuController.getZoom();
-        for (int i = 0; i < zoom; i++)
-            for (int j = 0; j < zoom; j++){
-                Image actor = mapImages.get(i).get(j);
-                stage.addActor(actor);
-                Label label = new Label(i + " " + j, controller.getSkin());
-                label.setPosition(actor.getX(), actor.getY());
-                stage.addActor(label);
-            }
+        for (int i = 0; i < zoom; i++) for (int j = 0; j < zoom; j++) stage.addActor(mapImages.get(i).get(j));
     }
 
     private void setAssets() {
@@ -60,8 +54,14 @@ public class MapViewMenu extends Menu {
                 Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
                         MapViewMenuController.getViewingY() - zoom / 2 + i, zoom));
                 image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
-                        (float) ((zoom - i -1) * Gdx.graphics.getHeight()) / zoom);
+                        (float) ((zoom - i - 1) * Gdx.graphics.getHeight()) / zoom);
                 images.add(image);
+//                image.addListener(new ClickListener(){
+//                    @Override
+//                    public void clicked(InputEvent event, float x, float y) {
+//
+//                    }
+//                });
             }
             mapImages.add(images);
         }
@@ -86,15 +86,20 @@ public class MapViewMenu extends Menu {
                 break;
             }
             case Input.Keys.S: {
-                MapViewMenuController.changeViewingY(-1);
-                stage.clear();
-                mapImages.clear();
-                setAssets();
-                addAssets();
+                moveDown();
                 break;
             }
             case Input.Keys.I: {
                 Gdx.app.exit();
+                break;
+            }
+            case Input.Keys.A: {
+                moveLeft();
+                break;
+            }
+            case Input.Keys.D: {
+                moveRight();
+                break;
             }
             default:
                 return;
@@ -104,21 +109,101 @@ public class MapViewMenu extends Menu {
     private void moveUp() {
         Array<Actor> actors = stage.getActors();
         int zoom = MapViewMenuController.getZoom();
-        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(0).get(i), true);
-
-        for (int i = 0; i < zoom - 1; i++) mapImages.set(i + 1, mapImages.get(i));
-
+        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(zoom - 1).get(i), true); // 4 --> dir
+        for (int i = 0; i < zoom - 1; i++)
+            for (int j = 0; j < zoom; j++) moveTileVertically(mapImages.get(i).get(j), i + 1); // +1 --> dir
+        for (int i = zoom - 2; i >= 0; i--) mapImages.set(i + 1, mapImages.get(i)); // --> dir
         ArrayList<Image> images = new ArrayList<>();
-        for (int j = 0; j < zoom; j++) {
+        MapViewMenuController.changeViewingY(-1); // --> dir
+        for (int j = 0; j < zoom; j++) { // --> dir
             Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
                     MapViewMenuController.getViewingY() - zoom / 2, zoom));
+            image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
+                    (float) ((zoom - 1) * Gdx.graphics.getHeight()) / zoom);
+            images.add(image);
+            stage.addActor(image);
+        }
+        mapImages.set(0, images); // 0 --> dir
+    }
+
+    private void moveDown() {
+        Array<Actor> actors = stage.getActors();
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(0).get(i), true); // 4 --> dir
+        for (int i = 1; i < zoom; i++)
+            for (int j = 0; j < zoom; j++) moveTileVertically(mapImages.get(i).get(j), i - 1); // +1 --> dir
+        for (int i = 1; i < zoom; i++) mapImages.set(i - 1, mapImages.get(i)); // --> dir
+        ArrayList<Image> images = new ArrayList<>();
+        MapViewMenuController.changeViewingY(1); // --> dir
+        for (int j = 0; j < zoom; j++) { // --> dir
+            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
+                    MapViewMenuController.getViewingY() - zoom / 2 + zoom - 1, zoom));
             image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
                     0);
             images.add(image);
             stage.addActor(image);
         }
-        mapImages.set(0, images);
+        mapImages.set(zoom - 1, images); // 0 --> dir
     }
+
+    private void moveLeft() {
+        Array<Actor> actors = stage.getActors();
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(i).get(zoom - 1), true); // 4 --> dir
+        for (int i = 0; i < zoom; i++)
+            for (int j = 0; j < zoom - 1; j++) moveTileHorizontally(mapImages.get(i).get(j), j + 1); // +1 --> dir
+        for (int i = zoom - 2; i >= 0; i--)
+            for (int j = 0; j < zoom; j++) {
+                mapImages.get(j).set(i + 1, mapImages.get(j).get(i));
+            } // --> dir
+        ArrayList<Image> images = new ArrayList<>();
+        MapViewMenuController.changeViewingX(-1); // --> dir
+        for (int j = 0; j < zoom; j++) { // --> dir
+            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2,
+                    MapViewMenuController.getViewingY() - zoom / 2 + j, zoom));
+            image.setPosition(0, (float) ((zoom - j - 1) * Gdx.graphics.getHeight()) / zoom);
+            images.add(image);
+            stage.addActor(image);
+        }
+        for (int i = 0; i < zoom; i++) {
+            mapImages.get(i).set(0, images.get(i));
+        } // 0 --> dir
+    }
+
+    private void moveRight() {
+        Array<Actor> actors = stage.getActors();
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(i).get(0), true); // 4 --> dir
+        for (int i = 0; i < zoom; i++)
+            for (int j = 1; j < zoom; j++) moveTileHorizontally(mapImages.get(i).get(j), j - 1); // +1 --> dir
+        for (int i = 1; i < zoom; i++)
+            for (int j = 0; j < zoom; j++) {
+                mapImages.get(j).set(i - 1, mapImages.get(j).get(i));
+            } // --> dir
+        ArrayList<Image> images = new ArrayList<>();
+        MapViewMenuController.changeViewingX(1); // --> dir
+        for (int j = 0; j < zoom; j++) { // --> dir
+            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + zoom - 1,
+                    MapViewMenuController.getViewingY() - zoom / 2 + j, zoom));
+            image.setPosition((float) ((zoom - 1) * Gdx.graphics.getWidth()) / zoom,
+                    (float) ((zoom - j - 1) * Gdx.graphics.getHeight()) / zoom);
+            images.add(image);
+            stage.addActor(image);
+        }
+        for (int i = 0; i < zoom; i++) {
+            mapImages.get(i).set(zoom - 1, images.get(i));
+        } // 0 --> dir
+    }
+
+
+    private void moveTileVertically(Image image, int row) {
+        image.setY((float) (zoom - row - 1) * Gdx.graphics.getHeight() / zoom);
+    }
+
+    private void moveTileHorizontally(Image image, int col) {
+        image.setX((float) col * Gdx.graphics.getWidth() / zoom);
+    }
+
 
     private Texture makeTextureForTile(int x, int y, int z) {
         System.out.printf("loading %d , %d with zoom %d\n", x, y, z);
