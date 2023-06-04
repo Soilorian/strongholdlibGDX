@@ -1,8 +1,15 @@
 package org.example.view.menus.ingamemenus;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.GameMenuMessages;
@@ -10,8 +17,8 @@ import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
+import org.example.model.AnimatedSprite;
 import org.example.model.ingame.map.Tile;
-import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.InGameMenuCommands;
@@ -26,32 +33,101 @@ import java.util.regex.Matcher;
 public class MapViewMenu extends Menu {
 
 
-    private final ArrayList<Image> mapImages;
+    private final ArrayList<ArrayList<Image>> mapImages = new ArrayList<>();
+    private AnimatedSprite animation;
+
     public MapViewMenu() {
-        mapImages = new ArrayList<>();
 
     }
 
     private void addAssets() {
-        for (Image mapImage : mapImages) {
-            stage.addActor(mapImage);
-        }
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++)
+            for (int j = 0; j < zoom; j++){
+                Image actor = mapImages.get(i).get(j);
+                stage.addActor(actor);
+                Label label = new Label(i + " " + j, controller.getSkin());
+                label.setPosition(actor.getX(), actor.getY());
+                stage.addActor(label);
+            }
     }
 
     private void setAssets() {
         int zoom = MapViewMenuController.getZoom();
         for (int i = 0; i < zoom; i++) {
+            ArrayList<Image> images = new ArrayList<>();
             for (int j = 0; j < zoom; j++) {
-                Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom/2,
-                        MapViewMenuController.getViewingY() - zoom / 2, zoom));
-                image.setPosition(i * zoom * 50, j * zoom * 50);
-                mapImages.add(image);
+                Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
+                        MapViewMenuController.getViewingY() - zoom / 2 + i, zoom));
+                image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
+                        (float) ((zoom - i -1) * Gdx.graphics.getHeight()) / zoom);
+                images.add(image);
             }
+            mapImages.add(images);
+        }
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                checkMovement(keycode);
+                return super.keyDown(event, keycode);
+            }
+        });
+        stage.setDebugAll(true);
+//        animation = new AnimatedSprite(new Texture[]{controller.getLock(), controller.getDefaultMap(),
+//                controller.getEntranceBack()}, 2);
+
+    }
+
+
+    private void checkMovement(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W: {
+                moveUp();
+                break;
+            }
+            case Input.Keys.S: {
+                MapViewMenuController.changeViewingY(-1);
+                stage.clear();
+                mapImages.clear();
+                setAssets();
+                addAssets();
+                break;
+            }
+            case Input.Keys.I: {
+                Gdx.app.exit();
+            }
+            default:
+                return;
         }
     }
 
+    private void moveUp() {
+        Array<Actor> actors = stage.getActors();
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) actors.removeValue(mapImages.get(0).get(i), true);
+
+        for (int i = 0; i < zoom - 1; i++) mapImages.set(i + 1, mapImages.get(i));
+
+        ArrayList<Image> images = new ArrayList<>();
+        for (int j = 0; j < zoom; j++) {
+            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
+                    MapViewMenuController.getViewingY() - zoom / 2, zoom));
+            image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
+                    0);
+            images.add(image);
+            stage.addActor(image);
+        }
+        mapImages.set(0, images);
+    }
+
     private Texture makeTextureForTile(int x, int y, int z) {
-        return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x).getTexture(z);
+        System.out.printf("loading %d , %d with zoom %d\n", x, y, z);
+        Tile tile = GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
+        if (tile != null) {
+            return tile.getTexture(z);
+        } else
+            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
+                    controller.getBlackMap());
     }
 
 
@@ -93,6 +169,7 @@ public class MapViewMenu extends Menu {
     public void create() {
         setAssets();
         addAssets();
+        Gdx.input.setInputProcessor(stage);
     }
 
     private boolean showXY(Matcher matcher) {
@@ -134,19 +211,19 @@ public class MapViewMenu extends Menu {
         int lastY = MapViewMenuController.getViewingY();
         for (String move : moves) {
             switch (move) {
-                case "up" :{
+                case "up": {
                     lastY--;
                     break;
                 }
-                case "down" :{
+                case "down": {
                     lastY++;
                     break;
                 }
-                case "left" :{
+                case "left": {
                     lastX--;
                     break;
                 }
-                case "right" : {
+                case "right": {
                     lastX++;
                     break;
                 }

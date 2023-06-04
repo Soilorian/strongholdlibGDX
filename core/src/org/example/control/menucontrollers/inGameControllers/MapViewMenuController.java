@@ -7,7 +7,6 @@ import org.example.model.ingame.castle.Castle;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
-import sun.swing.StringUIClientPropertyKey;
 
 public class MapViewMenuController {
     private static int viewingX;
@@ -18,7 +17,7 @@ public class MapViewMenuController {
         int x = viewingX;
         int y = viewingY;
         StringBuilder map = new StringBuilder();
-        Map currentMap = Controller.getCurrentMap();
+        Map currentMap = GameMenuController.getCurrentGame().getCurrentMap();
         map.append(printHalfRow(currentMap.getTile(y - 3, x - 5))).append("|");
         for (int i = 0; i < 9; i++) map.append(printRow(currentMap.getTile(y - 3, x - 4 + i), 3)).append("|");
         map.append(printHalfRow(currentMap.getTile(y - 3, x + 5))).append("\n");
@@ -164,6 +163,10 @@ public class MapViewMenuController {
 
     public static int getZoom() {
         return zoom;
+    }
+
+    public static void changeViewingY(int i) {
+        viewingY += i;
     }
 }
 
