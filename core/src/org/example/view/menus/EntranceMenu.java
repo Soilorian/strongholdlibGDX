@@ -68,9 +68,9 @@ public class EntranceMenu extends Menu {
             registerAnswerText;
     private Label login, register, loginResult, registerResult;
     private TextButton loginSubmit, registerSubmit;
-    private ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton,
-    showPassword;
-    private CheckBox stayLogged, q1, q2, q3;
+    private ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton, showPassword;
+    private CheckBox stayLogged;
+    private final SelectBox<String> questions;
     private Image loginUsernameImage, loginPasswordImage, loginCaptchaImage,
             registerUsernameImage, registerPasswordImage, registerCaptchaImage,
     background;
@@ -83,7 +83,6 @@ public class EntranceMenu extends Menu {
         super();
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
-        add3D();
         loginUsernameText = new TextField("", controller.getSkin());
         loginPasswordText = new TextField("", controller.getSkin());
         loginCaptchaText = new TextField("", controller.getSkin());
@@ -97,12 +96,16 @@ public class EntranceMenu extends Menu {
         registerSloganText = new TextField("", controller.getSkin());
         registerAnswerText = new TextField("", controller.getSkin());
 
+        questions = new SelectBox<>(controller.getSkin());
+        questions.setItems("What is the first game you played?","When did you meet Mossayeb?","What is your favorite patoq in university?");
+        questions.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
 
         stayLogged = new CheckBox("Remember Me", controller.getSkin());
-        q1 = new CheckBox("What is the first game you played?", controller.getSkin());
-        q2 = new CheckBox("When did you meet Mossayeb?", controller.getSkin());
-        q3 = new CheckBox("What is your favorite patoq in university?", controller.getSkin());
-
 
         loginSubmit = new TextButton("Submit", controller.getSkin());
         registerSubmit = new TextButton("register", controller.getSkin());
@@ -159,6 +162,7 @@ public class EntranceMenu extends Menu {
         createLabels();
         createCheckBoxes();
         createImages();
+        add3D();
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -260,24 +264,7 @@ public class EntranceMenu extends Menu {
 
     public void createCheckBoxes() {
         addActor(stayLogged, 1350, 720);
-        addActor(q1, 1250, 225);
-        addActor(q2, 1250, 210);
-        addActor(q3, 1250, 195);
-        pickSecurityQ(q1);
-        pickSecurityQ(q2);
-        pickSecurityQ(q3);
-    }
-
-    public void pickSecurityQ(CheckBox checkBox) {
-        checkBox.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                q1.setChecked(false);
-                q2.setChecked(false);
-                q3.setChecked(false);
-                checkBox.setChecked(true);
-            }
-        });
+        addActor(questions, 1250, 225);
     }
 
     public void createButtons() {
@@ -348,13 +335,7 @@ public class EntranceMenu extends Menu {
         registerSubmit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                int i = 0;
-                if (q1.isChecked())
-                    i = 1;
-                else if (q2.isChecked())
-                    i = 2;
-                else if (q3.isChecked())
-                    i = 3;
+                int i = questions.getSelectedIndex();
                 if (registerCaptcha.isFilledCaptchaValid(registerCaptchaText.getText())) {
                     try {
                         String result = EntranceMenuController.createNewUser(registerUsernameText.getText(),

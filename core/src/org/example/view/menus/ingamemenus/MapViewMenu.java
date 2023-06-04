@@ -8,6 +8,7 @@ import org.example.control.SoundPlayer;
 import org.example.control.enums.GameMenuMessages;
 import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
@@ -29,21 +30,26 @@ public class MapViewMenu extends Menu {
     public MapViewMenu() {
         mapImages = new ArrayList<>();
 
-        setAssets();
-        addAssets();
+    }
+
+    private void addAssets() {
+
     }
 
     private void setAssets() {
-        for (int i = 0; i < MapViewMenuController.getZoom(); i++) {
-            for (int j = 0; j < MapViewMenuController.getZoom(); j++) {
-                mapImages.add(new Image(makeTextureForTile()));
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) {
+            for (int j = 0; j < zoom; j++) {
+                Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom/2,
+                        MapViewMenuController.getViewingY() - zoom / 2, zoom));
+                image.setPosition(i * zoom * 50, j * zoom * 50);
+                mapImages.add(image);
             }
         }
     }
 
-    private Texture makeTextureForTile() {
-        Tile tile = new Tile(0,0, TileTypes.BEACH);
-
+    private Texture makeTextureForTile(int x, int y, int z) {
+        return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x).getTexture(z);
     }
 
 
@@ -83,7 +89,8 @@ public class MapViewMenu extends Menu {
 
     @Override
     public void create() {
-
+        setAssets();
+        addAssets();
     }
 
     private boolean showXY(Matcher matcher) {

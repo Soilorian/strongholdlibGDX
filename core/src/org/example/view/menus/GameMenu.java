@@ -49,8 +49,10 @@ public class GameMenu extends Menu {
     public GameMenu() {
         mapImages = new ArrayList<>();
 
-        setAssets();
-        addAssets();
+    }
+
+    private void addAssets() {
+
     }
 
     private void setAssets() {
@@ -72,6 +74,9 @@ public class GameMenu extends Menu {
 
     @Override
     public void create() {
+
+        setAssets();
+        addAssets();
         input.setInputProcessor(stage);
     }
 
