@@ -196,7 +196,7 @@ public class Controller extends Game {
         return manager.get(captchaPath);
     }
 
-    public Texture resizer(float width, float height, Texture texture) {
+    public static Texture resizer(float width, float height, Texture texture) {
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap200 = texture.getTextureData().consumePixmap();

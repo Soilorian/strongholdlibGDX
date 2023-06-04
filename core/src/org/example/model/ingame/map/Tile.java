@@ -4,6 +4,7 @@ package org.example.model.ingame.map;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.sun.tools.javac.comp.Todo;
 import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
@@ -253,18 +254,19 @@ public class Tile {
         isTunnel = true;
     }
 
-    public void getTexture(int i) {
+    public Texture getTexture(int i) {
         Pixmap pixmap = new Pixmap(i* 50, i * 50, Pixmap.Format.RGBA8888);
-        Texture texture = Controller.getTexture(tile.getTextureAddress());
-
-
-
-//
-//        for (int j = 0; j < i; j++) {
-//            for (int k = 0; k < i; k++) {
-//
-//            }
-//        }
+        Texture texture = Controller.resizer(50, 50,Controller.getTexture(tile.getTextureAddress()));
+        texture.getTextureData().prepare();
+        for (int j = 0; j < i; j++) {
+            for (int k = 0; k < i; k++) {
+                pixmap.drawPixmap(texture.getTextureData().consumePixmap(), j * 50, k * 50);
+            }
+        }
+        // TODO: 6/4/2023 building and tree and rock
+        texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
     }
 
 //    private Pixmap addQuality(Pixmap pixmap, int x, int y, int a){
