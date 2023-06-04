@@ -51,6 +51,7 @@ import org.example.view.enums.commands.Slogans;
 import static com.badlogic.gdx.Gdx.graphics;
 
 public class EntranceMenu extends Menu {
+
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
 
@@ -76,15 +77,11 @@ public class EntranceMenu extends Menu {
     private Stage backStage = new Stage();
     private Captcha loginCaptcha, registerCaptcha;
 
-
     public EntranceMenu() {
         super();
-
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
         add3D();
-
-
         loginUsernameText = new TextField("", controller.getSkin());
         loginPasswordText = new TextField("", controller.getSkin());
         loginCaptchaText = new TextField("", controller.getSkin());
