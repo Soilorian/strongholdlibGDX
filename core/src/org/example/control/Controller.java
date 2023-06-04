@@ -43,6 +43,8 @@ public class Controller extends Game {
     private final String gameStartUpBG = "pictures/game-start-up-background.png";
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
+    private final String entranceBack = "EntranceAssets/Dragon.jpg";
+
     private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private Menu nextMenu;
 
@@ -130,7 +132,6 @@ public class Controller extends Game {
         manager.load(captchaPath, Texture.class);
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
-        manager.load(entranceBG, Texture.class);
         for (TileTypes value : TileTypes.values()) {
             manager.load(value.getTextureAddress(), Texture.class);
         }
@@ -138,6 +139,7 @@ public class Controller extends Game {
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);
+        manager.load(entranceBack,Texture.class);
         manager.finishLoading();
     }
 
@@ -247,15 +249,15 @@ public class Controller extends Game {
         return manager.get(gameStartUpBG);
     }
 
+    public Texture getEntranceBack() {
+        return manager.get(entranceBack);
+    }
+
     public void exitGame() {
         for (Menus value : Menus.values()) {
             value.getMenu().dispose();
         }
         dispose();
         Gdx.app.exit();
-    }
-
-    public Texture getEntranceBackground() {
-        return manager.get(entranceBG);
     }
 }
