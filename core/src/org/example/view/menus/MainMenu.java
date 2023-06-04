@@ -58,7 +58,7 @@ public class MainMenu extends Menu {
     public MainMenu() {
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
-        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         threeDPrep();
         startGameButton = new TextButton("start new game", controller.getSkin());
         mapEditorButton = new TextButton("map editor", controller.getSkin());

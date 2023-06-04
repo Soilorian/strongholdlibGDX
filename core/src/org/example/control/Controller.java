@@ -3,6 +3,7 @@ package org.example.control;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
 public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
-    private final AssetManager manager = new AssetManager();
+    private static final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
@@ -47,7 +48,8 @@ public class Controller extends Game {
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
-
+    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
+    private Menu nextMenu;
 
 
     public static String removeQuotes(String string) {
@@ -87,8 +89,25 @@ public class Controller extends Game {
         //currentMenu = menus;
     }
 
-    public void changeMenu(Menu menu, Menu from){
-        setScreen(menu);
+    public static Texture getTexture(String textureAddress) {
+        return manager.get(textureAddress);
+    }
+
+    public void changeMenu(Menu menu, Menu from) {
+        if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
+            setScreen(nextMenu);
+            nextMenu = null;
+        } else
+            setScreen(menu);
+        if (from.equals(Menus.MAP_EDIT_MENU.getMenu()))
+            nextMenu = from;
+    }
+
+
+    @Override
+    public void setScreen(Screen screen) {
+        ((Menu) screen).create();
+        super.setScreen(screen);
     }
 
     @Override
@@ -183,7 +202,7 @@ public class Controller extends Game {
         return manager.get(captchaPath);
     }
 
-    public Texture resizer(float width, float height, Texture texture){
+    public static Texture resizer(float width, float height, Texture texture){
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap200 =texture.getTextureData().consumePixmap();
