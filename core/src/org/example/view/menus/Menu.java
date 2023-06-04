@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,7 +27,7 @@ import java.io.IOException;
 public abstract class Menu implements Screen {
     protected Controller controller = Main.getController();
     protected Stage stage = new Stage();
-    protected ModelBatch batch = new ModelBatch();
+    protected SpriteBatch batch = new SpriteBatch();
     protected Camera camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
 
@@ -79,7 +80,7 @@ public abstract class Menu implements Screen {
     @Override
     public void render(float delta){
         ScreenUtils.clear(Color.BLACK);
-        batch.begin(camera);
+        batch.begin();
         timerSlider.setValue(timerSlider.getValue()+1);
         timerSlider.updateVisualValue();
         stage.draw();

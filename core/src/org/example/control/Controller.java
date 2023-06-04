@@ -52,6 +52,7 @@ public class Controller extends Game {
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
     private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private Menu nextMenu;
+    private String blackTileAddress = "pictures/black-tile.png.";
 
 
     public static String removeQuotes(String string) {
@@ -119,6 +120,11 @@ public class Controller extends Game {
         createMenus();
         GameMenuController.setCurrentGame(new org.example.model.Game());
         GameMenuController.getCurrentGame().setCurrentMap(new Map(20, 20, "adsf"));
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 10).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(11, 10).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(12, 10).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 12).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
         setScreen(Menus.MAP_VIEW_MENU.getMenu());
@@ -138,6 +144,7 @@ public class Controller extends Game {
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
+        manager.load(blackTileAddress, Texture.class);
         for (TileTypes value : TileTypes.values()) {
             manager.load(value.getTextureAddress(), Texture.class);
         }
@@ -265,5 +272,9 @@ public class Controller extends Game {
         }
         dispose();
         Gdx.app.exit();
+    }
+
+    public Texture getBlackMap() {
+        return manager.get(blackTileAddress);
     }
 }

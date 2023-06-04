@@ -1,6 +1,7 @@
 package org.example.model.ingame.map;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
@@ -252,18 +253,16 @@ public class Tile {
         isTunnel = true;
     }
 
-    public Texture getTexture(int i) {
-        Pixmap pixmap = new Pixmap(i * 200, i * 200, Pixmap.Format.RGBA8888);
-        Texture texture = Controller.resizer(200, 200, Controller.getTexture(tile.getTextureAddress()));
+    public Texture getTexture(int z) {
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / z, Gdx.graphics.getHeight() / z, Pixmap.Format.RGBA8888);
+        Texture texture = Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
+                Controller.getTexture(tile.getTextureAddress()));
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
-        for (int j = 0; j < i; j++) {
-            for (int k = 0; k < i; k++) {
-                pixmap.drawPixmap(texture.getTextureData().consumePixmap(), j * 200, k * 200);
-            }
-        }
+        if (tree != null)
+            ;
         // TODO: 6/4/2023 building and tree and rock
-        texture = new Texture(pixmap);
+//        texture = new Texture(pixmap);
         pixmap.dispose();
         return texture;
     }

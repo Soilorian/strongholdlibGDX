@@ -41,7 +41,7 @@ public class SelectSizeMenu extends Menu {
         widthSlider = new Slider(200, 400, 1, false, controller.getSkin());
         hieghtSlider = new Slider(200, 400, 1, true, controller.getSkin());
         widthLabel = new Label(String.valueOf(200), controller.getSkin());
-        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         heightLabel = new Label(String.valueOf(200), controller.getSkin());
 
         //body
