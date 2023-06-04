@@ -22,8 +22,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.MainMenuController;
 import org.example.model.DataBase;
+import org.example.model.Game;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Menus;
@@ -42,13 +44,12 @@ import static com.badlogic.gdx.Gdx.graphics;
 import static com.badlogic.gdx.Gdx.input;
 
 public class MainMenu extends Menu {
-
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
     private final Array<ModelInstance> instances = new Array<>();
     private final Stage stageInput = new Stage();
     private final Image backgroundImage;
-    private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton;
+    private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton, logoutButton;
     private Model model, model1;
     private ModelInstance modelInstance, modelInstance1;
     private Environment environment;
@@ -57,13 +58,14 @@ public class MainMenu extends Menu {
     public MainMenu() {
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
-        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         threeDPrep();
         startGameButton = new TextButton("start new game", controller.getSkin());
         mapEditorButton = new TextButton("map editor", controller.getSkin());
         settingsButton = new TextButton("settings", controller.getSkin());
         profileButton = new TextButton("profile", controller.getSkin());
         exitButton = new TextButton("exit", controller.getSkin());
+        logoutButton = new TextButton("logout", controller.getSkin());
         twoDPrep();
     }
 
@@ -88,13 +90,7 @@ public class MainMenu extends Menu {
         mapEditorButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
                     mapEditor();
-                } catch (UnsupportedAudioFileException | IOException | NotInStoragesException |
-                         LineUnavailableException | CoordinatesOutOfMap e) {
-                    System.out.println("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuursi ra paas darim");
-                    throw new RuntimeException(e);
-                }
             }
         });
 
@@ -128,13 +124,28 @@ public class MainMenu extends Menu {
             }
         });
 
+        logoutButton.setPosition(graphics.getWidth()/3f, graphics.getHeight()/8f);
+        logoutButton.setWidth(typicalWidth);
+        logoutButton.setHeight(typicalHeight);
+        logoutButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                logout();
+            }
+        });
+
         stage.addActor(backgroundImage);
         stageInput.addActor(startGameButton);
         stageInput.addActor(mapEditorButton);
         stageInput.addActor(settingsButton);
         stageInput.addActor(profileButton);
         stageInput.addActor(exitButton);
+        stageInput.addActor(logoutButton);
         input.setInputProcessor(stageInput);
+    }
+
+    private void mapEditor() {
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), Menus.MAP_EDIT_MENU.getMenu());
     }
 
     private void exitApp() {
@@ -225,23 +236,8 @@ public class MainMenu extends Menu {
         Gdx.input.setInputProcessor(stageInput);
     }
 
-    private void mapEditor() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {
-        System.out.println("please select the size of your map");
-        do {
-            String input = ""; // TODO: 6/1/2023 new menu
-            Matcher matcher;
-            if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
-                ; // TODO: 6/1/2023 select size menu first
-            } else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.BACK) != null)
-                return;
-            else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.NO) != null)
-                break;
-            else System.out.println("invalid input!");
-        } while (true);
-        controller.setScreen(Menus.MAP_EDIT_MENU.getMenu());
-    }
-
     public void startNewGame() {
+        GameMenuController.setCurrentGame(new Game());
         controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(),  this);
     }
 
@@ -250,12 +246,12 @@ public class MainMenu extends Menu {
     }
 
     public void settings() {
-        // TODO: 5/11/2023 for Graphics
         System.out.println("this menu will be completed for the 2nd faz");
     }
 
     public void logout() {
         MainMenuController.logout();
+        controller.changeMenu(Menus.ENTRANCE_MENU.getMenu(), this);
     }
 
 

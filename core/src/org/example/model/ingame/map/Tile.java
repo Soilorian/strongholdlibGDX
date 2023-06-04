@@ -1,8 +1,9 @@
 package org.example.model.ingame.map;
 
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.ingame.castle.Building;
@@ -35,7 +36,7 @@ public class Tile {
     private boolean isPassable = true;
     private boolean isWall = false;
     private Trap trap = null;
-    private Random random =  new Random();
+    private Random random = new Random();
 
 
     private boolean isTunnel = false;
@@ -251,24 +252,32 @@ public class Tile {
         isTunnel = true;
     }
 
-    public void setUpPixmap(Pixmap pixmap, int i) {
+    public Texture getTexture(int i) {
+        Pixmap pixmap = new Pixmap(i * 200, i * 200, Pixmap.Format.RGBA8888);
+        Texture texture = Controller.resizer(200, 200, Controller.getTexture(tile.getTextureAddress()));
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
         for (int j = 0; j < i; j++) {
             for (int k = 0; k < i; k++) {
-
+                pixmap.drawPixmap(texture.getTextureData().consumePixmap(), j * 200, k * 200);
             }
         }
+        // TODO: 6/4/2023 building and tree and rock
+        texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
     }
 
-    private Pixmap addQuality(Pixmap pixmap, int x, int y, int a){
-        for (int i = 0; i < a; i++) {
-            for (int j = 0; j < a; j++) {
-                pixmap.setColor(tile.getColor().add(new Color(random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f,
-                        0.3f),random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f, 0.3f))));
-                pixmap.fillRectangle(x, y, 4, 4);
-            }
-        }
-        return pixmap;
-    }
+//    private Pixmap addQuality(Pixmap pixmap, int x, int y, int a){
+//        for (int i = 0; i < a; i++) {
+//            for (int j = 0; j < a; j++) {
+//                pixmap.setColor(tile.getColor().add(new Color(random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f,
+//                        0.3f),random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f, 0.3f))));
+//                pixmap.fillRectangle(x, y, 4, 4);
+//            }
+//        }
+//        return pixmap;
+//    }
 
     public void addTunneler(Tunneler tunneler) {
         tunnelers.add(tunneler);

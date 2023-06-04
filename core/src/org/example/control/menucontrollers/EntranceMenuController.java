@@ -167,7 +167,6 @@ public class EntranceMenuController {
         DataBase.setCurrentPlayer(player);
         if (stayLogged)
             DataBase.addStayLoggedPlayed(player);
-        Controller.setCurrentMenu(Menus.MAIN_MENU);
         return EntranceMenuMessages.SUCCEED.toString();
 
     }

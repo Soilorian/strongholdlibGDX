@@ -3,12 +3,15 @@ package org.example.control;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
@@ -30,7 +33,7 @@ import java.util.regex.Pattern;
 public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
-    private final AssetManager manager = new AssetManager();
+    private static final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
@@ -46,7 +49,9 @@ public class Controller extends Game {
     private final String gameStartUpBG = "pictures/game-start-up-background.png";
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
-
+    private final String entranceBack = "EntranceAssets/Dragon.jpg";
+    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
+    private Menu nextMenu;
 
 
     public static String removeQuotes(String string) {
@@ -86,8 +91,25 @@ public class Controller extends Game {
         //currentMenu = menus;
     }
 
-    public void changeMenu(Menu menu, Menu from){
-        setScreen(menu);
+    public static Texture getTexture(String textureAddress) {
+        return manager.get(textureAddress);
+    }
+
+    public void changeMenu(Menu menu, Menu from) {
+        if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
+            setScreen(nextMenu);
+            nextMenu = null;
+        } else
+            setScreen(menu);
+        if (from.equals(Menus.MAP_EDIT_MENU.getMenu()))
+            nextMenu = from;
+    }
+
+
+    @Override
+    public void setScreen(Screen screen) {
+        ((Menu) screen).create();
+        super.setScreen(screen);
     }
 
     @Override
@@ -95,11 +117,11 @@ public class Controller extends Game {
         DataBase.generateInfoFromJson();
         manageAssets();
         createMenus();
-        if (DataBase.isStayLogged())
-            currentMenu = Menus.MAIN_MENU;
-        else
-            currentMenu = Menus.ENTRANCE_MENU;
-        setScreen(currentMenu.getMenu());
+        GameMenuController.setCurrentGame(new org.example.model.Game());
+        GameMenuController.getCurrentGame().setCurrentMap(new Map(20, 20, "adsf"));
+        MapViewMenuController.setViewingY(10);
+        MapViewMenuController.setViewingX(10);
+        setScreen(Menus.MAP_VIEW_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -115,6 +137,7 @@ public class Controller extends Game {
         manager.load(captchaPath, Texture.class);
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
+        manager.load(gameStartUpBG, Texture.class);
         for (TileTypes value : TileTypes.values()) {
             manager.load(value.getTextureAddress(), Texture.class);
         }
@@ -122,6 +145,7 @@ public class Controller extends Game {
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);
+        manager.load(entranceBack,Texture.class);
         manager.finishLoading();
     }
 
@@ -180,7 +204,7 @@ public class Controller extends Game {
         return manager.get(captchaPath);
     }
 
-    public Texture resizer(float width, float height, Texture texture){
+    public static Texture resizer(float width, float height, Texture texture){
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         Pixmap pixmap200 =texture.getTextureData().consumePixmap();
@@ -229,6 +253,10 @@ public class Controller extends Game {
 
     public Texture getGameStartBG(){
         return manager.get(gameStartUpBG);
+    }
+
+    public Texture getEntranceBack() {
+        return manager.get(entranceBack);
     }
 
     public void exitGame() {

@@ -1,12 +1,17 @@
 package org.example.view.menus.ingamemenus;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.GameMenuMessages;
 import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
+import org.example.model.ingame.map.Tile;
+import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.InGameMenuCommands;
@@ -15,9 +20,41 @@ import org.example.view.menus.Menu;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class MapViewMenu extends Menu {
+
+
+    private final ArrayList<Image> mapImages;
+    public MapViewMenu() {
+        mapImages = new ArrayList<>();
+
+    }
+
+    private void addAssets() {
+        for (Image mapImage : mapImages) {
+            stage.addActor(mapImage);
+        }
+    }
+
+    private void setAssets() {
+        int zoom = MapViewMenuController.getZoom();
+        for (int i = 0; i < zoom; i++) {
+            for (int j = 0; j < zoom; j++) {
+                Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom/2,
+                        MapViewMenuController.getViewingY() - zoom / 2, zoom));
+                image.setPosition(i * zoom * 50, j * zoom * 50);
+                mapImages.add(image);
+            }
+        }
+    }
+
+    private Texture makeTextureForTile(int x, int y, int z) {
+        return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x).getTexture(z);
+    }
+
+
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         System.out.println("tell me where do you want to view");
         do {
@@ -54,7 +91,8 @@ public class MapViewMenu extends Menu {
 
     @Override
     public void create() {
-
+        setAssets();
+        addAssets();
     }
 
     private boolean showXY(Matcher matcher) {

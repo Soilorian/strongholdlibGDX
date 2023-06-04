@@ -12,6 +12,7 @@ import sun.swing.StringUIClientPropertyKey;
 public class MapViewMenuController {
     private static int viewingX;
     private static int viewingY;
+    private static int zoom = 5;
 
     public static String printMap() {
         int x = viewingX;
@@ -159,6 +160,10 @@ public class MapViewMenuController {
 
     public static void setViewingY(int viewingY) {
         MapViewMenuController.viewingY = viewingY;
+    }
+
+    public static int getZoom() {
+        return zoom;
     }
 }
 

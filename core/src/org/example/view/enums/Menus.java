@@ -51,7 +51,6 @@ public enum Menus {
     }
 
     public Menu getMenu() {
-        menu.create();
         return menu;
     }
 }
