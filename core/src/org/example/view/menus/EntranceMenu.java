@@ -438,4 +438,5 @@ public class EntranceMenu extends Menu {
         } else
             System.out.println(result);
     }
+
 }
