@@ -50,7 +50,7 @@ public class GameMenu extends Menu {
         mapImages = new ArrayList<>();
 
         setAssets();
-        addAssets();
+//        addAssets();
     }
 
     private void setAssets() {

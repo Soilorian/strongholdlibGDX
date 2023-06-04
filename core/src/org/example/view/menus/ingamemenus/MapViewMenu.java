@@ -29,22 +29,22 @@ public class MapViewMenu extends Menu {
     public MapViewMenu() {
         mapImages = new ArrayList<>();
 
-        setAssets();
-        addAssets();
+//        setAssets();
+//        addAssets();
     }
 
-    private void setAssets() {
-        for (int i = 0; i < MapViewMenuController.getZoom(); i++) {
-            for (int j = 0; j < MapViewMenuController.getZoom(); j++) {
-                mapImages.add(new Image(makeTextureForTile()));
-            }
-        }
-    }
+//    private void setAssets() {
+//        for (int i = 0; i < MapViewMenuController.getZoom(); i++) {
+//            for (int j = 0; j < MapViewMenuController.getZoom(); j++) {
+//                mapImages.add(new Image(makeTextureForTile()));
+//            }
+//        }
+//    }
 
-    private Texture makeTextureForTile() {
-        Tile tile = new Tile(0,0, TileTypes.BEACH);
-
-    }
+//    private Texture makeTextureForTile() {
+//        Tile tile = new Tile(0,0, TileTypes.BEACH);
+//
+//    }
 
 
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
