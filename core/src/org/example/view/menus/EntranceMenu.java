@@ -60,6 +60,7 @@ public class EntranceMenu extends Menu {
     private AnimationController animationController;
 
 
+
     private TextField loginUsernameText, loginPasswordText, loginCaptchaText,
             registerUsernameText, registerPasswordText, registerPasswordConfirmationText,
             registerCaptchaText, registerEmailText, registerNicknameText, registerSloganText,
