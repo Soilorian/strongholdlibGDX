@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
@@ -115,11 +117,11 @@ public class Controller extends Game {
         DataBase.generateInfoFromJson();
         manageAssets();
         createMenus();
-        if (DataBase.isStayLogged())
-            currentMenu = Menus.MAIN_MENU;
-        else
-            currentMenu = Menus.ENTRANCE_MENU;
-        setScreen(currentMenu.getMenu());
+        GameMenuController.setCurrentGame(new org.example.model.Game());
+        GameMenuController.getCurrentGame().setCurrentMap(new Map(20, 20, "adsf"));
+        MapViewMenuController.setViewingY(10);
+        MapViewMenuController.setViewingX(10);
+        setScreen(Menus.MAP_VIEW_MENU.getMenu());
     }
 
     private void manageAssets() {

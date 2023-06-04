@@ -1,7 +1,6 @@
 package org.example.model.ingame.map;
 
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
@@ -37,7 +36,7 @@ public class Tile {
     private boolean isPassable = true;
     private boolean isWall = false;
     private Trap trap = null;
-    private Random random =  new Random();
+    private Random random = new Random();
 
 
     private boolean isTunnel = false;
@@ -254,12 +253,13 @@ public class Tile {
     }
 
     public Texture getTexture(int i) {
-        Pixmap pixmap = new Pixmap(i* 50, i * 50, Pixmap.Format.RGBA8888);
-        Texture texture = Controller.resizer(50, 50,Controller.getTexture(tile.getTextureAddress()));
-        texture.getTextureData().prepare();
+        Pixmap pixmap = new Pixmap(i * 200, i * 200, Pixmap.Format.RGBA8888);
+        Texture texture = Controller.resizer(200, 200, Controller.getTexture(tile.getTextureAddress()));
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
         for (int j = 0; j < i; j++) {
             for (int k = 0; k < i; k++) {
-                pixmap.drawPixmap(texture.getTextureData().consumePixmap(), j * 50, k * 50);
+                pixmap.drawPixmap(texture.getTextureData().consumePixmap(), j * 200, k * 200);
             }
         }
         // TODO: 6/4/2023 building and tree and rock

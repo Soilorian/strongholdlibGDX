@@ -33,7 +33,9 @@ public class MapViewMenu extends Menu {
     }
 
     private void addAssets() {
-
+        for (Image mapImage : mapImages) {
+            stage.addActor(mapImage);
+        }
     }
 
     private void setAssets() {
