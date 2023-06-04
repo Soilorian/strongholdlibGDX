@@ -2,7 +2,10 @@
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
-	}
+	},
+	specialFont: {
+		file:
+	},
 	medium: {
 		file: font-medium-export.fnt
 	}
@@ -334,9 +337,15 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		fontColorSelected: font-over
 		fontColorUnselected: font-over
 		selection: list-selection
-	}
+	},
+	prof: {
+		font: font
+		fontColorSelected: font-over
+		fontColorUnselected: font-over
+		selection: list-selection
+	},
 	bg: {
-		font: small
+		font: font
 		fontColorSelected: font-over
 		fontColorUnselected: font-over
 		selection: list-selection
