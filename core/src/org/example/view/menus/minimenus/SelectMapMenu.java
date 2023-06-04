@@ -95,17 +95,8 @@ public class SelectMapMenu extends Menu {
 
         buildButton.setPosition(graphics.getWidth(), graphics.getHeight());
 
-        showMiniPrev();
-    }
-
-    private void showMaps() {
-        showMiniPrev();
-        ArrayList<String > fuck = new ArrayList<>();
-        for (Map map : DataBase.getMaps()) {
-            fuck.add(makeTextForLabel(map));
-        }
-        mapSelectBox.setItems(Arrays.toString(fuck.toArray()));
         mapSelectBox.setWidth(graphics.getWidth() / 2f);
+        mapSelectBox.setHeight(graphics.getHeight()/8f);
         mapSelectBox.setPosition(graphics.getWidth() / 4f, graphics.getHeight() / 3f * 1.9f);
         mapSelectBox.addListener(new ChangeListener() {
             @Override
@@ -113,8 +104,27 @@ public class SelectMapMenu extends Menu {
                 setSelectedMap();
             }
         });
-        stage.addActor(mapSelectBox);
 
+        randomMapSelectBox.setItems("rock land", "island", "normal");
+        randomMapSelectBox.setSelected("normal");
+        randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY()/2);
+        randomMapSelectBox.setWidth(200);
+        randomMapSelectBox.setHeight(100);
+        randomMapSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                buildRandomMap(randomMapSelectBox.getSelected());
+            }
+        });
+
+        showMiniPrev();
+    }
+
+    private void showMaps() {
+        for (Map map : DataBase.getMaps()) {
+            mapSelectBox.getItems().add((makeTextForLabel(map)));
+        }
+        stage.addActor(mapSelectBox);
         okButton.setDisabled(false);
         okButton.addListener(new ClickListener(){
             @Override
@@ -126,6 +136,7 @@ public class SelectMapMenu extends Menu {
 
     private void setSelectedMap() {
         Controller.setCurrentMap(DataBase.getMapById(extractId(mapSelectBox.getSelected())));
+        showMiniPrev();
     }
 
     private void next() {
@@ -153,17 +164,6 @@ public class SelectMapMenu extends Menu {
     }
 
     private void randomMap() {
-        randomMapSelectBox.setItems("rock land", "island", "normal");
-        randomMapSelectBox.setSelected("normal");
-        randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY());
-        randomMapSelectBox.setWidth(200);
-        randomMapSelectBox.setHeight(100);
-        randomMapSelectBox.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                buildRandomMap(randomMapSelectBox.getSelected());
-            }
-        });
         stage.addActor(randomMapSelectBox);
 
         okButton.setDisabled(false);

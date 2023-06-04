@@ -235,8 +235,8 @@ public class Map {
     }
 
     public void setUpPixmap(Pixmap pixmap, int i) {
-        for (int j = 0; j < groundWidth; j++) {
-            for (int k = 0; k < groundHeight; k++) {
+        for (int j = 0; j < groundHeight; j++) {
+            for (int k = 0; k < groundWidth; k++) {
                 pixmap.setColor(tiles[j][k].getTile().getColor());
                 pixmap.fillRectangle(j, groundHeight - k - 1, i, i);
             }

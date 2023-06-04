@@ -91,6 +91,6 @@ public class RandomMapMenu extends Menu {
     }
 
     private void back() {
-        Controller.setCurrentMenu(Menus.GAME_START_UP_MENU);
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), this);
     }
 }

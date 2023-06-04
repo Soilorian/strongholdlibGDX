@@ -22,8 +22,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.MainMenuController;
 import org.example.model.DataBase;
+import org.example.model.Game;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Menus;
@@ -48,7 +50,7 @@ public class MainMenu extends Menu {
     private final Array<ModelInstance> instances = new Array<>();
     private final Stage stageInput = new Stage();
     private final Image backgroundImage;
-    private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton;
+    private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton, logoutButton;
     private Model model, model1;
     private ModelInstance modelInstance, modelInstance1;
     private Environment environment;
@@ -64,6 +66,7 @@ public class MainMenu extends Menu {
         settingsButton = new TextButton("settings", controller.getSkin());
         profileButton = new TextButton("profile", controller.getSkin());
         exitButton = new TextButton("exit", controller.getSkin());
+        logoutButton = new TextButton("logout", controller.getSkin());
         twoDPrep();
     }
 
@@ -125,6 +128,16 @@ public class MainMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exitApp();
+            }
+        });
+
+        logoutButton.setPosition(graphics.getWidth()/3f, graphics.getHeight()/8f);
+        logoutButton.setWidth(typicalWidth);
+        logoutButton.setHeight(typicalHeight);
+        logoutButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                logout();
             }
         });
 
@@ -242,6 +255,7 @@ public class MainMenu extends Menu {
     }
 
     public void startNewGame() {
+        GameMenuController.setCurrentGame(new Game());
         controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(),  this);
     }
 
