@@ -75,7 +75,9 @@ public class EntranceMenu extends Menu {
             registerUsernameImage, registerPasswordImage, registerCaptchaImage,
     background;
     private Stage backStage = new Stage();
+
     private Captcha loginCaptcha, registerCaptcha;
+
 
     public EntranceMenu() {
         super();
