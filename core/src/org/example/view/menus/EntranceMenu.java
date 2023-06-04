@@ -37,18 +37,24 @@ import org.example.view.enums.commands.Slogans;
 
 public class EntranceMenu extends Menu {
 
-    private TextField loginUsernameText, loginPasswordText, loginCaptchaText,
+    private final TextField loginUsernameText, loginPasswordText, loginCaptchaText,
             registerUsernameText, registerPasswordText, registerPasswordConfirmationText,
             registerCaptchaText, registerEmailText, registerNicknameText, registerSloganText,
             registerAnswerText;
-    private Label login, register, loginResult, registerResult;
-    private TextButton loginSubmit, registerSubmit;
-    private ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton,
+    private final Label login, register, loginResult, registerResult;
+    private final TextButton loginSubmit, registerSubmit;
+    private final ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton,
     showPassword;
-    private CheckBox stayLogged, q1, q2, q3;
-    private Image loginUsernameImage, loginPasswordImage, loginCaptchaImage,
-            registerUsernameImage, registerPasswordImage, registerCaptchaImage;
-    private Captcha loginCaptcha, registerCaptcha;
+    private final CheckBox stayLogged;
+    private final SelectBox<String> questions;
+    private final Image loginUsernameImage;
+    private final Image loginPasswordImage;
+    private Image loginCaptchaImage;
+    private final Image registerUsernameImage;
+    private final Image registerPasswordImage;
+    private Image registerCaptchaImage;
+    private final Image backgroundImage;
+    private final Captcha loginCaptcha, registerCaptcha;
 
 
     public EntranceMenu() {
@@ -68,9 +74,14 @@ public class EntranceMenu extends Menu {
 
 
         stayLogged = new CheckBox("Remember Me", controller.getSkin());
-        q1 = new CheckBox("What is the first game you played?", controller.getSkin());
-        q2 = new CheckBox("When did you meet Mossayeb?", controller.getSkin());
-        q3 = new CheckBox("What is your favorite patoq in university?", controller.getSkin());
+        questions = new SelectBox<>(controller.getSkin());
+        questions.setItems("What is the first game you played?","When did you meet Mossayeb?","What is your favorite patoq in university?");
+        questions.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
 
 
         loginSubmit = new TextButton("Submit", controller.getSkin());
@@ -101,13 +112,13 @@ public class EntranceMenu extends Menu {
         registerCaptcha = new Captcha();
         captchaTexture = new Texture("saved.png");
         registerCaptchaImage = new Image(captchaTexture);
+        backgroundImage = new Image(controller.resizer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),controller.getEntranceBackground()));
     }
 
     public void create() {
         createTextFields();
         createButtons();
         createLabels();
-        createCheckBoxes();
         createImages();
         Gdx.input.setInputProcessor(stage);
     }
@@ -143,6 +154,7 @@ public class EntranceMenu extends Menu {
     }
 
     private void createImages() {
+        addActor(backgroundImage, 0, 0);
         addActor(loginUsernameImage, 1200, 850, 50, 50);
         addActor(loginPasswordImage, 1200, 800, 50, 40);
         addActor(registerUsernameImage, 1200, 550, 50, 50);
@@ -189,28 +201,6 @@ public class EntranceMenu extends Menu {
 
     }
 
-    public void createCheckBoxes() {
-        addActor(stayLogged, 1350, 720);
-        addActor(q1, 1250, 225);
-        addActor(q2, 1250, 210);
-        addActor(q3, 1250, 195);
-        pickSecurityQ(q1);
-        pickSecurityQ(q2);
-        pickSecurityQ(q3);
-    }
-
-    public void pickSecurityQ(CheckBox checkBox) {
-        checkBox.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                q1.setChecked(false);
-                q2.setChecked(false);
-                q3.setChecked(false);
-                checkBox.setChecked(true);
-            }
-        });
-    }
-
     public void createButtons() {
         createButton(loginSubmit, 1250, 670, 350, 50);
         createButton(registerSubmit, 1250, 100, 350, 50);
@@ -232,11 +222,7 @@ public class EntranceMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
-                    if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
-                        loginResult.setText(EntranceMenuController.login(loginUsernameText.getText(),
-                                loginPasswordText.getText(), stayLogged.isChecked()));
-                    } else loginResult.setText("Invalid Captcha");
-
+                    login();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -280,12 +266,7 @@ public class EntranceMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 int i = 0;
-                if (q1.isChecked())
-                    i = 1;
-                else if (q2.isChecked())
-                    i = 2;
-                else if (q3.isChecked())
-                    i = 3;
+                i += questions.getSelectedIndex();
                 if (registerCaptcha.isFilledCaptchaValid(registerCaptchaText.getText())) {
                     try {
                         String result = EntranceMenuController.createNewUser(registerUsernameText.getText(),
@@ -311,17 +292,23 @@ public class EntranceMenu extends Menu {
 
                         }
 
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (UnsupportedAudioFileException e) {
-                        throw new RuntimeException(e);
-                    } catch (LineUnavailableException e) {
+                    } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
                         throw new RuntimeException(e);
                     }
 
                 } else registerResult.setText("Invalid Captcha");
             }
         });
+    }
+
+    private void login() throws IOException {
+            if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
+                String result = EntranceMenuController.login(loginUsernameText.getText(),
+                        loginPasswordText.getText(), stayLogged.isChecked());
+                loginResult.setText(result);
+                if (result.equals(EntranceMenuMessages.SUCCEED.toString()))
+                    controller.changeMenu(Menus.MAIN_MENU.getMenu(), this);
+            } else loginResult.setText("Invalid Captcha");
     }
 
     private void generateNewCaptcha(Captcha captcha, Image image,

@@ -3,26 +3,23 @@ package org.example.control;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
-import org.example.view.menus.minimenus.ForgotPassword;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +27,7 @@ import java.util.regex.Pattern;
 public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
-    private final AssetManager manager = new AssetManager();
+    private final static AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
@@ -46,7 +43,8 @@ public class Controller extends Game {
     private final String gameStartUpBG = "pictures/game-start-up-background.png";
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
-
+    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
+    private Menu nextMenu;
 
 
     public static String removeQuotes(String string) {
@@ -57,7 +55,7 @@ public class Controller extends Game {
     }
 
     public static String addQuotes(String string) {
-        return "\""+string+"\"";
+        return "\"" + string + "\"";
     }
 
     public static Matcher getMatcher(String input, String regex) {
@@ -83,11 +81,21 @@ public class Controller extends Game {
     }
 
     public static void setCurrentMenu(Menus menus) {
-        //currentMenu = menus;
+
     }
 
-    public void changeMenu(Menu menu, Menu from){
-        setScreen(menu);
+    public static Texture getTexture(String textureAddress) {
+        return manager.get(textureAddress);
+    }
+
+    public void changeMenu(Menu menu, Menu from) {
+        if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
+            setScreen(nextMenu);
+            nextMenu = null;
+        } else
+            setScreen(menu);
+        if (from.equals(Menus.MAP_EDIT_MENU.getMenu()))
+            nextMenu = from;
     }
 
     @Override
@@ -100,6 +108,13 @@ public class Controller extends Game {
         else
             currentMenu = Menus.ENTRANCE_MENU;
         setScreen(currentMenu.getMenu());
+    }
+
+
+    @Override
+    public void setScreen(Screen screen) {
+        ((Menu) screen).create();
+        super.setScreen(screen);
     }
 
     private void manageAssets() {
@@ -115,6 +130,7 @@ public class Controller extends Game {
         manager.load(captchaPath, Texture.class);
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
+        manager.load(entranceBG, Texture.class);
         for (TileTypes value : TileTypes.values()) {
             manager.load(value.getTextureAddress(), Texture.class);
         }
@@ -180,10 +196,10 @@ public class Controller extends Game {
         return manager.get(captchaPath);
     }
 
-    public Texture resizer(float width, float height, Texture texture){
+    public Texture resizer(float width, float height, Texture texture) {
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
-        Pixmap pixmap200 =texture.getTextureData().consumePixmap();
+        Pixmap pixmap200 = texture.getTextureData().consumePixmap();
         Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
         pixmap100.drawPixmap(pixmap200,
                 0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
@@ -219,15 +235,15 @@ public class Controller extends Game {
         return manager.get(showPassPath);
     }
 
-    public Texture getMainMenuBackground(){
+    public Texture getMainMenuBackground() {
         return manager.get(backgroundMainMenu);
     }
 
-    public Music getRainSound(){
+    public Music getRainSound() {
         return manager.get(rainSoundAddress);
     }
 
-    public Texture getGameStartBG(){
+    public Texture getGameStartBG() {
         return manager.get(gameStartUpBG);
     }
 
@@ -237,5 +253,9 @@ public class Controller extends Game {
         }
         dispose();
         Gdx.app.exit();
+    }
+
+    public Texture getEntranceBackground() {
+        return manager.get(entranceBG);
     }
 }

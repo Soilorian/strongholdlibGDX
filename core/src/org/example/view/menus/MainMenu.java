@@ -44,7 +44,6 @@ import static com.badlogic.gdx.Gdx.graphics;
 import static com.badlogic.gdx.Gdx.input;
 
 public class MainMenu extends Menu {
-
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
     private final Array<ModelInstance> instances = new Array<>();
@@ -91,13 +90,7 @@ public class MainMenu extends Menu {
         mapEditorButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                try {
                     mapEditor();
-                } catch (UnsupportedAudioFileException | IOException | NotInStoragesException |
-                         LineUnavailableException | CoordinatesOutOfMap e) {
-                    System.out.println("fuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuursi ra paas darim");
-                    throw new RuntimeException(e);
-                }
             }
         });
 
@@ -147,7 +140,12 @@ public class MainMenu extends Menu {
         stageInput.addActor(settingsButton);
         stageInput.addActor(profileButton);
         stageInput.addActor(exitButton);
+        stageInput.addActor(logoutButton);
         input.setInputProcessor(stageInput);
+    }
+
+    private void mapEditor() {
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), Menus.MAP_EDIT_MENU.getMenu());
     }
 
     private void exitApp() {
@@ -238,22 +236,6 @@ public class MainMenu extends Menu {
         Gdx.input.setInputProcessor(stageInput);
     }
 
-    private void mapEditor() throws UnsupportedAudioFileException, CoordinatesOutOfMap, LineUnavailableException, NotInStoragesException, IOException {
-        System.out.println("please select the size of your map");
-        do {
-            String input = ""; // TODO: 6/1/2023 new menu
-            Matcher matcher;
-            if ((matcher = GameStartUpMenuCommands.getMatcher(input, GameStartUpMenuCommands.SELECT_SIZE)) != null) {
-                ; // TODO: 6/1/2023 select size menu first
-            } else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.BACK) != null)
-                return;
-            else if (MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.NO) != null)
-                break;
-            else System.out.println("invalid input!");
-        } while (true);
-        controller.setScreen(Menus.MAP_EDIT_MENU.getMenu());
-    }
-
     public void startNewGame() {
         GameMenuController.setCurrentGame(new Game());
         controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(),  this);
@@ -264,12 +246,12 @@ public class MainMenu extends Menu {
     }
 
     public void settings() {
-        // TODO: 5/11/2023 for Graphics
         System.out.println("this menu will be completed for the 2nd faz");
     }
 
     public void logout() {
         MainMenuController.logout();
+        controller.changeMenu(Menus.ENTRANCE_MENU.getMenu(), this);
     }
 
 

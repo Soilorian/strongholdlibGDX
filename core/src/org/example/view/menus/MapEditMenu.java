@@ -9,6 +9,7 @@ import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.MapEditorMenuCommands;
+import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;

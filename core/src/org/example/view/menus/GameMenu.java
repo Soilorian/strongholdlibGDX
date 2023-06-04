@@ -28,6 +28,7 @@ import org.example.control.enums.GameMenuMessages;
 import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
@@ -38,15 +39,26 @@ import org.example.view.enums.commands.GameMenuCommands;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 import static com.badlogic.gdx.Gdx.*;
 
 public class GameMenu extends Menu {
+    private final ArrayList<Image> mapImages;
     public GameMenu() {
+        mapImages = new ArrayList<>();
 
-
+        setAssets();
+        addAssets();
     }
+
+    private void setAssets() {
+        for (int i = 0; i < MapViewMenuController.getZoom(); i++) {
+
+        }
+    }
+
 
     private void exitApp() {
         controller.exitGame();

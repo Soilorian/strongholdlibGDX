@@ -1,12 +1,16 @@
 package org.example.view.menus.ingamemenus;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.GameMenuMessages;
 import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
+import org.example.model.ingame.map.Tile;
+import org.example.model.ingame.map.enums.TileTypes;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.InGameMenuCommands;
@@ -15,9 +19,34 @@ import org.example.view.menus.Menu;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class MapViewMenu extends Menu {
+
+
+    private final ArrayList<Image> mapImages;
+    public MapViewMenu() {
+        mapImages = new ArrayList<>();
+
+        setAssets();
+        addAssets();
+    }
+
+    private void setAssets() {
+        for (int i = 0; i < MapViewMenuController.getZoom(); i++) {
+            for (int j = 0; j < MapViewMenuController.getZoom(); j++) {
+                mapImages.add(new Image(makeTextureForTile()));
+            }
+        }
+    }
+
+    private Texture makeTextureForTile() {
+        Tile tile = new Tile(0,0, TileTypes.BEACH);
+
+    }
+
+
     public void run(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         System.out.println("tell me where do you want to view");
         do {
