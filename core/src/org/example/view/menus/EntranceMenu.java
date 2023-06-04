@@ -51,7 +51,6 @@ import org.example.view.enums.commands.Slogans;
 import static com.badlogic.gdx.Gdx.graphics;
 
 public class EntranceMenu extends Menu {
-
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
 
@@ -59,7 +58,6 @@ public class EntranceMenu extends Menu {
     private ModelInstance modelInstance;
     private Environment environment;
     private AnimationController animationController;
-
 
 
     private TextField loginUsernameText, loginPasswordText, loginCaptchaText,
@@ -75,12 +73,12 @@ public class EntranceMenu extends Menu {
             registerUsernameImage, registerPasswordImage, registerCaptchaImage,
     background;
     private Stage backStage = new Stage();
-
     private Captcha loginCaptcha, registerCaptcha;
 
 
     public EntranceMenu() {
         super();
+
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
         loginUsernameText = new TextField("", controller.getSkin());
@@ -154,8 +152,9 @@ public class EntranceMenu extends Menu {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         animationController = new AnimationController(modelInstance);
-        animationController.setAnimation("mixamo.com", -1);
+        animationController.setAnimation("mixamo.com", 1);
     }
+
     public void create() {
         createTextFields();
         createButtons();
@@ -421,5 +420,4 @@ public class EntranceMenu extends Menu {
         } else
             System.out.println(result);
     }
-
 }
