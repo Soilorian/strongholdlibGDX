@@ -47,26 +47,26 @@ public class EntranceMenu extends Menu {
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
 
-    private Model model;
     private ModelInstance modelInstance;
     private Environment environment;
     private AnimationController animationController;
 
 
-    private TextField loginUsernameText, loginPasswordText, loginCaptchaText,
+    private final TextField loginUsernameText, loginPasswordText, loginCaptchaText,
             registerUsernameText, registerPasswordText, registerPasswordConfirmationText,
             registerCaptchaText, registerEmailText, registerNicknameText, registerSloganText,
             registerAnswerText;
-    private Label login, register, loginResult, registerResult;
-    private TextButton loginSubmit, registerSubmit;
-    private ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton, showPassword;
-    private CheckBox stayLogged;
+    private final Label login, register, loginResult, registerResult;
+    private final TextButton loginSubmit, registerSubmit;
+    private final ImageButton randomPassword, randomSlogan, loginCaptchaButton, registerCaptchaButton, showPassword;
+    private final CheckBox stayLogged;
     private final SelectBox<String> questions;
-    private Image loginUsernameImage, loginPasswordImage, loginCaptchaImage,
-            registerUsernameImage, registerPasswordImage, registerCaptchaImage,
-    background;
-    private Stage backStage = new Stage();
-    private Captcha loginCaptcha, registerCaptcha;
+    private final Image loginUsernameImage, loginPasswordImage, registerUsernameImage, registerPasswordImage,background;
+    private Image registerCaptchaImage,loginCaptchaImage;
+
+    private final Stage backStage = new Stage();
+    private final Captcha loginCaptcha, registerCaptcha;
+
     public EntranceMenu() {
         super();
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
@@ -74,7 +74,6 @@ public class EntranceMenu extends Menu {
         loginUsernameText = new TextField("", controller.getSkin());
         loginPasswordText = new TextField("", controller.getSkin());
         loginCaptchaText = new TextField("", controller.getSkin());
-
 
         registerUsernameText = new TextField("", controller.getSkin());
         registerPasswordText = new TextField("", controller.getSkin());
@@ -135,7 +134,7 @@ public class EntranceMenu extends Menu {
         camera.far = 7000f;
         UBJsonReader ubJsonReader = new UBJsonReader();
         G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
-        model = modelLoader.loadModel(Gdx.files.getFileHandle("EntranceAssets/Entrance Wizard/Witcher.g3db", Files.FileType.Internal));
+        Model model = modelLoader.loadModel(Gdx.files.getFileHandle("EntranceAssets/Entrance Wizard/Witcher.g3db", Files.FileType.Internal));
         modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(-3000, -2000, 100);
         modelInstance.transform.rotate(0,-1,0,-150);
@@ -351,11 +350,7 @@ public class EntranceMenu extends Menu {
 
                         }
 
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (UnsupportedAudioFileException e) {
-                        throw new RuntimeException(e);
-                    } catch (LineUnavailableException e) {
+                    } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
                         throw new RuntimeException(e);
                     }
 
@@ -375,9 +370,6 @@ public class EntranceMenu extends Menu {
     private void createNewUser(Matcher matcher, int type) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
     }
-
-
-
 
 
     private void forgetPassword(Matcher matcher) {
