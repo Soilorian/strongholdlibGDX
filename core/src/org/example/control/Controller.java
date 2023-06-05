@@ -15,17 +15,15 @@ import org.example.control.menucontrollers.inGameControllers.MapViewMenuControll
 import org.example.model.DataBase;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
+import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
-import org.example.view.menus.minimenus.ForgotPassword;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,8 +31,9 @@ import java.util.regex.Pattern;
 public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
-    private static final AssetManager manager = new AssetManager();
+    public static final AssetManager manager = new AssetManager();
     private final String jsonSkinAddress = "button/skin/sgx-ui.json";
+    private final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
     private final String defaultMapAddress = "pictures/default-map.jpeg";
@@ -50,9 +49,12 @@ public class Controller extends Game {
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
-    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
+    private final String granaryBack = "GraneryAssets/background.jpg";
+    private final String shopBack = "ShopAssets/background.jpg";
     private Menu nextMenu;
+    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private String blackTileAddress = "pictures/black-tile.png.";
+    private Menu nextMenu;
 
 
     public static String removeQuotes(String string) {
@@ -124,14 +126,16 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(11, 10).setTile(TileTypes.SEA);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(12, 10).setTile(TileTypes.SEA);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTree(TreeTypes.OLIVE_TREE);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 12).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
-        setScreen(Menus.PROFILE_MENU.getMenu());
+        setScreen(Menus.GRANARY_MENU.getMenu());
     }
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
+        manager.load(junkSkin, Skin.class);
         manager.load(userAvatar, Texture.class);
         manager.load(lock, Texture.class);
         manager.load(defaultMapAddress, Texture.class);
@@ -145,14 +149,19 @@ public class Controller extends Game {
         manager.load(gameStartUpBG, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
         manager.load(blackTileAddress, Texture.class);
+        for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
+        for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
+
+
         for (TileTypes value : TileTypes.values()) {
             manager.load(value.getTextureAddress(), Texture.class);
         }
-
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);
         manager.load(entranceBack,Texture.class);
+        manager.load(granaryBack,Texture.class);
+        manager.load(shopBack,Texture.class);
         manager.finishLoading();
     }
 
@@ -276,5 +285,22 @@ public class Controller extends Game {
 
     public Texture getBlackMap() {
         return manager.get(blackTileAddress);
+    }
+
+    public Texture getGranaryBack() {
+        return manager.get(granaryBack);
+    }
+
+    public Skin getJunkSkin() {
+        return manager.get(junkSkin);
+    }
+
+    public Texture getShopBack() {
+        return manager.get(shopBack);
+
+    }
+
+    public Texture getLoadingBG() {
+        return new Texture("pictures/background.png");
     }
 }

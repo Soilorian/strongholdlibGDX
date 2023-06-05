@@ -5,38 +5,35 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import org.example.Main;
 import org.example.control.Controller;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
 
 public abstract class Menu implements Screen {
     protected Controller controller = Main.getController();
+    protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
+
+            "cancel", controller.getSkin());
+    protected final Slider timerSlider = new Slider(0, 500, 1, false, controller.getSkin());
+    protected final Dialog messageDialog = new Dialog("", controller.getSkin());
+    protected final Label messageLabel = new Label("", controller.getSkin());
     protected Stage stage = new Stage();
     protected SpriteBatch batch = new SpriteBatch();
     protected Camera camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
 
-        "cancel", controller.getSkin());
-    protected final Slider timerSlider = new Slider(0, 500, 1, false,controller.getSkin());
-    protected final Dialog messageDialog = new Dialog("", controller.getSkin());
-    protected final Label messageLabel = new Label("", controller.getSkin());
-
-    public abstract void create();
     public Menu() {
         messageLabel.setColor(Color.BLACK);
         messageDialog.add(messageLabel);
@@ -52,7 +49,7 @@ public abstract class Menu implements Screen {
         okButton.setHeight(80);
         okButton.setWidth(150);
         okButton.setX(Gdx.graphics.getWidth() / 20f * 19 - okButton.getWidth());
-        okButton.addListener(new ClickListener(){
+        okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 messageDialog.setVisible(false);
@@ -67,7 +64,7 @@ public abstract class Menu implements Screen {
         timerSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((Slider) actor).isOver()){
+                if (((Slider) actor).isOver()) {
                     messageDialog.setVisible(false);
                 }
             }
@@ -76,25 +73,40 @@ public abstract class Menu implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    public abstract void create();
 
     @Override
-    public void render(float delta){
-        ScreenUtils.clear(Color.BLACK);
+    public void render(float delta) {
+        if (!Controller.manager.isFinished()){
+            batch.begin();
+            batch.draw(controller.getLoadingBG(), 0, 0);
+            Slider slider = new Slider(0, 1, 0.001f , false,controller.getSkin());
+            slider.setValue(Controller.manager.getProgress());
+            slider.updateVisualValue();
+            slider.setDisabled(true);
+            slider.setWidth(Gdx.graphics.getWidth() / 4f  * 3);
+            slider.setPosition(Gdx.graphics.getWidth() / 2f - slider.getWidth() / 2f, Gdx.graphics.getHeight() / 4f);
+            stage.addActor(slider);
+            stage.draw();
+            stage.act();
+        } else {
+            ScreenUtils.clear(Color.BLACK);
         batch.begin();
-        timerSlider.setValue(timerSlider.getValue()+1);
+        timerSlider.setValue(timerSlider.getValue() + 1);
         timerSlider.updateVisualValue();
         stage.draw();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         batch.end();
+        }
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         stage.dispose();
         batch.dispose();
     }
 
-    protected void showMessage(String message){
+    protected void showMessage(String message) {
         timerSlider.setValue(0);
         messageLabel.setColor(Color.TAN);
         messageLabel.setText(message);
@@ -124,7 +136,7 @@ public abstract class Menu implements Screen {
     }
 
     @Override
-    public void show(){
+    public void show() {
 
     }
 }

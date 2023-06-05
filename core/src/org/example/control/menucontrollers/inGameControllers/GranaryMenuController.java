@@ -16,7 +16,7 @@ public class GranaryMenuController {
     public static String changeFoodRate(String foodRate) {
         if (Controller.isFieldEmpty(foodRate))
             return EntranceMenuMessages.EMPTY_FIELD.toString();
-        if (!EntranceMenuController.isDigit(foodRate))
+        if (EntranceMenuController.isDigit(foodRate))
             return InGameMessages.IS_FOOD_RATE_DIGIT.toString();
         int FoodRate = Integer.parseInt(foodRate);
         if (!isFoodRateValid(FoodRate))
@@ -26,7 +26,7 @@ public class GranaryMenuController {
     }
 
 
-    public static void showFoodList() {
+    public static String showFoodList() {
         int meat = 0, bread = 0, cheese = 0, apple = 0;
         for (Resource resource : DataBase.getCurrentEmpire().getResources()) {
             switch (resource.getResourceName().getType()) {
@@ -40,10 +40,11 @@ public class GranaryMenuController {
                     apple = resource.getAmount();
             }
         }
-        System.out.println("meat: " + meat + "\nbread: " + bread + "\ncheese: " + cheese + "\napple: " + apple);
+        return ("meat: " + meat + "\nbread: " + bread + "\ncheese: " + cheese + "\napple: " + apple);
     }
 
-    public static void showFoodRate() {
-        System.out.println(DataBase.getCurrentEmpire().getFoodRate());
+    public static String showFoodRate() {
+//        return "Food Rate:"+String.valueOf(DataBase.getCurrentEmpire().getFoodRate().getFoodRate());
+        return ("Food Rate:"+String.valueOf(2));
     }
 }
