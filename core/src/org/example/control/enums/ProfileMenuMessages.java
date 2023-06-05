@@ -7,21 +7,20 @@ public enum ProfileMenuMessages {
     USERNAME_ALREADY_EXISTS("Username already exists"),
     //change Nickname
     EMPTY_NICKNAME("Nickname's field is empty"),
-    NICKNAME_EXISTS("you already have this nickname bro"),
+    NICKNAME_EXISTS("Nickname already exists"),
     //change Email
-    EMPTY_EMAIL("email's field is empty"),
-    INVALID_EMAIL("invalid email format"),
-    EMAIL_ALREADY_EXISTS("email already exists try another one"),
+    EMPTY_EMAIL("Email's field is empty"),
+    INVALID_EMAIL("Invalid email format"),
+    EMAIL_ALREADY_EXISTS("Email already exists"),
     //change Password
-    EMPTY_OLD_PASSWORD("old password's field is empty"),
-    EMPTY_NEW_PASSWORD("new password's field is empty"),
-    INCORRECT_PASSWORD("incorrect password"),
-    PASSWORD_ALREADY_EXISTS("you can't set your old password as new password!"),
+    EMPTY_OLD_PASSWORD("Old password's field is empty"),
+    EMPTY_NEW_PASSWORD("New password's field is empty"),
+    INCORRECT_PASSWORD("Incorrect password"),
+    PASSWORD_ALREADY_EXISTS("Can't set old password as new password!"),
     //change Slogan
-    EMPTY_SLOGAN("slogan's field is empty"),
-    SLOGAN_EXISTS("you already have this slogan bro"),
-    SUCCEED("operation succeed"),
-    WRONG_FIELD("there is no such field to show");
+    EMPTY_SLOGAN("Slogan's field is empty"),
+    SLOGAN_EXISTS("You already have this slogan bro"),
+    SUCCEED("Succeed");
 
     private final String message;
 

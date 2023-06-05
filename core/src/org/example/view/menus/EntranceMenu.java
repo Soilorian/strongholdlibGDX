@@ -75,7 +75,6 @@ public class EntranceMenu extends Menu {
         loginPasswordText = new TextField("", controller.getSkin());
         loginCaptchaText = new TextField("", controller.getSkin());
 
-
         registerUsernameText = new TextField("", controller.getSkin());
         registerPasswordText = new TextField("", controller.getSkin());
         registerPasswordConfirmationText = new TextField("", controller.getSkin());

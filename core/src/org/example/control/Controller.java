@@ -54,7 +54,6 @@ public class Controller extends Game {
     private Menu nextMenu;
     private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private String blackTileAddress = "pictures/black-tile.png.";
-    private Menu nextMenu;
 
 
     public static String removeQuotes(String string) {
@@ -130,7 +129,7 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 12).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
-        setScreen(Menus.GRANARY_MENU.getMenu());
+        setScreen(Menus.PROFILE_MENU.getMenu());
     }
 
     private void manageAssets() {

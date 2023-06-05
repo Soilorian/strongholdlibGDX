@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import jdk.javadoc.internal.doclets.formats.html.markup.Text;
 import org.example.Main;
 import org.example.control.comparetors.PlayerComparator;
 import org.example.control.enums.ProfileMenuMessages;
 import org.example.control.menucontrollers.ProfileMenuController;
+import org.example.model.Captcha;
 import org.example.model.DataBase;
 import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
@@ -23,15 +24,17 @@ import org.example.model.exceptions.NotInStoragesException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class ProfileMenu extends Menu {
-    private TextField oldPass, newPass,news;
+    private TextField oldPass, newPass,news,captcha;
+    private TextField changeUser,changeNick,changeEmail,changeSlogan;
     private CheckBox showPass;
     private Label error;
     private Button backPass,submit;
-    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5,board;
+    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5,board,captchaButton;
+    private Captcha passCaptcha;
+    private Image captchaImage;
     private List listNum,listUser,listScore;
     private Label goldNum,goldUser,goldScore;
     private Label silverNum,silverUser,silverScore;
@@ -56,8 +59,11 @@ public class ProfileMenu extends Menu {
 
 
     private void changeUsername() {
+        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+            return;
+        }
         String message = ProfileMenuController.changeUsername(news.getText());
-        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+        if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
             return;
         }
@@ -66,8 +72,11 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeNickname() {
+        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+            return;
+        }
         String message = ProfileMenuController.changeNickname(news.getText());
-        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+        if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
             return;
         }
@@ -76,8 +85,11 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeEmail() {
+        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+            return;
+        }
         String message = ProfileMenuController.changeEmail(news.getText());
-        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+        if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
             return;
         }
@@ -86,8 +98,11 @@ public class ProfileMenu extends Menu {
     }
 
     private void changePassword() {
-        String message = ProfileMenuController.changePassword(oldPass.getText(), newPass.getText());
-        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+            return;
+        }
+        String message = ProfileMenuController.changePassword(oldPass.getText(),newPass.getText());
+        if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
             return;
         }
@@ -96,8 +111,11 @@ public class ProfileMenu extends Menu {
     }
 
     private void changeSlogan() {
+        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+            return;
+        }
         String message = ProfileMenuController.changeSlogan(news.getText());
-        if(!message.equals(ProfileMenuMessages.SUCCEED.toString())) {
+        if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
             return;
         }
@@ -106,12 +124,12 @@ public class ProfileMenu extends Menu {
     }
 
     private void profileMenu(){
-        TextField changeUser = new TextField("", controller.getSkin());
+        changeUser = new TextField("", controller.getSkin());
         //changeUser.setMessageText(DataBase.getCurrentPlayer().getUsername());
-        TextField changeNick = new TextField("", controller.getSkin());
+        changeNick = new TextField("", controller.getSkin());
         TextField changePass = new TextField("", controller.getSkin());
-        TextField changeEmail = new TextField("", controller.getSkin());
-        TextField changeSlogan = new TextField("", controller.getSkin());
+        changeEmail = new TextField("", controller.getSkin());
+        changeSlogan = new TextField("", controller.getSkin());
         submit = new TextButton("Submit",controller.getSkin());
         error = new Label("",controller.getSkin());
         Drawable backBut = new TextureRegionDrawable(new TextureRegion(backPic));
@@ -149,8 +167,10 @@ public class ProfileMenu extends Menu {
         imageListener(board);
     }
 
-    private void changes(Window window,String type){
+    private void changes(String type){
         stage.clear();
+        Window window = new Window("Change " + type,controller.getSkin());
+        window.setBounds(230,230,500, 500);
         news = new TextField("",controller.getSkin());
         news.setMessageText("New " + type);
         Button changeBut = new TextButton("Change " + type, Main.getController().getSkin());
@@ -175,60 +195,105 @@ public class ProfileMenu extends Menu {
         window.add(backPass).pad(10, 0, 10, 0).row();
         backListener(backPass);
         window.add(error).pad(10, 0, 10, 0).row();
-        window.setBounds(230,230,500, 500);
+        news.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(!news.getText().equalsIgnoreCase("")){
+                    switch (type) {
+                        case "Username":
+                            error.setText(ProfileMenuController.userErrors(news.getText()));
+                            break;
+                        case "Nickname":
+                            error.setText(ProfileMenuController.nickErrors(news.getText()));
+                            break;
+                        case "Email":
+                            error.setText(ProfileMenuController.emailErrors(news.getText()));
+                            break;
+                        case "Slogan":
+                            error.setText(ProfileMenuController.sloganErrors(news.getText()));
+                            break;
+                    }
+                    if(error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())){
+                        error.setText("");
+                    }
+                }
+            }
+        });
         stage.addActor(window);
     }
 
     private void changePass(){
         stage.clear();
         Window window = new Window("Change Password",controller.getSkin());
+        window.setBounds(230,200,500, 700);
+        captcha = new TextField("", controller.getSkin());
         oldPass = new TextField("",controller.getSkin());
         newPass = new TextField("",controller.getSkin());
         showPass = new CheckBox("Show Password", controller.getSkin());
         CheckBox showNew = new CheckBox("Show New Password", Main.getController().getSkin());
         Button changePassBut = new TextButton("Change", Main.getController().getSkin());
-        backPass = new TextButton("Back", Main.getController().getSkin());
+        backPass = new TextButton("Back", controller.getSkin());
         error = new Label("",Main.getController().getSkin());
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(controller.getCaptchaPath()));
+        captchaButton = new ImageButton(drawable);
+        passCaptcha = new Captcha();
+        Texture captchaTexture = new Texture("saved.png");
+        captchaImage = new Image(captchaTexture);
         oldPass.setMessageText("Old Password");
         newPass.setMessageText("New Password");
-        window.add(oldPass).pad(10, 0, 10, 0).row();
+        newPass.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                error.setText(ProfileMenuController.passErrors(oldPass.getText(),newPass.getText()));
+                if(error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())){
+                    error.setText("");
+                }
+            }
+        });
+        Table table = new Table(controller.getSkin());
+        table.setBounds(window.getX(), window.getY(), 450,450);
+        table.add(oldPass).center().colspan(5).padBottom(15).row();
         oldPass.setPasswordMode(true);
         oldPass.setPasswordCharacter('*');
-        window.add(showPass).pad(10,0,10,0).row();
-        window.add(newPass).pad(10, 0, 10, 0).row();
+        table.add(showPass).center().colspan(5).padBottom(15).row();
+        table.add(newPass).center().colspan(5).padBottom(15).row();
         newPass.setPasswordMode(true);
         newPass.setPasswordCharacter('*');
-        window.add(showNew).pad(10,0,10,0).row();
+        table.add(showNew).center().colspan(5).padBottom(15).row();
         passListener(showPass);
         passListener(showNew);
-        window.add(changePassBut).pad(10, 0, 10, 0).row();
+        table.add(captchaButton).colspan(2);
+        table.add(captchaImage).colspan(5);
+        captchaButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                passCaptcha.generateCaptcha();
+                captchaImage.remove();
+                captchaImage = new Image(new Texture("saved.png"));
+                table.addActorAfter(captchaButton,captchaImage);
+               captchaImage.setPosition(100,4);
+            }
+        });
+        table.row();
+        window.add(table).colspan(5).row();
+        window.add(captcha).center().colspan(5).row();
+        window.add(changePassBut).center().colspan(5).padTop(15).row();
         butListener(changePassBut,"password");
         backListener(backPass);
-        window.add(backPass).pad(10, 0, 10, 0).row();
-        window.add(error).pad(10, 0, 10, 0).row();
-        window.setBounds(230,230,500, 500);
+        window.add(backPass).center().colspan(5).padTop(15).row();
+        window.add(error).center().colspan(5).padTop(15).row();
         stage.addActor(window);
     }
 
     private void leaderBoard(){
         stage.clear();
-        goldNum = new Label("",controller.getSkin(),"gold");
-        goldUser = new Label("",controller.getSkin(),"gold");
-        goldScore = new Label("",controller.getSkin(),"gold");
-        silverNum = new Label("",controller.getSkin(),"silver");
-        silverUser = new Label("",controller.getSkin(),"silver");
-        silverScore = new Label("",controller.getSkin(),"silver");
-        cuNum = new Label("",controller.getSkin(),"cu");
-        cuUser = new Label("",controller.getSkin(),"cu");
-        cuScore = new Label("",controller.getSkin(),"cu");
-        listNum = new List(controller.getSkin(),"prof");
-        listUser = new List(controller.getSkin(),"prof");
-        listScore = new List(controller.getSkin(),"prof");
+        newLeader();
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
-        //int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer()) + 1;
+        //int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer());
         String[] num = new String[DataBase.getPlayers().size()-3];
         String[] user = new String[DataBase.getPlayers().size()-3];
         String[] score = new String[DataBase.getPlayers().size()-3];
+        backPass = new TextButton("Back", controller.getSkin());
         Player player;
         int j=0;
         for(int i=0;i<DataBase.getPlayers().size();i++){
@@ -258,12 +323,15 @@ public class ProfileMenu extends Menu {
         listNum.setItems(num);
         listUser.setItems(user);
         listScore.setItems(score);
+        listNum.setSelected(false);
         Table table = new Table(controller.getSkin());
         tableAdd(table);
         ScrollPane scrollPane = new ScrollPane(table,controller.getSkin());
         scrollPane.setSize(500,500);
-        scrollPane.setPosition(700,200);
+        scrollPane.setPosition(700,300);
         scrollPane.setForceScroll(false,true);
+        addActor(backPass,850,150,200,60);
+        backListener(backPass);
         stage.addActor(scrollPane);
     }
 
@@ -310,7 +378,9 @@ public class ProfileMenu extends Menu {
                         changeNickname();
                         break;
                     case "password":
-                        changePassword();
+                        if(passCaptcha.isFilledCaptchaValid(captcha.getText())){
+                            changePassword();
+                        }else error.setText("Invalid Captcha");
                         break;
                     case "Email":
                         changeEmail();
@@ -343,18 +413,18 @@ public class ProfileMenu extends Menu {
                 super.clicked(event, x, y);
                 if(imageButton.equals(editBut1)){
                     Window window = new Window("Change Username",controller.getSkin());
-                    changes(window,"Username");
+                    changes("Username");
                 }else if (imageButton.equals(editBut2)) {
                     Window window = new Window("Change Nickname",controller.getSkin());
-                    changes(window,"Nickname");
+                    changes("Nickname");
                 }else if (imageButton.equals(editBut3)) {
                     changePass();
                 }else if (imageButton.equals(editBut4)) {
                     Window window = new Window("Change Email",controller.getSkin());
-                    changes(window,"Email");
+                    changes("Email");
                 }else if (imageButton.equals(editBut5)) {
                     Window window = new Window("Change Slogan",controller.getSkin());
-                    changes(window,"Slogan");
+                    changes("Slogan");
                 } else if (imageButton.equals(board)) {
                     leaderBoard();
                 } else{
@@ -376,5 +446,19 @@ public class ProfileMenu extends Menu {
         table.add(listNum).left().pad(10,0,30,70);
         table.add(listUser).center().pad(10,10,30,70);
         table.add(listScore).right().pad(10,10,10,0);
+    }
+    private void newLeader(){
+        goldNum = new Label("",controller.getSkin(),"gold");
+        goldUser = new Label("",controller.getSkin(),"gold");
+        goldScore = new Label("",controller.getSkin(),"gold");
+        silverNum = new Label("",controller.getSkin(),"silver");
+        silverUser = new Label("",controller.getSkin(),"silver");
+        silverScore = new Label("",controller.getSkin(),"silver");
+        cuNum = new Label("",controller.getSkin(),"cu");
+        cuUser = new Label("",controller.getSkin(),"cu");
+        cuScore = new Label("",controller.getSkin(),"cu");
+        listNum = new List(controller.getSkin(),"prof");
+        listUser = new List(controller.getSkin(),"prof");
+        listScore = new List(controller.getSkin(),"prof");
     }
 }

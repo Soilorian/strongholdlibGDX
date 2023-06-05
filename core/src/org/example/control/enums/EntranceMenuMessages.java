@@ -1,7 +1,6 @@
 package org.example.control.enums;
 
 public enum EntranceMenuMessages {
-    DIGIT_PASSWORD("you don't have any digit letter in your password"),
     EMAIL_ALREADY_EXISTS("email already exists try another one"),
     EMPTY_FIELD("you have an empty field"),
     EMPTY_USERNAME("username's field is empty"),
@@ -19,15 +18,16 @@ public enum EntranceMenuMessages {
     INVALID_EMAIL("invalid email format"),
     INVALID_QUESTION_NUMBER("invalid question number\nchoose a number between 1 and 3"),
     IS_DIGIT("question num is not digit"),
-    LENGTH_PASSWORD("yous password must contain at least 6 char"),
-    LOWERCASE_PASSWORD("you don't have any lowercase letter in your password"),
+    LENGTH_PASSWORD("Password must contain at least 6 char"),
+    LOWERCASE_PASSWORD("No lowercase letter in your password"),
+    DIGIT_PASSWORD("No digit letter in your password"),
     SUCCEED("operation succeed"),
-    SYMBOl_PASSWORD("you don't have any symbol in your password"),
-    UPPERCASE_PASSWORD("you don't have any uppercase letter in your password"),
+    SYMBOl_PASSWORD("No symbol in your password"),
+    UPPERCASE_PASSWORD("No uppercase letter in your password"),
     USERNAME_ALREADY_EXISTS("username already exists try another one"),
     USERNAME_INVALID("invalid username format"),
     USERNAME_NOT_EXIST("there's no Player with this username"),
-    WEAK_PASSWORD("your password is weak");
+    WEAK_PASSWORD("Password is weak");
 
 
     private final String message;
