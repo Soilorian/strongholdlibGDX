@@ -28,16 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
-import org.example.control.SoundPlayer;
 import org.example.control.enums.EntranceMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.model.Captcha;
-import org.example.model.DataBase;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
-import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
-import org.example.view.enums.commands.EntranceMenuCommands;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -160,7 +153,7 @@ public class EntranceMenu extends Menu {
         createCheckBoxes();
         createImages();
         add3D();
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     public void render(float delta) {
@@ -174,8 +167,8 @@ public class EntranceMenu extends Menu {
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
         modelBatch.end();
-        stage.draw();
-        stage.act();
+        behindStage.draw();
+        behindStage.act();
     }
 
 
@@ -185,13 +178,13 @@ public class EntranceMenu extends Menu {
         actor.setY(y);
         actor.setWidth(width);
         actor.setHeight(height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void addActor(Actor actor, int x, int y) {
         actor.setX(x);
         actor.setY(y);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void createText(TextField textField, int x, int y, int width, int height, String text) {

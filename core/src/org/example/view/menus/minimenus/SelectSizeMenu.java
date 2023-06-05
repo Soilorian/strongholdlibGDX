@@ -90,13 +90,13 @@ public class SelectSizeMenu extends Menu {
         });
 
         //end
-        stage.clear();
-        stage.addActor(backgroundImage);
-        stage.addActor(window);
-        stage.addActor(widthSlider);
-        stage.addActor(hieghtSlider);
-        stage.addActor(okButton);
-        stage.addActor(cancelButton);
+        behindStage.clear();
+        behindStage.addActor(backgroundImage);
+        behindStage.addActor(window);
+        behindStage.addActor(widthSlider);
+        behindStage.addActor(hieghtSlider);
+        behindStage.addActor(okButton);
+        behindStage.addActor(cancelButton);
     }
 
     private void ok() {
@@ -147,7 +147,7 @@ public class SelectSizeMenu extends Menu {
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     private void cancelSizeSelection() {

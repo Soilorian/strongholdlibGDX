@@ -1,5 +1,7 @@
 package org.example.control.menucontrollers;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.control.enums.GameMenuMessages;
 import org.example.control.enums.MapEditorMenuMessages;
@@ -369,7 +371,6 @@ public class GameMenuController {
         for (Troop troop : Controller.getCurrentMap().getTile(y, x).getTroops())
             if (troop.getKing().equals(DataBase.getCurrentEmpire()))
                 troop.changeHp(Math.min(200, Objects.requireNonNull(Troops.getTroopByName(troop.getType())).getHp() - troop.getHitPoint()));
-
     }
 
     public static GameMenuMessages createUnit(String type, int count) {
@@ -591,5 +592,21 @@ public class GameMenuController {
     public static void removeSubsetFromPeasant(ArrayList<Peasant> main, ArrayList<Peasant> subset) {
         for (Peasant peasant : subset)
             main.remove(peasant);
+    }
+
+    public static Texture getMapPrev(Map selectedMap, int scale) {
+        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
+                Pixmap.Format.RGBA8888);
+        selectedMap.setUpPixmap(pixmap, scale);
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
+    }
+
+    public static Pixmap getMapPrevPixmap(Map selectedMap, int scale) {
+        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
+                Pixmap.Format.RGBA8888);
+        selectedMap.setUpPixmap(pixmap, scale);
+        return pixmap;
     }
 }

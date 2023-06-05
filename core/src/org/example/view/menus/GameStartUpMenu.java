@@ -67,19 +67,19 @@ public class GameStartUpMenu extends Menu {
     public void create() {
         setActors();
         addActors();
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     private void addActors() {
-        stage.clear();
-        stage.addActor(background);
-        stage.addActor(playersWindow);
-        stage.addActor(colorsSelectBox);
-        stage.addActor(castleSelectBox);
-        stage.addActor(addUsername);
-        stage.addActor(addUser);
-        stage.addActor(okButton);
-        stage.addActor(cancelButton);
+        behindStage.clear();
+        behindStage.addActor(background);
+        behindStage.addActor(playersWindow);
+        behindStage.addActor(colorsSelectBox);
+        behindStage.addActor(castleSelectBox);
+        behindStage.addActor(addUsername);
+        behindStage.addActor(addUser);
+        behindStage.addActor(okButton);
+        behindStage.addActor(cancelButton);
     }
 
     private void setActors() {

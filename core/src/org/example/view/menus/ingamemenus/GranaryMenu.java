@@ -24,7 +24,6 @@ import org.example.view.menus.Menu;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.regex.Matcher;
 
 import static com.badlogic.gdx.Gdx.graphics;
 
@@ -70,7 +69,7 @@ public class GranaryMenu extends Menu {
         sliderListener();
         add3D();
 
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
 
@@ -119,8 +118,8 @@ public class GranaryMenu extends Menu {
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
         modelBatch.end();
-        stage.draw();
-        stage.act();
+        behindStage.draw();
+        behindStage.act();
     }
 
 
@@ -130,12 +129,12 @@ public class GranaryMenu extends Menu {
         actor.setY(y);
         actor.setWidth(width);
         actor.setHeight(height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void addActor(Actor actor, int x, int y) {
         actor.setX(x);
         actor.setY(y);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 }

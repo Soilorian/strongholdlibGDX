@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
@@ -115,7 +114,7 @@ public class ShopMenu extends Menu {
         addButtonsListener();
         add3D();
 
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     public void addButtonsListener() {
@@ -144,8 +143,8 @@ public class ShopMenu extends Menu {
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
         modelBatch.end();
-        stage.draw();
-        stage.act();
+        behindStage.draw();
+        behindStage.act();
     }
 
 
@@ -198,12 +197,12 @@ public class ShopMenu extends Menu {
         actor.setY(y);
         actor.setWidth(width);
         actor.setHeight(height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void addActor(Actor actor, int x, int y) {
         actor.setX(x);
         actor.setY(y);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 }

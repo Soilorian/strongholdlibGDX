@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import jdk.javadoc.internal.doclets.formats.html.markup.Text;
 import org.example.Main;
 import org.example.control.comparetors.PlayerComparator;
 import org.example.control.enums.ProfileMenuMessages;
@@ -23,7 +22,6 @@ import org.example.model.exceptions.NotInStoragesException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class ProfileMenu extends Menu {
@@ -51,7 +49,7 @@ public class ProfileMenu extends Menu {
     }
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
 
@@ -61,7 +59,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -71,7 +69,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -81,7 +79,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -91,7 +89,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -101,7 +99,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -125,7 +123,7 @@ public class ProfileMenu extends Menu {
         addActor(changeSlogan,250,370,250,50);
         addActor(submit,310,290,130,50);
         error.setPosition(250,170);
-        stage.addActor(error);
+        behindStage.addActor(error);
         addActor(back,255,285,45,70);
         addActor(board,450,295,45,45);
         backListener(submit);
@@ -150,7 +148,7 @@ public class ProfileMenu extends Menu {
     }
 
     private void changes(Window window,String type){
-        stage.clear();
+        behindStage.clear();
         news = new TextField("",controller.getSkin());
         news.setMessageText("New " + type);
         Button changeBut = new TextButton("Change " + type, Main.getController().getSkin());
@@ -176,11 +174,11 @@ public class ProfileMenu extends Menu {
         backListener(backPass);
         window.add(error).pad(10, 0, 10, 0).row();
         window.setBounds(230,230,500, 500);
-        stage.addActor(window);
+        behindStage.addActor(window);
     }
 
     private void changePass(){
-        stage.clear();
+        behindStage.clear();
         Window window = new Window("Change Password",controller.getSkin());
         oldPass = new TextField("",controller.getSkin());
         newPass = new TextField("",controller.getSkin());
@@ -207,11 +205,11 @@ public class ProfileMenu extends Menu {
         window.add(backPass).pad(10, 0, 10, 0).row();
         window.add(error).pad(10, 0, 10, 0).row();
         window.setBounds(230,230,500, 500);
-        stage.addActor(window);
+        behindStage.addActor(window);
     }
 
     private void leaderBoard(){
-        stage.clear();
+        behindStage.clear();
         goldNum = new Label("",controller.getSkin(),"gold");
         goldUser = new Label("",controller.getSkin(),"gold");
         goldScore = new Label("",controller.getSkin(),"gold");
@@ -264,13 +262,13 @@ public class ProfileMenu extends Menu {
         scrollPane.setSize(500,500);
         scrollPane.setPosition(700,200);
         scrollPane.setForceScroll(false,true);
-        stage.addActor(scrollPane);
+        behindStage.addActor(scrollPane);
     }
 
     private void addActor(Actor actor,int x,int y,int width,int height){
         actor.setPosition(x,y);
         actor.setSize(width,height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     private void passListener(final CheckBox box) {
@@ -328,7 +326,7 @@ public class ProfileMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (button.equals(backPass)) {
-                    stage.clear();
+                    behindStage.clear();
                     profileMenu();
                 }else if (button.equals(submit)) {
                     controller.setScreen(new MainMenu());

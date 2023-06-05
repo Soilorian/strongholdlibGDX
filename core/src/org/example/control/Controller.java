@@ -51,10 +51,10 @@ public class Controller extends Game {
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
     private final String granaryBack = "GraneryAssets/background.jpg";
     private final String shopBack = "ShopAssets/background.jpg";
-    private Menu nextMenu;
-    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private String blackTileAddress = "pictures/black-tile.png.";
+    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
     private Menu nextMenu;
+    private String boarderAddress = "pictures/frame.png";
 
 
     public static String removeQuotes(String string) {
@@ -121,16 +121,16 @@ public class Controller extends Game {
         manageAssets();
         createMenus();
         GameMenuController.setCurrentGame(new org.example.model.Game());
-        GameMenuController.getCurrentGame().setCurrentMap(new Map(20, 20, "adsf"));
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 10).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(11, 10).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(12, 10).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTile(TileTypes.SEA);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(13, 12).setTree(TreeTypes.OLIVE_TREE);
-        GameMenuController.getCurrentGame().getCurrentMap().getTile(10, 12).setTile(TileTypes.IRON_GROUND);
+        GameMenuController.getCurrentGame().setCurrentMap(new Map(200, 200, "adsf"));
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 100).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(101, 100).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(102, 100).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(103, 102).setTile(TileTypes.SEA);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(103, 102).setTree(TreeTypes.OLIVE_TREE);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
-        setScreen(Menus.GRANARY_MENU.getMenu());
+        setScreen(new GameMenu());
     }
 
     private void manageAssets() {
@@ -149,6 +149,7 @@ public class Controller extends Game {
         manager.load(gameStartUpBG, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
         manager.load(blackTileAddress, Texture.class);
+        manager.load(boarderAddress, Texture.class);
         for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
 
@@ -302,5 +303,22 @@ public class Controller extends Game {
 
     public Texture getLoadingBG() {
         return new Texture("pictures/background.png");
+    }
+
+    public Texture addBoarder(Texture texture) {
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
+        Pixmap pixmap = texture.getTextureData().consumePixmap();
+        Texture boarder = resizer(pixmap.getWidth(), pixmap.getHeight(), getBoarder());
+        if (!boarder.getTextureData().isPrepared())
+            boarder.getTextureData().prepare();
+        pixmap.drawPixmap(boarder.getTextureData().consumePixmap(), 0, 0);
+        Texture texture1 = new Texture(pixmap);
+        pixmap.dispose();
+        return texture1;
+    }
+
+    private Texture getBoarder() {
+        return manager.get(boarderAddress);
     }
 }

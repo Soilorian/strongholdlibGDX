@@ -1,12 +1,11 @@
 package org.example.view.menus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +29,8 @@ public abstract class Menu implements Screen {
     protected final Slider timerSlider = new Slider(0, 500, 1, false, controller.getSkin());
     protected final Dialog messageDialog = new Dialog("", controller.getSkin());
     protected final Label messageLabel = new Label("", controller.getSkin());
-    protected Stage stage = new Stage();
+    protected Stage behindStage = new Stage();
+    protected Stage frontStage = new Stage();
     protected SpriteBatch batch = new SpriteBatch();
     protected Camera camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -70,39 +70,47 @@ public abstract class Menu implements Screen {
             }
         });
 
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     public abstract void create();
 
     @Override
     public void render(float delta) {
-        if (!Controller.manager.isFinished()){
+        if (!Controller.manager.isFinished()) {
             batch.begin();
             batch.draw(controller.getLoadingBG(), 0, 0);
-            Slider slider = new Slider(0, 1, 0.001f , false,controller.getSkin());
+            Slider slider = new Slider(0, 1, 0.001f, false, controller.getSkin());
             slider.setValue(Controller.manager.getProgress());
             slider.updateVisualValue();
             slider.setDisabled(true);
-            slider.setWidth(Gdx.graphics.getWidth() / 4f  * 3);
+            slider.setWidth(Gdx.graphics.getWidth() / 4f * 3);
             slider.setPosition(Gdx.graphics.getWidth() / 2f - slider.getWidth() / 2f, Gdx.graphics.getHeight() / 4f);
-            stage.addActor(slider);
-            stage.draw();
-            stage.act();
+            behindStage.addActor(slider);
+            behindStage.draw();
+            behindStage.act();
         } else {
             ScreenUtils.clear(Color.BLACK);
-        batch.begin();
-        timerSlider.setValue(timerSlider.getValue() + 1);
-        timerSlider.updateVisualValue();
-        stage.draw();
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        batch.end();
+            batch.begin();
+            timerSlider.setValue(timerSlider.getValue() + 1);
+            timerSlider.updateVisualValue();
+            behindStage.draw();
+            frontStage.draw();
+            frontStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+            behindStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+            batch.end();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+            if (Gdx.input.getInputProcessor().equals(behindStage))
+                Gdx.input.setInputProcessor(frontStage);
+            else
+                Gdx.input.setInputProcessor(behindStage);
         }
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        behindStage.dispose();
         batch.dispose();
     }
 
