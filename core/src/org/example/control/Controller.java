@@ -8,7 +8,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
@@ -51,8 +50,8 @@ public class Controller extends Game {
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
     private final String granaryBack = "GraneryAssets/background.jpg";
     private final String shopBack = "ShopAssets/background.jpg";
-    private String blackTileAddress = "pictures/black-tile.png.";
-    private final String entranceBG = "EntranceAssets/entrance-bg.jpg";
+    private final String taxBack = "TaxAssets/background.jpg";
+    private final String unitBack = "UnitCreatingAssets/background.jpg";
     private Menu nextMenu;
     private String boarderAddress = "pictures/frame.png";
 
@@ -130,7 +129,7 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
-        setScreen(Menus.PROFILE_MENU.getMenu());
+        setScreen(Menus.GRANARY_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -148,8 +147,7 @@ public class Controller extends Game {
         manager.load(backgroundMainMenu, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
-        manager.load(blackTileAddress, Texture.class);
-        manager.load(boarderAddress, Texture.class);
+        manager.load(unitBack, Texture.class);
         for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
 
@@ -163,6 +161,8 @@ public class Controller extends Game {
         manager.load(entranceBack,Texture.class);
         manager.load(granaryBack,Texture.class);
         manager.load(shopBack,Texture.class);
+        manager.load(taxBack,Texture.class);
+        manager.load(unitBack,Texture.class);
         manager.finishLoading();
     }
 
@@ -320,5 +320,12 @@ public class Controller extends Game {
 
     private Texture getBoarder() {
         return manager.get(boarderAddress);
+    }
+    public Texture getTaxBack() {
+        return manager.get(taxBack);
+    }
+
+    public Texture getUnitBack() {
+        return manager.get(unitBack);
     }
 }
