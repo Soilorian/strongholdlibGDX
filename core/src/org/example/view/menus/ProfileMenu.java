@@ -224,6 +224,7 @@ public class ProfileMenu extends Menu {
 
     private void changePass(){
         stage.clear();
+
         Window window = new Window("Change Password",controller.getSkin());
         window.setBounds(230,200,500, 700);
         captcha = new TextField("", controller.getSkin());
