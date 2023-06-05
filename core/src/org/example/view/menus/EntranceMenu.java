@@ -67,12 +67,6 @@ public class EntranceMenu extends Menu {
     private final Stage backStage = new Stage();
     private final Captcha loginCaptcha, registerCaptcha;
 
-
-    private Image loginUsernameImage, loginPasswordImage, loginCaptchaImage,
-            registerUsernameImage, registerPasswordImage, registerCaptchaImage,
-    background;
-    private Stage backStage = new Stage();
-    private Captcha loginCaptcha, registerCaptcha;
     public EntranceMenu() {
         super();
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
