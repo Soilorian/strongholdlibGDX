@@ -9,10 +9,22 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	small: {
 		file: font-small-export.fnt
 	}
+	special: {
+		file: font-special.fnt
+	}
 	title: {
 		file: font-title-export.fnt
 	}
-}
+	winner: {
+		file: font-winner.fnt
+	}
+	silver: {
+		file: font-silver.fnt
+	}
+	third: {
+		file: font-third.fnt
+	}
+},
 com.badlogic.gdx.graphics.Color: {
 	black: {
 		r: 0
@@ -67,6 +79,24 @@ com.badlogic.gdx.graphics.Color: {
 		g: 0.3372549
 		b: 0.4392157
 		a: 1
+	}
+	goldFont: {
+		r: 255
+		g: 193
+		b: 0
+		a: 255
+	}
+	silverFont: {
+		r: 213
+		g: 213
+		b: 213
+		a: 255
+	}
+	thirdFont: {
+		r: 215
+		g: 100
+		b: 0
+		a: 255
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
@@ -327,6 +357,18 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: medium
 		fontColor: font-over
 	}
+	gold: {
+		font: winner
+		fontColor: goldFont
+	}
+	silver: {
+		font: silver
+		fontColor: silverFont
+	}
+	cu: {
+		font: third
+		fontColor: thirdFont
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
@@ -334,15 +376,21 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		fontColorSelected: font-over
 		fontColorUnselected: font-over
 		selection: list-selection
-	}
+	},
+	prof: {
+		font: special
+		fontColorSelected: font-over
+		fontColorUnselected: font-over
+		selection: list-selection
+	},
 	bg: {
-		font: small
+		font: font
 		fontColorSelected: font-over
 		fontColorUnselected: font-over
 		selection: list-selection
 		background: list
 	}
-}
+},
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
 		background: list

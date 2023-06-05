@@ -74,16 +74,14 @@ public class EntranceMenu extends Menu {
     background;
     private Stage backStage = new Stage();
     private Captcha loginCaptcha, registerCaptcha;
-
-
     public EntranceMenu() {
         super();
-
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
         loginUsernameText = new TextField("", controller.getSkin());
         loginPasswordText = new TextField("", controller.getSkin());
         loginCaptchaText = new TextField("", controller.getSkin());
+
 
         registerUsernameText = new TextField("", controller.getSkin());
         registerPasswordText = new TextField("", controller.getSkin());

@@ -44,9 +44,10 @@ public class TaxMenu extends Menu {
 
     }
 
+
+
+
     public void showTax() {
         System.out.println(DataBase.getCurrentEmpire().getTax());
     }
-
-
 }

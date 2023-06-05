@@ -22,12 +22,15 @@ public class ShopMenuController {
     }
 
     public static String showPriceList() {
+        boolean t = true;
         StringBuilder result = new StringBuilder();
         for (Resources resources : Resources.values()) {
-            result.append(resources.getType()).append(" :\nbuying price : ").append(resources.getBuyingPrice());
-            result.append("\nselling price : ").append(resources.getSellingPrice());
-            result.append("\n\tyour resource amount : ").append(DataBase.getCurrentEmpire()
-                    .totalResources(new ArrayList<>(Collections.singleton(resources)))).append("\n");
+            result.append(resources.getType()).append(" :\tbuying price : ").append(resources.getBuyingPrice());
+            result.append("\tselling price : ").append(resources.getSellingPrice());
+//            result.append("\n\tyour resource amount : ").append(DataBase.getCurrentEmpire()
+//                    .totalResources(new ArrayList<>(Collections.singleton(resources)))).append("\n");
+            result.append("\n\tyour resource amount : ").append(1000).append("\n");
+
         }
         return result.toString();
     }
