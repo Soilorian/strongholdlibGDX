@@ -374,9 +374,6 @@ public class EntranceMenu extends Menu {
     }
 
 
-
-
-
     private void forgetPassword(Matcher matcher) {
         String username = Controller.removeQuotes(matcher.group("Username"));
         if (Controller.isFieldEmpty(username)) {
