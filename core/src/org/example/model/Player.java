@@ -48,7 +48,12 @@ public class Player {
     public int getMaxStore() {
         return maxStore;
     }
-
+    public void setMaxStore(int maxstore){
+        maxStore = maxstore;
+    }
+    public String toStringScore(){
+        return Integer.valueOf(getMaxStore()).toString();
+    }
     public String getUsername() {
         return username;
     }

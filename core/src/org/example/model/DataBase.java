@@ -107,7 +107,7 @@ public class DataBase {
     public static void updatePlayersXS() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 //        SoundPlayer.play(Sounds.WAIT_A_MOMENT);
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                Files.newOutputStream(Paths.get("assets/players.txt")));
+                Files.newOutputStream(Paths.get("players.txt")));
         for (Player player : players)
             objectOutputStream.writeObject(player);
         objectOutputStream.close();
@@ -117,7 +117,7 @@ public class DataBase {
     public static void updateMaps() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 //        SoundPlayer.play(Sounds.WAIT_A_MOMENT);
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                Files.newOutputStream(Paths.get("assets/maps.txt")));
+                Files.newOutputStream(Paths.get("maps.txt")));
         for (Map map : maps)
             objectOutputStream.writeObject(map);
         objectOutputStream.close();
@@ -128,8 +128,8 @@ public class DataBase {
     public static void generateInfoFromJson() {
         Player player = new Player("t", "t", "t", "t", "t");
         Map map = new Map(0, 0, "0");
-        importFromJson("assets/players.txt", player, true);
-        importFromJson("assets/maps.txt", map, false);
+        importFromJson("players.txt", player, true);
+        importFromJson("maps.txt", map, false);
     }
 
     public static void importFromJson(String path, Object object, boolean bol) {
@@ -158,11 +158,11 @@ public class DataBase {
     public static boolean isStayLogged() {
         try {
             ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                    new FileOutputStream("assets/stayLogged.txt", true));
+                    new FileOutputStream("stayLogged.txt", true));
             Player player = new Player("ar", "ar", "ar", "ar", "ar");
             objectOutputStream.writeObject(player);
             ObjectInputStream objectInputStream = xstream.createObjectInputStream(
-                    Files.newInputStream(Paths.get("assets/stayLogged.txt")));
+                    Files.newInputStream(Paths.get("stayLogged.txt")));
             currentPlayer = (Player) objectInputStream.readObject();
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
@@ -174,14 +174,14 @@ public class DataBase {
     public static void clearStayLogged() throws IOException {
         currentPlayer = null;
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                Files.newOutputStream(Paths.get("assets/stayLogged.txt")));
+                Files.newOutputStream(Paths.get("stayLogged.txt")));
         objectOutputStream.writeObject(currentPlayer);
         objectOutputStream.close();
     }
 
     public static void addStayLoggedPlayed(Player player) throws IOException {
         ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(
-                Files.newOutputStream(Paths.get("assets/stayLogged.txt")));
+                Files.newOutputStream(Paths.get("stayLogged.txt")));
         objectOutputStream.writeObject(player);
         objectOutputStream.close();
     }
