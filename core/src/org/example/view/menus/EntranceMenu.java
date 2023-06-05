@@ -152,7 +152,7 @@ public class EntranceMenu extends Menu {
         createCheckBoxes();
         createImages();
         add3D();
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     public void render(float delta) {
@@ -166,8 +166,8 @@ public class EntranceMenu extends Menu {
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
         modelBatch.end();
-        stage.draw();
-        stage.act();
+        behindStage.draw();
+        behindStage.act();
     }
 
 
@@ -177,13 +177,13 @@ public class EntranceMenu extends Menu {
         actor.setY(y);
         actor.setWidth(width);
         actor.setHeight(height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void addActor(Actor actor, int x, int y) {
         actor.setX(x);
         actor.setY(y);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     public void createText(TextField textField, int x, int y, int width, int height, String text) {

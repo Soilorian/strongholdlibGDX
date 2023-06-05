@@ -31,14 +31,11 @@ import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.EntranceMenuCommands;
-import org.example.view.enums.commands.GameStartUpMenuCommands;
 import org.example.view.enums.commands.MainMenuCommands;
-import org.example.view.enums.commands.MapEditorMenuCommands;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.regex.Matcher;
 
 import static com.badlogic.gdx.Gdx.graphics;
 import static com.badlogic.gdx.Gdx.input;
@@ -134,7 +131,7 @@ public class MainMenu extends Menu {
             }
         });
 
-        stage.addActor(backgroundImage);
+        behindStage.addActor(backgroundImage);
         stageInput.addActor(startGameButton);
         stageInput.addActor(mapEditorButton);
         stageInput.addActor(settingsButton);
@@ -178,8 +175,8 @@ public class MainMenu extends Menu {
         Gdx.gl.glViewport(0, 0, graphics.getWidth(), graphics.getHeight());
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        stage.act();
-        stage.draw();
+        behindStage.act();
+        behindStage.draw();
         camera.update();
         animationController.update(graphics.getDeltaTime());
         modelBatch.begin(camera);

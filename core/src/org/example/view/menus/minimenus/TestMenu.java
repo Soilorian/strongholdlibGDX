@@ -84,15 +84,15 @@ public class TestMenu extends Menu {
         });
 
         //end
-        stage.clear();
-        stage.addActor(window);
-        stage.addActor(widthSlider);
-        stage.addActor(hieghtSlider);
-        stage.addActor(okButton);
+        behindStage.clear();
+        behindStage.addActor(window);
+        behindStage.addActor(widthSlider);
+        behindStage.addActor(hieghtSlider);
+        behindStage.addActor(okButton);
         TextField type = new TextField("type", controller.getSkin());
         type.setX(100);
-        stage.addActor(type);
-        stage.addActor(cancelButton);
+        behindStage.addActor(type);
+        behindStage.addActor(cancelButton);
     }
 
     public float getPercentage(float length) {

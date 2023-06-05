@@ -1,8 +1,6 @@
 package org.example.view.menus.minimenus;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -13,18 +11,10 @@ import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.MapBuilderMenuController;
 import org.example.model.DataBase;
-import org.example.model.exceptions.CoordinatesOutOfMap;
-import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.map.Map;
 import org.example.view.enums.Menus;
 import org.example.view.menus.Menu;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,18 +39,18 @@ public class SelectMapMenu extends Menu {
     public void create() {
         setActors();
         addActors();
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
     private void addActors() {
-        stage.clear();
-        stage.addActor(backgroundImage);
-        stage.addActor(cancelButton);
-        stage.addActor(randomMapButton);
-        stage.addActor(showMapsButton);
-        stage.addActor(createBlankMapButton);
-        stage.addActor(okButton);
-        stage.addActor(mapImage);
+        behindStage.clear();
+        behindStage.addActor(backgroundImage);
+        behindStage.addActor(cancelButton);
+        behindStage.addActor(randomMapButton);
+        behindStage.addActor(showMapsButton);
+        behindStage.addActor(createBlankMapButton);
+        behindStage.addActor(okButton);
+        behindStage.addActor(mapImage);
     }
 
     private void setActors() {
@@ -124,7 +114,7 @@ public class SelectMapMenu extends Menu {
         for (Map map : DataBase.getMaps()) {
             mapSelectBox.getItems().add((makeTextForLabel(map)));
         }
-        stage.addActor(mapSelectBox);
+        behindStage.addActor(mapSelectBox);
         okButton.setDisabled(false);
         okButton.addListener(new ClickListener(){
             @Override
@@ -164,7 +154,7 @@ public class SelectMapMenu extends Menu {
     }
 
     private void randomMap() {
-        stage.addActor(randomMapSelectBox);
+        behindStage.addActor(randomMapSelectBox);
 
         okButton.setDisabled(false);
     }
@@ -184,19 +174,14 @@ public class SelectMapMenu extends Menu {
                 break;
             }
         }
-
         showMiniPrev();
     }
     private void showMiniPrev() {
-        Map selectedMap = getSelectedMap();
-        int scale = 2;
-        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
-                Pixmap.Format.RGBA8888);
-        selectedMap.setUpPixmap(pixmap, scale);
-        mapImage = new Image(new Texture(pixmap));
-        pixmap.dispose();
+        mapImage = new Image(GameMenuController.getMapPrev(getSelectedMap(), 4));
         mapImage.setPosition(graphics.getWidth() / 4f * 3, graphics.getHeight() / 4f);
-        stage.addActor(mapImage);
+        behindStage.addActor(mapImage);
     }
+
+
 
 }

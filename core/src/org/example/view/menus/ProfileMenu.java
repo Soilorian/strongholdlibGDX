@@ -54,7 +54,7 @@ public class ProfileMenu extends Menu {
     }
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(behindStage);
     }
 
 
@@ -67,7 +67,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -80,7 +80,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -93,7 +93,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -106,7 +106,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -119,7 +119,7 @@ public class ProfileMenu extends Menu {
             error.setText(message);
             return;
         }
-        stage.clear();
+        behindStage.clear();
         profileMenu();
     }
 
@@ -143,7 +143,7 @@ public class ProfileMenu extends Menu {
         addActor(changeSlogan,250,370,250,50);
         addActor(submit,310,290,130,50);
         error.setPosition(250,170);
-        stage.addActor(error);
+        behindStage.addActor(error);
         addActor(back,255,285,45,70);
         addActor(board,450,295,45,45);
         backListener(submit);
@@ -168,7 +168,7 @@ public class ProfileMenu extends Menu {
     }
 
     private void changes(String type){
-        stage.clear();
+        behindStage.clear();
         Window window = new Window("Change " + type,controller.getSkin());
         window.setBounds(230,230,500, 500);
         news = new TextField("",controller.getSkin());
@@ -219,12 +219,11 @@ public class ProfileMenu extends Menu {
                 }
             }
         });
-        stage.addActor(window);
+        behindStage.addActor(window);
     }
 
     private void changePass(){
-        stage.clear();
-
+        behindStage.clear();
         Window window = new Window("Change Password",controller.getSkin());
         window.setBounds(230,200,500, 700);
         captcha = new TextField("", controller.getSkin());
@@ -283,11 +282,11 @@ public class ProfileMenu extends Menu {
         backListener(backPass);
         window.add(backPass).center().colspan(5).padTop(15).row();
         window.add(error).center().colspan(5).padTop(15).row();
-        stage.addActor(window);
+        behindStage.addActor(window);
     }
 
     private void leaderBoard(){
-        stage.clear();
+        behindStage.clear();
         newLeader();
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
         //int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer());
@@ -333,13 +332,13 @@ public class ProfileMenu extends Menu {
         scrollPane.setForceScroll(false,true);
         addActor(backPass,850,150,200,60);
         backListener(backPass);
-        stage.addActor(scrollPane);
+        behindStage.addActor(scrollPane);
     }
 
     private void addActor(Actor actor,int x,int y,int width,int height){
         actor.setPosition(x,y);
         actor.setSize(width,height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 
     private void passListener(final CheckBox box) {
@@ -399,7 +398,7 @@ public class ProfileMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (button.equals(backPass)) {
-                    stage.clear();
+                    behindStage.clear();
                     profileMenu();
                 }else if (button.equals(submit)) {
                     controller.setScreen(new MainMenu());

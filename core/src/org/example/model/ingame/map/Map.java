@@ -237,9 +237,17 @@ public class Map {
     public void setUpPixmap(Pixmap pixmap, int i) {
         for (int j = 0; j < groundHeight; j++) {
             for (int k = 0; k < groundWidth; k++) {
-                pixmap.setColor(tiles[j][k].getTile().getColor());
-                pixmap.fillRectangle(j, groundHeight - k - 1, i, i);
+                if (tiles[j][k].getBuilding() != null) {
+                    pixmap.setColor(tiles[groundHeight - j - 1][k].getBuilding().getOwner().getColor().toColor());
+                } else if (!tiles[groundHeight - j - 1][k].getTroops().isEmpty()) {
+                    pixmap.setColor(tiles[groundHeight - j - 1][k].getTroops().get(0).getKing().getColor().toColor());
+                } else
+                    pixmap.setColor(tiles[groundHeight - j - 1][k].getTile().getColor());
+                pixmap.fillRectangle(k * i, (groundHeight - j - 1) * i, i, i);
             }
+        }
+        for (Integer integer : castles.keySet()) {
+
         }
     }
 }

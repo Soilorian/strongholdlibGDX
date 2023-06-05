@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.example.Main;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.model.DataBase;
 import org.example.model.Player;
@@ -84,6 +83,6 @@ public class ForgotPassword extends Menu {
         actor.setY(y);
         actor.setWidth(width);
         actor.setHeight(height);
-        stage.addActor(actor);
+        behindStage.addActor(actor);
     }
 }
