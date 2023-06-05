@@ -206,7 +206,6 @@ public class MapViewMenu extends Menu {
 
 
     private Texture makeTextureForTile(int x, int y, int z) {
-        System.out.printf("loading %d , %d with zoom %d\n", x, y, z);
         Tile tile = GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
         if (tile != null) {
             return tile.getTexture(z);
