@@ -31,6 +31,7 @@ public abstract class Menu implements Screen {
     protected final Label messageLabel = new Label("", controller.getSkin());
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
+    protected Stage stage = new Stage();
     protected SpriteBatch batch = new SpriteBatch();
     protected Camera camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
