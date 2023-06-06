@@ -284,9 +284,9 @@ public class Controller extends Game {
         Gdx.app.exit();
     }
 
-    public Texture getBlackMap() {
-        return manager.get(blackTileAddress);
-    }
+//    public Texture getBlackMap() {
+//        return manager.get(blackTileAddress);
+//    }
 
     public Texture getGranaryBack() {
         return manager.get(granaryBack);
