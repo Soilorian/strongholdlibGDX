@@ -108,8 +108,6 @@ public class UnitCreatingMenu extends Menu {
             }
         });
     }
-
-
     public void add3D() {
 
         camera.position.set(0, 150, 250);
