@@ -52,8 +52,9 @@ public class Controller extends Game {
     private final String shopBack = "ShopAssets/background.jpg";
     private final String taxBack = "TaxAssets/background.jpg";
     private final String unitBack = "UnitCreatingAssets/background.jpg";
+    private final String boarderAddress = "pictures/frame.png";
     private Menu nextMenu;
-    private String boarderAddress = "pictures/frame.png";
+    private final String  blackTileAddress = "pictures/black-tile.png";
 
 
     public static String removeQuotes(String string) {
@@ -148,13 +149,11 @@ public class Controller extends Game {
         manager.load(gameStartUpBG, Texture.class);
         manager.load(gameStartUpBG, Texture.class);
         manager.load(unitBack, Texture.class);
+        manager.load(boarderAddress, Texture.class);
+        manager.load(blackTileAddress, Texture.class);
         for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
 
-
-        for (TileTypes value : TileTypes.values()) {
-            manager.load(value.getTextureAddress(), Texture.class);
-        }
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);
@@ -284,9 +283,9 @@ public class Controller extends Game {
         Gdx.app.exit();
     }
 
-//    public Texture getBlackMap() {
-//        return manager.get(blackTileAddress);
-//    }
+    public Texture getBlackMap() {
+        return manager.get(blackTileAddress);
+    }
 
     public Texture getGranaryBack() {
         return manager.get(granaryBack);
