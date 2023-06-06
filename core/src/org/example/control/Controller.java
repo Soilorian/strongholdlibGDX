@@ -130,7 +130,7 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(10);
         MapViewMenuController.setViewingX(10);
-        setScreen(Menus.TAX_MENU.getMenu());
+        setScreen(Menus.PROFILE_MENU.getMenu());
     }
 
     private void manageAssets() {
