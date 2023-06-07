@@ -49,6 +49,7 @@ public class ProfileMenu extends Menu {
     private Table leaderBoard;
     private ScrollPane scrollPane;
     private List listNum,listUser,listScore;
+    //avatar
     //Pics
     private final Texture groundPic = new Texture("pictures/ProfBackground.png");
     private final Texture editPic = new Texture("pictures/edit.png");
