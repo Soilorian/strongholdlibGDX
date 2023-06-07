@@ -181,11 +181,12 @@ public class MapViewMenu extends Menu {
 
     private Texture makeTextureForTile(int x, int y, int z) {
         Tile tile = GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
-        if (tile != null) {
-            return tile.getTexture(z);
-        } else
-            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
-                    controller.getBlackMap());
+        return tile.getTexture(z);
+//        if (tile != null) {
+//            return tile.getTexture(z);
+//        } else
+//            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
+//                    controller.getBlackMap());
     }
 
     @Override

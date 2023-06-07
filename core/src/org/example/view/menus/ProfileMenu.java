@@ -39,6 +39,7 @@ public class ProfileMenu extends Menu {
     private Label goldNum,goldUser,goldScore;
     private Label silverNum,silverUser,silverScore;
     private Label cuNum,cuUser,cuScore;
+    private final Texture backgroundPic = new Texture("pictures/ProfBackground.png");
     private final Texture editPic = new Texture("pictures/edit.png");
     private final Texture trashPic = new Texture("pictures/trash.png");
     private final Texture backPic = new Texture("pictures/back.jpg");
@@ -56,7 +57,12 @@ public class ProfileMenu extends Menu {
     public void create() {
         Gdx.input.setInputProcessor(behindStage);
     }
-
+    @Override
+    public void render(float delta){
+        batch.begin();
+        batch.draw(backgroundPic,0,0);
+        batch.end();
+    }
 
     private void changeUsername() {
         if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
