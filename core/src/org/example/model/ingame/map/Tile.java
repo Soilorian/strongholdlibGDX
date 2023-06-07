@@ -259,10 +259,43 @@ public class Tile {
                 Controller.getTexture(tile.getTextureAddress()));
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
-        if (tree != null)
-            ;
-        // TODO: 6/4/2023 building and tree and rock
-//        texture = new Texture(pixmap);
+        pixmap = texture.getTextureData().consumePixmap();
+        if (tree != null) {
+            Texture texture1 = tree.getTexture();
+            if (!texture1.getTextureData().isPrepared())
+                texture1.getTextureData().prepare();
+            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
+                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
+        }
+        if (rock != null) {
+            Texture texture1 = rock.getTexture();
+            if (!texture1.getTextureData().isPrepared())
+                texture1.getTextureData().prepare();
+            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
+                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
+        }
+        if (!peasants.isEmpty()) {
+            Texture texture1 = Controller.getPeseantTexture();
+            if (!texture1.getTextureData().isPrepared())
+                texture1.getTextureData().prepare();
+            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+            pixmap.drawPixmap(pixmap1, texture.getWidth() - pixmap1.getWidth(),
+                    texture.getHeight() - pixmap1.getHeight());
+        }
+        if (!troops.isEmpty()) {
+            for (int i = 0; i < troops.size(); i++) {
+                Troop troop = troops.get(i);
+                Texture texture1 = troop.getTexture();
+                if (!texture1.getTextureData().isPrepared())
+                    texture1.getTextureData().prepare();
+                Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+                pixmap.drawPixmap(pixmap1, i + 10, pixmap.getHeight()/2 - pixmap1.getHeight());
+            }
+        }
+
+        texture = new Texture(pixmap);
         pixmap.dispose();
         return texture;
     }

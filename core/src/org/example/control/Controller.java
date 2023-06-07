@@ -98,6 +98,10 @@ public class Controller extends Game {
         return manager.get(textureAddress);
     }
 
+    public static Texture getPeseantTexture() {
+        return null;
+    }
+
     public void changeMenu(Menu menu, Menu from) {
         if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
             setScreen(nextMenu);

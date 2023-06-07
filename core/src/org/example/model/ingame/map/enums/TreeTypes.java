@@ -1,5 +1,6 @@
 package org.example.model.ingame.map.enums;
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.view.enums.ConsoleColors;
 
 public enum TreeTypes {
@@ -32,5 +33,9 @@ public enum TreeTypes {
 
     public String getTextureAddress() {
         return textureAddress;
+    }
+
+    public Texture getTexture() {
+        return null;
     }
 }
