@@ -67,7 +67,7 @@ public class MapEditMenu extends Menu {
         }
         System.out.println("do you want to save the map?");
         do {
-            String input = ""; // TODO: 6/1/2023 save window
+            String input = ""; // TODO: 6/1/2023 save ChangeWindow
             Matcher matcher;
             if ((matcher = MapEditorMenuCommands.getMatcher(input, MapEditorMenuCommands.SAVE)) != null) {
                 if (save(matcher))

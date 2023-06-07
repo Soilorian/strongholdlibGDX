@@ -66,9 +66,6 @@ public class Player {
         this.password = DataBase.hashWithApacheCommons(password);
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public String getNickname() {
         return nickname;

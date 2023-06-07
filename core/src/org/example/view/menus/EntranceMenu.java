@@ -278,8 +278,12 @@ public class EntranceMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 try {
                     if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
-                        loginResult.setText(EntranceMenuController.login(loginUsernameText.getText(),
-                                loginPasswordText.getText(), stayLogged.isChecked()));
+                        String message = EntranceMenuController.login(loginUsernameText.getText(),
+                                loginPasswordText.getText(), stayLogged.isChecked());
+                        loginResult.setText(message);
+                        if(message.equals(EntranceMenuMessages.SUCCEED.toString())){
+                            controller.setScreen(new MainMenu());
+                        }
                     } else loginResult.setText("Invalid Captcha");
 
                 } catch (IOException e) {
