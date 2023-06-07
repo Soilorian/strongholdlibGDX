@@ -2,15 +2,15 @@ package org.example.view.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
@@ -20,9 +20,12 @@ import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
+import org.example.model.BuildingDragger;
+import org.example.model.BuildingReturnerAction;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
+import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Tile;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
@@ -36,19 +39,38 @@ import java.util.regex.Matcher;
 
 import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.*;
 
-
-import com.badlogic.gdx.graphics.Texture;
-
-import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.zoom;
-
 public class GameMenu extends Menu {
-    private Image mapPrevImage = new Image();
     private final ArrayList<ArrayList<Image>> mapImages = new ArrayList<>();
+    Window[] menuWindows;
+    ImageButton[] imageButtons;
+    private Image mapPrevImage = new Image();
 
     private void addAssets() {
+        addMapAssets();
+        addMiniMapAssets();
+        addMenuAssets();
+        addWiseManAssets();
+    }
+
+    private void addWiseManAssets() {
+
+    }
+
+    private void addMenuAssets() {
+        for (Window menuWindow : menuWindows) {
+            menuWindow.setVisible(false);
+            stage.addActor(menuWindow);
+        }
+        menuWindows[0].setVisible(true);
+    }
+
+    private void addMiniMapAssets() {
+        frontStage.addActor(mapPrevImage);
+    }
+
+    private void addMapAssets() {
         int zoom = MapViewMenuController.getZoom();
         for (int i = 0; i < zoom; i++) for (int j = 0; j < zoom; j++) behindStage.addActor(mapImages.get(i).get(j));
-        frontStage.addActor(mapPrevImage);
     }
 
     private void setAssets() {
@@ -59,11 +81,72 @@ public class GameMenu extends Menu {
     }
 
     private void setupWiseMan() {
-
+        // TODO: 6/6/2023 armiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiin
     }
 
     private void setupMenus() {
+        menuWindows = new Window[6];
+        Window window;
+        Buildings[] values = Buildings.values();
+        for (int i = 0; i < values.length; i++) {
+            if (i % 8 == 0){
+                window = new Window("buildings", controller.getSkin());
+                window.setWidth(Gdx.graphics.getWidth() - 800);
+                window.setHeight(400);
+                final int i1 = i / 8;
+                menuWindows[i1] = window;
+                ImageButton imageButton = new ImageButton(new TextureRegionDrawable(controller.getPictureOf(i1 + 1)));
+                imageButton.setPosition(getButtonXForMenu(i/8), getButtonYForMenu(i/8));
+                imageButtons[i1] = imageButton;
+                imageButtons[i1].addListener(new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        changeWindow(i1);
+                    }
+                });
+            }
+            Buildings buildings = values.clone()[i];
+            Image image = new Image(Controller.resizer(80, 80, buildings.getTexture()));
+            image.addAction(new BuildingReturnerAction(buildings));
+            image.addListener(new BuildingDragger());
+            image.setPosition(getRelativeX(i), getRelativeY(i));
+        }
+    }
 
+    private float getButtonYForMenu(int i) {
+        i %= 3;
+        return 400/3f *(2 - i);
+    }
+
+    private float getButtonXForMenu(int i) {
+        if (i < 3) return 0;
+        else return Gdx.graphics.getWidth() - 800 - 400 / 3f;
+    }
+
+    private float getRelativeY(int i) {
+        i %= 2;
+        if (i == 0) return mapPrevImage.getHeight() / 4;
+        else return mapPrevImage.getHeight() * 3 / 4;
+    }
+
+    private float getRelativeX(int i) {
+        i %= 8;
+        switch (i/2){
+            case 0: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 6);
+            case 1: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 3);
+            case 2: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 2);
+            case 3: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) * 2 / 3);
+            default:
+                System.out.println("ey vay, getRelativeX");
+        }
+        return 0;
+    }
+
+    private void changeWindow(int i1) {
+        for (Window menuWindow : menuWindows) {
+            menuWindow.setVisible(false);
+        }
+        menuWindows[i1].setVisible(true);
     }
 
     private void setupMap() {
@@ -86,7 +169,6 @@ public class GameMenu extends Menu {
                 return super.keyDown(event, keycode);
             }
         });
-
     }
 
 
@@ -112,7 +194,7 @@ public class GameMenu extends Menu {
                 moveRight();
                 break;
             }
-            case Input.Keys.V:{
+            case Input.Keys.V: {
                 viewPosition();
             }
             default:
@@ -274,13 +356,13 @@ public class GameMenu extends Menu {
                 zoom, zoom);
         Texture mapPrev = new Texture(pixmap);
         this.mapPrevImage = new Image(controller.addBoarder(mapPrev));
-        mapPrevImage.setPosition(0 , 0);
+        mapPrevImage.setPosition(0, 0);
         mapPrevImage.setWidth(400);
         mapPrevImage.setHeight(400);
-        mapPrevImage.addListener(new ClickListener(){
+        mapPrevImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println(x+" "+ y);
+                System.out.println(x + " " + y);
                 quickMove(x, y);
             }
         });
@@ -303,8 +385,6 @@ public class GameMenu extends Menu {
                 moveUnit(matcher);
             else if (command.equalsIgnoreCase("show menu"))
                 System.out.println(Menus.getNameByObj(this));
-            else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.DROP_BUILDING)) != null)
-                dropBuilding(matcher);
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY_FACTORS) != null)
                 showPopularityFactors();
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.REPAIR) != null)
@@ -331,11 +411,10 @@ public class GameMenu extends Menu {
                 pourOil(matcher);
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.DISBAND) != null)
                 disbandUnit();
-            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TRADE) != null){
+            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TRADE) != null) {
                 controller.setScreen(Menus.TRADE_MENU.getMenu());
                 controller.changeMenu(this, this);
-            }
-            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.NEXT_TURN) != null) {
+            } else if (GameMenuCommands.getMatcher(command, GameMenuCommands.NEXT_TURN) != null) {
                 if (nextTurn())
                     break;
             } else if (GameMenuCommands.getMatcher(command, GameMenuCommands.OPEN_TRADE_MENU) != null)
@@ -359,7 +438,7 @@ public class GameMenu extends Menu {
             else if ((command.equalsIgnoreCase("open music player"))) {
                 controller.setScreen(Menus.MUSIC_CONTROL_MENU.getMenu());
                 controller.changeMenu(this, this);
-            }else if (command.equalsIgnoreCase("show castle coordinates"))
+            } else if (command.equalsIgnoreCase("show castle coordinates"))
                 System.out.println(GameMenuController.showCastleCoordinates());
             else {
                 SoundPlayer.play(Sounds.AKHEY);
@@ -486,14 +565,6 @@ public class GameMenu extends Menu {
     private void setFearRate(Matcher matcher) {
         String fear = matcher.group("Rate");
         System.out.println(GameMenuController.setFearRate(fear));
-    }
-
-    public void dropBuilding(Matcher matcher) {
-        String x = matcher.group("X");
-        String y = matcher.group("Y");
-        String type = Controller.removeQuotes(matcher.group("Type"));
-        String direction = Controller.removeQuotes(matcher.group("Direction"));
-        System.out.println(GameMenuController.dropBuildingGameMenu(x, y, type, direction));
     }
 
     public void selectBuilding(Matcher matcher) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {

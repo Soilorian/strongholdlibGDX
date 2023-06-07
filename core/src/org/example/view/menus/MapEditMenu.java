@@ -132,7 +132,7 @@ public class MapEditMenu extends Menu {
         String type = Controller.removeQuotes(matcher.group("Type"));
         if (type.equals("castle"))
             System.out.println(MapEditMenuController.dropCastle(Integer.parseInt(x), Integer.parseInt(y)));
-        else System.out.println(MapEditMenuController.dropBuilding(x, y, type, "MapEditMenu"));
+//        else System.out.println(MapEditMenuController.dropBuilding(x, y, type, "MapEditMenu"));
     }
 
     private void dropUnit(Matcher matcher) {

@@ -128,9 +128,9 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(103, 102).setTile(TileTypes.SEA);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(103, 102).setTree(TreeTypes.OLIVE_TREE);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
-        MapViewMenuController.setViewingY(10);
-        MapViewMenuController.setViewingX(10);
-        setScreen(Menus.TAX_MENU.getMenu());
+        MapViewMenuController.setViewingY(100);
+        MapViewMenuController.setViewingX(100);
+        setScreen(Menus.GAME_MENU.getMenu());
     }
 
     private void manageAssets() {
@@ -326,5 +326,9 @@ public class Controller extends Game {
 
     public Texture getUnitBack() {
         return manager.get(unitBack);
+    }
+
+    public Texture getPictureOf(int i) {
+        return null;
     }
 }

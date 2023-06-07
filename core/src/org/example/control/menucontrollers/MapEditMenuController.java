@@ -263,25 +263,9 @@ public class MapEditMenuController {
         return MapEditorMenuMessages.SUCCEED.toString();
     }
 
-    public static String dropBuilding(String width, String height, String type, String menu) {
-        String result;
-        if ((result = checkEmpty(width, height, type)) != null) {
-            return result;
-        }
-        if (isCoordinatesNotDigit(width, height)) {
-            return MapEditorMenuMessages.DIGIT_COORDINATES.toString();
-        }
-        int x = Integer.parseInt(width);
-        int y = Integer.parseInt(height);
-        if (isNotCoordinatesValid(x, y)) {
-            return MapEditorMenuMessages.INVALID_COORDINATES.toString();
-        }
+    public static String dropBuilding(int x, int y, Buildings buildings, String menu) {
         if (isThereBuilding(x, y)) {
             return MapEditorMenuMessages.ALREADY_BUILDING.toString();
-        }
-        Buildings buildings;
-        if ((buildings = getBuildingsEnumByName(type)) == null) {
-            return MapEditorMenuMessages.INVALID_BUILDING.toString();
         }
         Map map = Controller.getCurrentMap();
         Tile tile = map.getTile(y, x);

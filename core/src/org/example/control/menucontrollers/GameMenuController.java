@@ -37,7 +37,6 @@ import java.util.Objects;
 
 import static org.example.control.Controller.isFieldEmpty;
 import static org.example.control.menucontrollers.MapEditMenuController.dropBuilding;
-import static org.example.control.menucontrollers.MapEditMenuController.isDirectionValid;
 
 public class GameMenuController {
     private static final ArrayList<Troop> selectedTroops = new ArrayList<>();
@@ -101,24 +100,17 @@ public class GameMenuController {
         return GameMenuMessages.SUCCEED.toString();
     }
 
-    public static String dropBuildingGameMenu(String xInString, String yInString, String type, String direction) {
-        Direction dir;
-        if ((dir = isDirectionValid(direction)) == null) return MapEditorMenuMessages.INVALID_DIRECTION.toString();
-        String result = dropBuilding(xInString, yInString, type, "GameMenu");
-        if (result != null) return result;
-        Buildings buildings = Objects.requireNonNull(Buildings.getBuildingsEnumByName(type));
+    public static void dropBuildingGameMenu(int x, int y, Buildings buildings, Direction dir) {
+        String result = dropBuilding(x, y, buildings, "GameMenu");
         Building building = new Building(buildings);
         building.setOwner(DataBase.getCurrentEmpire());
-        int x = Integer.parseInt(xInString);
-        int y = Integer.parseInt(yInString);
-        if (!lookAround(x, y, DataBase.getCurrentEmpire(), 5).isEmpty())
-            return "There are enemies around";
-        if (!Building.build(buildings, GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x)))
-            return "unable to place building";
+        if (!lookAround(x, y, DataBase.getCurrentEmpire(), 5).isEmpty());
+//            "There are enemies around" TODO error masseges
+        if (!Building.build(buildings, GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x)));
+//            return "unable to place building"; // TODO: 6/6/2023 error
         if (isGate(buildings))
             currentGame.getCurrentMap().addGate(x, y, dir);
         if (isWall(building)) Controller.getCurrentMap().dropWall(x, y, building);
-        return GameMenuMessages.SUCCEED.toString();
     }
 
     public static boolean isGate(Buildings buildings) {

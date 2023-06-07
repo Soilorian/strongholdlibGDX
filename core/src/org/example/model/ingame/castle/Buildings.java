@@ -1,6 +1,7 @@
 package org.example.model.ingame.castle;
 
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.model.ingame.castle.details.Durability;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.resourses.Resource;
@@ -177,6 +178,11 @@ public enum Buildings {
     MERCENARY_POST("mercenary post", Durability.LOW, Menus.UNIT_CREATING_MENU, null, null,
             0, 0, new Resource[]{new Resource(Resources.WOOD, 10)}, new TileTypes[]
             {TileTypes.GRASS, TileTypes.BEACH, TileTypes.DENSE_GRASS_LAND, TileTypes.GRASS_LAND, TileTypes.GRAVEL_GROUND,
+                    TileTypes.GROUND, TileTypes.IRON_GROUND, TileTypes.PLAIN}, 0),
+
+    HELL_DOORWAY("mercenary post", Durability.HIGH, Menus.UNIT_CREATING_MENU, null, null,
+            0, 0, new Resource[]{new Resource(Resources.GOLD, 1000), new Resource(Resources.HORSE, 10)}
+            , new TileTypes[]{TileTypes.GRASS, TileTypes.BEACH, TileTypes.DENSE_GRASS_LAND, TileTypes.GRASS_LAND, TileTypes.GRAVEL_GROUND,
                     TileTypes.GROUND, TileTypes.IRON_GROUND, TileTypes.PLAIN}, 0);
 
     private final String buildingName;
@@ -249,5 +255,9 @@ public enum Buildings {
 
     public int getProducingAmount() {
         return producingAmount;
+    }
+
+    public Texture getTexture() {
+        return null;
     }
 }
