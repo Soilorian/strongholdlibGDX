@@ -1,5 +1,6 @@
 package org.example.model.ingame.map.enums;
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.view.enums.ConsoleColors;
 
 import java.util.ArrayList;
@@ -37,5 +38,9 @@ public enum RockTypes {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Texture getTexture() {
+        return null;
     }
 }

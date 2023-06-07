@@ -1,6 +1,7 @@
 package org.example.model.ingame.humans.army;
 
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Building;
@@ -341,5 +342,9 @@ public class Troop {
 
     public int getRange() {
         return range;
+    }
+
+    public Texture getTexture() {
+        return null;
     }
 }

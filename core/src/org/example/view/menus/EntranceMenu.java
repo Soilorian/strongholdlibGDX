@@ -39,6 +39,7 @@ import java.util.regex.Matcher;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import org.example.view.enums.Menus;
 import org.example.view.enums.commands.Slogans;
 
 import static com.badlogic.gdx.Gdx.graphics;
@@ -277,10 +278,7 @@ public class EntranceMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
-                    if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
-                        loginResult.setText(EntranceMenuController.login(loginUsernameText.getText(),
-                                loginPasswordText.getText(), stayLogged.isChecked()));
-                    } else loginResult.setText("Invalid Captcha");
+                    login();
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -402,5 +400,15 @@ public class EntranceMenu extends Menu {
             } while (!result.equals(EntranceMenuMessages.SUCCEED.toString()));
         } else
             System.out.println(result);
+    }
+
+    private void login() throws IOException {
+        if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
+            String login1 = EntranceMenuController.login(loginUsernameText.getText(),
+                    loginPasswordText.getText(), stayLogged.isChecked());
+            loginResult.setText(login1);
+            if (login1.equals(EntranceMenuMessages.SUCCEED.toString()))
+                controller.changeMenu(Menus.MAIN_MENU.getMenu() , this);
+        } else loginResult.setText("Invalid Captcha");
     }
 }
