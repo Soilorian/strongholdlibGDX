@@ -136,8 +136,7 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(100);
         MapViewMenuController.setViewingX(100);
-        setScreen(Menus.MAIN_MENU.getMenu());
-        System.out.println(Buildings.values().length);
+        setScreen(Menus.GAME_MENU.getMenu());
     }
 
     private void manageAssets() {

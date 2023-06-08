@@ -4,10 +4,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.example.control.SoundPlayer;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
-import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.Slogans;
 
 import javax.sound.sampled.LineUnavailableException;

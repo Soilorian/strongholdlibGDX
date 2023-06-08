@@ -21,6 +21,7 @@ public class Player {
     String slogan;
 
     int maxStore = 0;
+    int profImage = 0;
 
 
     public Player(String username, String password, String nickname, String email, String slogan) {
@@ -48,9 +49,7 @@ public class Player {
     public int getMaxStore() {
         return maxStore;
     }
-    public void setMaxStore(int maxstore){
-        maxStore = maxstore;
-    }
+
     public String toStringScore(){
         return Integer.valueOf(getMaxStore()).toString();
     }
@@ -66,9 +65,6 @@ public class Player {
         this.password = DataBase.hashWithApacheCommons(password);
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public String getNickname() {
         return nickname;
@@ -92,6 +88,14 @@ public class Player {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+    }
+
+    public int getProfImage() {
+        return profImage;
+    }
+
+    public void setProfImage(int profImage) {
+        this.profImage = profImage;
     }
 
     public void setSecurityQuestionAnswer(String securityQuestionAnswer) {

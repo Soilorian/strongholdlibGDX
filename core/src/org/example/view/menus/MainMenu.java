@@ -240,6 +240,7 @@ public class MainMenu extends Menu {
 
     public void profile() {
         MainMenuController.profile();
+        controller.setScreen(new ProfileMenu());
     }
 
     public void settings() {
