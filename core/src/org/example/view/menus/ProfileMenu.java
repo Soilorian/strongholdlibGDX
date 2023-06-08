@@ -20,6 +20,7 @@ import org.example.model.DataBase;
 import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
+import org.example.view.enums.Avatars;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -43,19 +44,23 @@ public class ProfileMenu extends Menu {
     //profileMenu
     private TextField changeUser,changeNick,changePass,changeEmail,changeSlogan;
     private Button submit;
-    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5,board,back;
+    private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5,board,back,avatar;
     //leaderBoard
     private String[] num,user,score;
     private Table leaderBoard;
     private ScrollPane scrollPane;
     private List listNum,listUser,listScore;
     //avatar
+    private Window windowPic;
+    private ImageButton defaultPic,pic1,pic2,pic3,pic4,pic5,pic6,pic7;
+    private Button done;
     //Pics
     private final Texture groundPic = new Texture("pictures/ProfBackground.png");
     private final Texture editPic = new Texture("pictures/edit.png");
     private final Texture trashPic = new Texture("pictures/trash.png");
     private final Texture backPic = new Texture("pictures/back.jpg");
     private final Texture boardPic = new Texture("pictures/leaderBoard.png");
+
 
 
     public ProfileMenu() {
@@ -72,6 +77,7 @@ public class ProfileMenu extends Menu {
         newChanges();
         newChangePass();
         newLeader();
+        newImage();
     }
     @Override
     public void render(float delta){
@@ -132,8 +138,15 @@ public class ProfileMenu extends Menu {
         leaderBoard = new Table(controller.getSkin());
         scrollPane = new ScrollPane(leaderBoard,controller.getSkin());
     }
+    private void newImage(){
+        windowPic = new Window("Change Avatar",controller.getSkin());
+        done = new TextButton("Submit",controller.getSkin());
+    }
     private void profileMenu(){
         error = new Label("",controller.getSkin());
+        int type = DataBase.getCurrentPlayer().getProfImage();
+        avatar = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
+        addActor(avatar,400,620,130,100);
         addActor(changeUser,350,590,250,50);
         addActor(changeNick,350,530,250,50);
         addActor(changePass,350,470,250,50);
@@ -157,9 +170,10 @@ public class ProfileMenu extends Menu {
         changePass.setDisabled(true);
         changeEmail.setText(DataBase.getCurrentPlayer().getEmail());
         changeEmail.setDisabled(true);
-        changeSlogan.setText(DataBase.getCurrentPlayer().getSlogan());
+        changeSlogan.setText(ProfileMenuController.showSlogan());
         changeSlogan.setDisabled(true);
         backListener(submit);
+        imageListener(avatar);
         imageListener(editBut1);
         imageListener(editBut2);
         imageListener(editBut3);
@@ -296,6 +310,25 @@ public class ProfileMenu extends Menu {
         backListener(backBut);
         behindStage.addActor(scrollPane);
     }
+    private void avatarMenu(){
+        behindStage.clear();
+        window.setBounds(130,100,700, 800);
+        defaultPic = new Avatars(Avatars.getPic(0),Avatars.getPic(0),0);
+        window.add(defaultPic).pad(10,0,10,10);
+//        pic1 = new ImageButtons(ImageButtons.getPic(1),ImageButtons.getPic(1),1);
+//        pic1.setPosition(270,400);
+//        pic1.setSize(160,130);
+//        pic2 = new ImageButtons(ImageButtons.getPic(2),ImageButtons.getPic(2),2);
+//        pic2.setPosition(480,400);
+//        pic2.setSize(140,140);
+//        pic3 = new ImageButtons(ImageButtons.getPic(3),ImageButtons.getPic(3),2);
+//        pic3.setPosition(90,230);
+//        pic3.setSize(140,140);
+//        pic4 = new ImageButtons(ImageButtons.getPic(4),ImageButtons.getPic(4),4);
+//        pic4.setPosition(270,230);
+//        pic4.setSize(140,140);
+        behindStage.addActor(window);
+    }
 
     private void addActor(Actor actor,int x,int y,int width,int height){
         actor.setPosition(x,y);
@@ -385,6 +418,8 @@ public class ProfileMenu extends Menu {
                     changes("Slogan");
                 } else if (imageButton.equals(board)) {
                     leaderBoard();
+                } else if (imageButton.equals(avatar)) {
+                    avatarMenu();
                 } else{
                     controller.setScreen(new MainMenu());
                 }
