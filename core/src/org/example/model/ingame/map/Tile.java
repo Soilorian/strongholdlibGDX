@@ -254,41 +254,43 @@ public class Tile {
     }
 
     public Texture getTexture(int z) {
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth() / z, Gdx.graphics.getHeight() / z, Pixmap.Format.RGBA8888);
+        int width = Gdx.graphics.getWidth() / z;
+        int height = Gdx.graphics.getHeight() / z;
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         Texture texture = Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
                 Controller.getTexture(tile.getTextureAddress()));
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         pixmap.drawPixmap(texture.getTextureData().consumePixmap(), 0, 0);
-        if (tree != null) {
-            Texture texture1 = tree.getTexture();
-            if (!texture1.getTextureData().isPrepared())
-                texture1.getTextureData().prepare();
-            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
-                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-//            pixmap1.dispose();
-        }
-        if (rock != null) {
-            Texture texture1 = rock.getTexture();
-            if (!texture1.getTextureData().isPrepared())
-                texture1.getTextureData().prepare();
-            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
-                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-//            pixmap1.dispose();
-        }
-        if (trap != null && DataBase.getCurrentEmpire().equals(trap.getEmpire())){
-            Texture texture1 = trap.getTexture();
-            if (!texture1.getTextureData().isPrepared())
-                texture1.getTextureData().prepare();
-            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
-                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-//            pixmap1.dispose();
-        }
+//        if (tree != null) {
+//            Texture texture1 = tree.getTexture();
+//            if (!texture1.getTextureData().isPrepared())
+//                texture1.getTextureData().prepare();
+//            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+//            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
+//                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
+////            pixmap1.dispose();
+//        }
+//        if (rock != null) {
+//            Texture texture1 = rock.getTexture();
+//            if (!texture1.getTextureData().isPrepared())
+//                texture1.getTextureData().prepare();
+//            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+//            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
+//                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
+////            pixmap1.dispose();
+//        }
+//        if (trap != null && DataBase.getCurrentEmpire().equals(trap.getEmpire())){
+//            Texture texture1 = trap.getTexture();
+//            if (!texture1.getTextureData().isPrepared())
+//                texture1.getTextureData().prepare();
+//            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+//            pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
+//                    texture.getHeight() / 2 - pixmap1.getHeight() / 2);
+////            pixmap1.dispose();
+////        }
         if (building != null) {
-            Texture texture1 = building.getTexture();
+            Texture texture1 = Controller.resizer(width, height, building.getTexture());
             if (!texture1.getTextureData().isPrepared()) {
                 texture1.getTextureData().prepare();
             }
@@ -297,30 +299,31 @@ public class Tile {
                     texture.getHeight() / 2 - pixmap1.getHeight() / 2);
 //            pixmap1.dispose();
         }
-        if (!peasants.isEmpty()) {
-            Texture texture1 = Controller.getPeseantTexture();
-            if (!texture1.getTextureData().isPrepared()) {
-                texture1.getTextureData().prepare();
-            }
-            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
-            pixmap.drawPixmap(pixmap1, texture.getWidth() - pixmap1.getWidth(),
-                    texture.getHeight() - pixmap1.getHeight());
-//            pixmap1.dispose();
-        }
-        if (!troops.isEmpty()) {
-            for (int i = 0; i < troops.size(); i++) {
-                Troop troop = troops.get(i);
-                Texture texture1 = troop.getTexture();
-                if (!texture1.getTextureData().isPrepared()) {
-                    texture1.getTextureData().prepare();
-                }
-                Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
-                pixmap.drawPixmap(pixmap1, i + 10, pixmap.getHeight()/2 - pixmap1.getHeight());
-//                pixmap1.dispose();
-            }
-        }
+//        if (!peasants.isEmpty()) {
+//            Texture texture1 = Controller.getPeseantTexture();
+//            if (!texture1.getTextureData().isPrepared()) {
+//                texture1.getTextureData().prepare();
+//            }
+//            Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+//            pixmap.drawPixmap(pixmap1, texture.getWidth() - pixmap1.getWidth(),
+//                    texture.getHeight() - pixmap1.getHeight());
+////            pixmap1.dispose();
+//        }
+//        if (!troops.isEmpty()) {
+//            for (int i = 0; i < troops.size(); i++) {
+//                Troop troop = troops.get(i);
+//                Texture texture1 = troop.getTexture();
+//                if (!texture1.getTextureData().isPrepared()) {
+//                    texture1.getTextureData().prepare();
+//                }
+//                Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
+//                pixmap.drawPixmap(pixmap1, i + 10, pixmap.getHeight()/2 - pixmap1.getHeight());
+////                pixmap1.dispose();
+//            }
+//        }
 
         texture = new Texture(pixmap);
+//        pixmap.dispose();
         return texture;
     }
 

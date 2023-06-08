@@ -39,8 +39,8 @@ import static org.example.control.menucontrollers.inGameControllers.MapViewMenuC
 
 public class GameMenu extends Menu {
     private final ArrayList<ArrayList<Image>> mapImages = new ArrayList<>();
-    Window[] menuWindows;
-    ImageButton[] imageButtons;
+    Window[] menuWindows = new Window[6];
+    ImageButton[] imageButtons = new ImageButton[8];
     private Image mapPrevImage = new Image();
 
     private void addAssets() {
@@ -55,9 +55,10 @@ public class GameMenu extends Menu {
     }
 
     private void addMenuAssets() {
+        for (Window menuWindow : menuWindows) for (ImageButton imageButton : imageButtons) menuWindow.add(imageButton);
         for (Window menuWindow : menuWindows) {
             menuWindow.setVisible(false);
-            stage.addActor(menuWindow);
+            frontStage.addActor(menuWindow);
         }
         menuWindows[0].setVisible(true);
     }
@@ -84,13 +85,14 @@ public class GameMenu extends Menu {
 
     private void setupMenus() {
         menuWindows = new Window[6];
-        Window window;
+        Window window = null;
         Buildings[] values = Buildings.values();
         for (int i = 0; i < values.length; i++) {
             if (i % 8 == 0) {
                 window = new Window("buildings", controller.getSkin());
                 window.setWidth(Gdx.graphics.getWidth() - 800);
                 window.setHeight(400);
+                window.setPosition(400, 0);
                 final int i1 = i / 8;
                 menuWindows[i1] = window;
                 ImageButton imageButton = new ImageButton(new TextureRegionDrawable(controller.getPictureOf(i1 + 1)));
@@ -108,6 +110,7 @@ public class GameMenu extends Menu {
             image.addAction(new BuildingReturnerAction(buildings));
             image.addListener(new BuildingDragger());
             image.setPosition(getRelativeX(i), getRelativeY(i));
+            window.add(image);
         }
     }
 
@@ -168,6 +171,7 @@ public class GameMenu extends Menu {
                 image.addListener(listener);
             }
             mapImages.add(images);
+
         }
         behindStage.addListener(new InputListener() {
             @Override
@@ -215,6 +219,8 @@ public class GameMenu extends Menu {
             default:
                 return;
         }
+        setupMiniMap();
+        addMiniMapAssets();
     }
 
     private void viewPosition() {
@@ -345,12 +351,11 @@ public class GameMenu extends Menu {
 
     private Texture makeTextureForTile(int x, int y, int z) {
         Tile tile = GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
-//        if (tile != null) {
-//        }
-        return tile.getTexture(z);
-//        else
-//            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
-//                    controller.getBlackMap());
+        if (tile != null) {
+            return tile.getTexture(z);
+        } else
+            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
+                    controller.getBlackMap());
     }
 
 
@@ -386,7 +391,7 @@ public class GameMenu extends Menu {
 
     private void quickMove(float x, float y) {
         MapViewMenuController.setViewingX((int) (x / 2));
-        MapViewMenuController.setViewingY((int) (y / 2));
+        MapViewMenuController.setViewingY((int) (200 - y / 2));
         create();
     }
 

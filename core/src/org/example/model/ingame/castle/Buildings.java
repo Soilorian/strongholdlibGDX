@@ -2,6 +2,7 @@ package org.example.model.ingame.castle;
 
 
 import com.badlogic.gdx.graphics.Texture;
+import org.example.control.Controller;
 import org.example.model.ingame.castle.details.Durability;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.resourses.Resource;
@@ -301,7 +302,7 @@ public enum Buildings {
     }
 
     public Texture getTexture() {
-        return null;
+        return Controller.getTexture(pictureAddress);
     }
 
     public String getTextureAddress() {

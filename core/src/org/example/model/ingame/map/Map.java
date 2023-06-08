@@ -237,7 +237,7 @@ public class Map {
     public void setUpPixmap(Pixmap pixmap, int i) {
         for (int j = 0; j < groundHeight; j++) {
             for (int k = 0; k < groundWidth; k++) {
-                if (tiles[j][k].getBuilding() != null) {
+                if (tiles[groundHeight - j - 1][k].getBuilding() != null) {
                     pixmap.setColor(tiles[groundHeight - j - 1][k].getBuilding().getOwner().getColor().toColor());
                 } else if (!tiles[groundHeight - j - 1][k].getTroops().isEmpty()) {
                     pixmap.setColor(tiles[groundHeight - j - 1][k].getTroops().get(0).getKing().getColor().toColor());

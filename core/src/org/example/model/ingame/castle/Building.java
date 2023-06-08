@@ -2,6 +2,7 @@ package org.example.model.ingame.castle;
 
 import com.badlogic.gdx.graphics.Texture;
 import org.example.Main;
+import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
@@ -307,6 +308,6 @@ public class Building {
     }
 
     public Texture getTexture() {
-        return null;
+        return Controller.getTexture(building.getTextureAddress());
     }
 }

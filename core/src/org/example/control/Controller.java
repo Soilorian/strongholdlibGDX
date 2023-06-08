@@ -14,7 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.DataBase;
+import org.example.model.Player;
+import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Buildings;
+import org.example.model.ingame.castle.Colors;
+import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
@@ -136,6 +140,11 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(100);
         MapViewMenuController.setViewingX(100);
+        Building building = new Building(Buildings.ARMOURER);
+        Empire owner = new Empire(new Player("aa", "aa", "aa", "aa", "aa"));
+        owner.setColor(Colors.YELLOW);
+        building.setOwner(owner);
+        GameMenuController.getCurrentGame().getCurrentMap().getTile(99, 100).setBuilding(building);
         setScreen(Menus.GAME_MENU.getMenu());
     }
 
@@ -160,7 +169,7 @@ public class Controller extends Game {
         for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (Buildings value : Buildings.values()) manager.load(value.getTextureAddress(), Texture.class);
-
+        for (int i = 1; i <= 10; i++) manager.load("numbers/" +i + "image.png", Texture.class);
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
         manager.load(showPassPath, Texture.class);
@@ -238,7 +247,7 @@ public class Controller extends Game {
         );
         Texture result = new Texture(pixmap100);
         pixmap200.dispose();
-        pixmap100.dispose();
+//        pixmap100.dispose();
         return result;
     }
 
@@ -336,6 +345,6 @@ public class Controller extends Game {
     }
 
     public Texture getPictureOf(int i) {
-        return null;
+        return manager.get("numbers/" +i + "image.png");
     }
 }
