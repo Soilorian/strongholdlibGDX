@@ -259,7 +259,7 @@ public class Tile {
                 Controller.getTexture(tile.getTextureAddress()));
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
-        pixmap = texture.getTextureData().consumePixmap();
+        pixmap.drawPixmap(texture.getTextureData().consumePixmap(), 0, 0);
         if (tree != null) {
             Texture texture1 = tree.getTexture();
             if (!texture1.getTextureData().isPrepared())
@@ -267,7 +267,7 @@ public class Tile {
             Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
             pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
                     texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-            pixmap1.dispose();
+//            pixmap1.dispose();
         }
         if (rock != null) {
             Texture texture1 = rock.getTexture();
@@ -276,7 +276,7 @@ public class Tile {
             Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
             pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
                     texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-            pixmap1.dispose();
+//            pixmap1.dispose();
         }
         if (trap != null && DataBase.getCurrentEmpire().equals(trap.getEmpire())){
             Texture texture1 = trap.getTexture();
@@ -285,7 +285,7 @@ public class Tile {
             Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
             pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
                     texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-            pixmap1.dispose();
+//            pixmap1.dispose();
         }
         if (building != null) {
             Texture texture1 = building.getTexture();
@@ -295,7 +295,7 @@ public class Tile {
             Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
             pixmap.drawPixmap(pixmap1, texture.getWidth() / 2 - pixmap1.getWidth() / 2,
                     texture.getHeight() / 2 - pixmap1.getHeight() / 2);
-            pixmap1.dispose();
+//            pixmap1.dispose();
         }
         if (!peasants.isEmpty()) {
             Texture texture1 = Controller.getPeseantTexture();
@@ -305,7 +305,7 @@ public class Tile {
             Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
             pixmap.drawPixmap(pixmap1, texture.getWidth() - pixmap1.getWidth(),
                     texture.getHeight() - pixmap1.getHeight());
-            pixmap1.dispose();
+//            pixmap1.dispose();
         }
         if (!troops.isEmpty()) {
             for (int i = 0; i < troops.size(); i++) {
@@ -316,7 +316,7 @@ public class Tile {
                 }
                 Pixmap pixmap1 = texture1.getTextureData().consumePixmap();
                 pixmap.drawPixmap(pixmap1, i + 10, pixmap.getHeight()/2 - pixmap1.getHeight());
-                pixmap1.dispose();
+//                pixmap1.dispose();
             }
         }
 

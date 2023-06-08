@@ -1,6 +1,7 @@
 package org.example.model.ingame.map.enums;
 
 import com.badlogic.gdx.graphics.Texture;
+import org.example.control.Controller;
 import org.example.view.enums.ConsoleColors;
 
 public enum TreeTypes {
@@ -36,6 +37,6 @@ public enum TreeTypes {
     }
 
     public Texture getTexture() {
-        return null;
+        return Controller.getTexture(textureAddress);
     }
 }
