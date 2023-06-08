@@ -1,5 +1,6 @@
 package org.example.model.ingame.castle;
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.Main;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
@@ -303,5 +304,9 @@ public class Building {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public Texture getTexture() {
+        return null;
     }
 }

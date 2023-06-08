@@ -8,10 +8,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.DistanceFieldFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.DataBase;
+import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
@@ -31,8 +34,8 @@ public class Controller extends Game {
     private static Map currentMap;
     private static Menus currentMenu;
     public static final AssetManager manager = new AssetManager();
-    private final String jsonSkinAddress = "button/skin/sgx-ui.json";
-    private final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
+    private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
+    private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
     private final String defaultMapAddress = "pictures/default-map.jpeg";
@@ -112,7 +115,6 @@ public class Controller extends Game {
             nextMenu = from;
     }
 
-
     @Override
     public void setScreen(Screen screen) {
         ((Menu) screen).create();
@@ -134,7 +136,8 @@ public class Controller extends Game {
         GameMenuController.getCurrentGame().getCurrentMap().getTile(100, 102).setTile(TileTypes.IRON_GROUND);
         MapViewMenuController.setViewingY(100);
         MapViewMenuController.setViewingX(100);
-        setScreen(Menus.GAME_MENU.getMenu());
+        setScreen(Menus.MAIN_MENU.getMenu());
+        System.out.println(Buildings.values().length);
     }
 
     private void manageAssets() {
@@ -157,6 +160,7 @@ public class Controller extends Game {
         manager.load(blackTileAddress, Texture.class);
         for (TileTypes value : TileTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
         for (TreeTypes value : TreeTypes.values()) manager.load(value.getTextureAddress(), Texture.class);
+        for (Buildings value : Buildings.values()) manager.load(value.getTextureAddress(), Texture.class);
 
         manager.load(rainSoundAddress, Music.class);
         manager.load(refresh, Texture.class);
@@ -208,7 +212,7 @@ public class Controller extends Game {
         }
     }
 
-    public Skin getSkin() {
+    public static Skin getSkin() {
         return manager.get(jsonSkinAddress);
     }
 

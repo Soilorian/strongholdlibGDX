@@ -20,9 +20,7 @@ import org.example.control.enums.GameStartUpMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
-import org.example.model.BuildingDragger;
-import org.example.model.BuildingReturnerAction;
-import org.example.model.DataBase;
+import org.example.model.*;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.castle.Buildings;
@@ -89,16 +87,16 @@ public class GameMenu extends Menu {
         Window window;
         Buildings[] values = Buildings.values();
         for (int i = 0; i < values.length; i++) {
-            if (i % 8 == 0){
+            if (i % 8 == 0) {
                 window = new Window("buildings", controller.getSkin());
                 window.setWidth(Gdx.graphics.getWidth() - 800);
                 window.setHeight(400);
                 final int i1 = i / 8;
                 menuWindows[i1] = window;
                 ImageButton imageButton = new ImageButton(new TextureRegionDrawable(controller.getPictureOf(i1 + 1)));
-                imageButton.setPosition(getButtonXForMenu(i/8), getButtonYForMenu(i/8));
+                imageButton.setPosition(getButtonXForMenu(i / 8), getButtonYForMenu(i / 8));
                 imageButtons[i1] = imageButton;
-                imageButtons[i1].addListener(new ClickListener(){
+                imageButtons[i1].addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         changeWindow(i1);
@@ -115,7 +113,7 @@ public class GameMenu extends Menu {
 
     private float getButtonYForMenu(int i) {
         i %= 3;
-        return 400/3f *(2 - i);
+        return 400 / 3f * (2 - i);
     }
 
     private float getButtonXForMenu(int i) {
@@ -131,11 +129,15 @@ public class GameMenu extends Menu {
 
     private float getRelativeX(int i) {
         i %= 8;
-        switch (i/2){
-            case 0: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 6);
-            case 1: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 3);
-            case 2: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 2);
-            case 3: return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) * 2 / 3);
+        switch (i / 2) {
+            case 0:
+                return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 6);
+            case 1:
+                return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 3);
+            case 2:
+                return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) / 2);
+            case 3:
+                return mapPrevImage.getWidth() + ((float) (Gdx.graphics.getWidth() - 800) * 2 / 3);
             default:
                 System.out.println("ey vay, getRelativeX");
         }
@@ -159,6 +161,11 @@ public class GameMenu extends Menu {
                 image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
                         (float) ((zoom - i - 1) * Gdx.graphics.getHeight()) / zoom);
                 images.add(image);
+                Tile tile = getTile(getViewingX() - zoom / 2 + j,
+                        getViewingY() - zoom / 2 + i);
+                image.addAction(new GetTileAction(tile));
+                TextTooltip listener = new MyTextTooltip("", controller.getSkin(), tile);
+                image.addListener(listener);
             }
             mapImages.add(images);
         }
@@ -169,6 +176,14 @@ public class GameMenu extends Menu {
                 return super.keyDown(event, keycode);
             }
         });
+    }
+
+    private Tile getTile(int x, int y) {
+        return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
+    }
+
+    private void hideDetails() {
+
     }
 
 
@@ -332,7 +347,7 @@ public class GameMenu extends Menu {
         Tile tile = GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
 //        if (tile != null) {
 //        }
-            return tile.getTexture(z);
+        return tile.getTexture(z);
 //        else
 //            return Controller.resizer((float) Gdx.graphics.getWidth() / z, (float) Gdx.graphics.getHeight() / z,
 //                    controller.getBlackMap());

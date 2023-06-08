@@ -1,5 +1,6 @@
 package org.example.model.ingame.castle.traps;
 
+import com.badlogic.gdx.graphics.Texture;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Buildings;
@@ -31,6 +32,11 @@ public class DogCage extends Building implements Trap {
     @Override
     public String getName() {
         return "dog cage";
+    }
+
+    @Override
+    public Texture getTexture() {
+        return null;
     }
 
     @Override
