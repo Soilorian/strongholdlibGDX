@@ -3,7 +3,10 @@ package org.example.view.menus.minimenus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -55,7 +58,7 @@ public class SelectMapMenu extends Menu {
 
     private void setActors() {
         randomMapButton.setPosition(graphics.getWidth() / 4f - randomMapButton.getWidth(),
-                graphics.getHeight() / 3f *2);
+                graphics.getHeight() / 3f * 2);
         randomMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -63,8 +66,8 @@ public class SelectMapMenu extends Menu {
             }
         });
 
-        showMapsButton.setPosition(graphics.getWidth() / 4f * 2 - showMapsButton.getWidth()/2,
-                graphics.getHeight() / 3f *2);
+        showMapsButton.setPosition(graphics.getWidth() / 4f * 2 - showMapsButton.getWidth() / 2,
+                graphics.getHeight() / 3f * 2);
         showMapsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -73,7 +76,7 @@ public class SelectMapMenu extends Menu {
         });
 
         createBlankMapButton.setPosition(graphics.getWidth() / 4f * 3,
-                graphics.getHeight() / 3f *2);
+                graphics.getHeight() / 3f * 2);
         createBlankMapButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -99,7 +102,7 @@ public class SelectMapMenu extends Menu {
         buildButton.setPosition(graphics.getWidth(), graphics.getHeight());
 
         mapSelectBox.setWidth(graphics.getWidth() / 2f);
-        mapSelectBox.setHeight(graphics.getHeight()/8f);
+        mapSelectBox.setHeight(graphics.getHeight() / 8f);
         mapSelectBox.setPosition(graphics.getWidth() / 4f, graphics.getHeight() / 3f * 1.9f);
         mapSelectBox.addListener(new ChangeListener() {
             @Override
@@ -110,7 +113,7 @@ public class SelectMapMenu extends Menu {
 
         randomMapSelectBox.setItems("rock land", "island", "normal");
         randomMapSelectBox.setSelected("normal");
-        randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY()/2);
+        randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY() / 2);
         randomMapSelectBox.setWidth(100);
         randomMapSelectBox.setHeight(80);
         randomMapSelectBox.addListener(new ChangeListener() {
@@ -126,7 +129,7 @@ public class SelectMapMenu extends Menu {
         controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), this);
     }
 
-    private void goToGameStartUp(){
+    private void goToGameStartUp() {
         GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
         controller.changeMenu(Menus.GAME_START_UP_MENU.getMenu(), this);
     }
@@ -137,7 +140,7 @@ public class SelectMapMenu extends Menu {
         }
         behindStage.addActor(mapSelectBox);
         okButton.setDisabled(false);
-        okButton.addListener(new ClickListener(){
+        okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 next();
@@ -182,28 +185,28 @@ public class SelectMapMenu extends Menu {
 
     private void buildRandomMap(String selected) {
         switch (selected) {
-            case "rock land":{
+            case "rock land": {
                 MapBuilderMenuController.createRockLand();
                 break;
             }
-            case "island":{
+            case "island": {
                 MapBuilderMenuController.createIsland();
                 break;
             }
-            case "normal":{
+            case "normal": {
                 MapBuilderMenuController.createBaseLand();
                 break;
             }
         }
         showMiniPrev();
     }
-    private void showMiniPrev() {
-        behindStage.getActors().removeValue(mapImage, true);
-        mapImage = new Image(GameMenuController.getMapPrev(getSelectedMap(), 4));
-        mapImage.setPosition(graphics.getWidth() /2f - mapImage.getWidth()/2f, 0);
-        behindStage.addActor(mapImage);
-    }
 
+    private void showMiniPrev() {
+        stage.clear();
+        mapImage = new Image(GameMenuController.getMapPrev(getSelectedMap(), 4));
+        mapImage.setPosition(graphics.getWidth() / 2f - mapImage.getWidth() / 2f, 0);
+        stage.addActor(mapImage);
+    }
 
 
 }

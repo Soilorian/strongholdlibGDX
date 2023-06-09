@@ -96,8 +96,10 @@ public abstract class Menu implements Screen {
             timerSlider.setValue(timerSlider.getValue() + 1);
             timerSlider.updateVisualValue();
             behindStage.draw();
+            stage.draw();
             frontStage.draw();
             frontStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+            stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
             behindStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
             batch.end();
         }
