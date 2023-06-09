@@ -104,7 +104,7 @@ public class ProfileMenuController {
 
     public static void removeSlogan() {
         Player player = DataBase.getCurrentPlayer();
-        player.setSlogan(null);
+        player.setSlogan("");
     }
 
     public static String showSlogan() {
@@ -112,7 +112,7 @@ public class ProfileMenuController {
         Player player = DataBase.getCurrentPlayer();
         slogan = player.getSlogan();
         if (slogan.isEmpty()) return "Slogan is empty";
-        return "Slogan: " + slogan;
+        return slogan;
     }
 
 }
