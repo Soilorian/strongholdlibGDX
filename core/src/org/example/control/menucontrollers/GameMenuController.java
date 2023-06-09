@@ -589,6 +589,7 @@ public class GameMenuController {
     public static Texture getMapPrev(Map selectedMap, int scale) {
         Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
                 Pixmap.Format.RGBA8888);
+
         selectedMap.setUpPixmap(pixmap, scale);
         Texture texture = new Texture(pixmap);
         pixmap.dispose();

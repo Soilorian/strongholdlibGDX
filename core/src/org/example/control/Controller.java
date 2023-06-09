@@ -14,6 +14,7 @@ import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
+import org.example.view.LoadingMenu;
 import org.example.view.enums.Menus;
 import org.example.view.menus.*;
 import org.example.view.menus.ingamemenus.*;
@@ -30,9 +31,9 @@ public class Controller extends Game {
     public static final AssetManager manager = new AssetManager();
     private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
+    private static final String shieldAddress = "pictures/shield.png";
     private static Map currentMap;
     private static Menus currentMenu;
-    private static final String  shieldAddress = "pictures/shield.png";
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
     private final String defaultMapAddress = "pictures/default-map.jpeg";
@@ -120,6 +121,14 @@ public class Controller extends Game {
         return result;
     }
 
+    public static Texture getPictureOf(int i) {
+        return manager.get("numbers/" + i + "image.png");
+    }
+
+    public static Texture getShield() {
+        return manager.get(shieldAddress);
+    }
+
     public void changeMenu(Menu menu, Menu from) {
         getRainSound().pause();
         if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
@@ -127,13 +136,14 @@ public class Controller extends Game {
             nextMenu = null;
         } else
             setScreen(menu);
-        if (from.equals(Menus.MAP_EDIT_MENU.getMenu()))
+        if (menu.equals(Menus.LOADING_MENU.getMenu()) || from.equals(Menus.MAP_EDIT_MENU.getMenu()))
             nextMenu = from;
     }
 
     @Override
     public void setScreen(Screen screen) {
-        ((Menu) screen).create();
+        if (screen instanceof Menu)
+            ((Menu) screen).create();
         super.setScreen(screen);
     }
 
@@ -141,11 +151,7 @@ public class Controller extends Game {
     public void create() {
         DataBase.generateInfoFromJson();
         manageAssets();
-        createMenus();
-        if (DataBase.isStayLogged())
-            setScreen(Menus.MAIN_MENU.getMenu());
-        else
-            setScreen(Menus.ENTRANCE_MENU.getMenu());
+        setScreen(new LoadingMenu(this));
     }
 
     private void manageAssets() {
@@ -179,10 +185,9 @@ public class Controller extends Game {
         manager.load(shopBack, Texture.class);
         manager.load(taxBack, Texture.class);
         manager.load(unitBack, Texture.class);
-        manager.finishLoading();
     }
 
-    private void createMenus() {
+    public void createMenus() {
         Menus.MUSIC_CONTROL_MENU.setMenu(new MusicMenu());
         Menus.MAP_EDIT_MENU.setMenu(new MapEditMenu());
         Menus.TRADE_MENU.setMenu(new TradeMenu());
@@ -299,7 +304,7 @@ public class Controller extends Game {
     }
 
     public Texture getLoadingBG() {
-        return new Texture("pictures/background.png");
+        return new Texture("pictures/background.jpg");
     }
 
     public Texture addBoarder(Texture texture) {
@@ -325,13 +330,5 @@ public class Controller extends Game {
 
     public Texture getUnitBack() {
         return manager.get(unitBack);
-    }
-
-    public static Texture getPictureOf(int i) {
-        return manager.get("numbers/" + i + "image.png");
-    }
-
-    public static Texture getShield(){
-        return manager.get(shieldAddress);
     }
 }

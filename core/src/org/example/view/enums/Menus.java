@@ -24,7 +24,7 @@ public enum Menus {
     FORGOT_PASSWORD("forgot password"),
     New("select map menu"),
 
-    ;
+    LOADING_MENU("loading menu");
 
     private final String menuName;
 
