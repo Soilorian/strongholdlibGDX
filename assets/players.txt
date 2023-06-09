@@ -1,1 +1,1 @@
-<?xml version="1.0" ?><object-stream></object-stream>
+<?xml version="1.0" ?><object-stream><player><username>fifik</username><password>80a166107d05721e3742ba273075771ff6e914de6d8698df0273498c70823514</password><nickname>nik</nickname><email>fifi@gmail.com</email><securityQuestion>What is your favorite patoq in university?</securityQuestion><securityQuestionAnswer>9523d9fbe79bcf3ee5f9f664a8041fa3cdba4b6b8bb902cb5ec335a5bf1ca769</securityQuestionAnswer><slogan></slogan><maxStore>0</maxStore><profImage>7</profImage></player></object-stream>

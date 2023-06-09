@@ -145,7 +145,7 @@ public class Controller extends Game {
         owner.setColor(Colors.YELLOW);
         building.setOwner(owner);
         GameMenuController.getCurrentGame().getCurrentMap().getTile(99, 100).setBuilding(building);
-        setScreen(Menus.GAME_MENU.getMenu());
+        setScreen(Menus.ENTRANCE_MENU.getMenu());
     }
 
     private void manageAssets() {

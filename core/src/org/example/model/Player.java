@@ -23,7 +23,6 @@ public class Player {
     int maxStore = 0;
     int profImage = 0;
 
-
     public Player(String username, String password, String nickname, String email, String slogan) {
         this.username = username;
         this.password = DataBase.hashWithApacheCommons(password);

@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.example.Main;
+import org.example.control.Controller;
 import org.example.control.comparetors.PlayerComparator;
 import org.example.control.enums.ProfileMenuMessages;
 import org.example.control.menucontrollers.ProfileMenuController;
@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class ProfileMenu extends Menu {
-    private Label error = new Label("",controller.getSkin());
+    private Label error;
     //changes
     private TextField news;
     private ImageButton delBut;
@@ -50,10 +50,7 @@ public class ProfileMenu extends Menu {
     private Table leaderBoard;
     private ScrollPane scrollPane;
     private List listNum,listUser,listScore;
-    //avatar
-    private Window windowPic;
     private ImageButton defaultPic,pic1,pic2,pic3,pic4,pic5,pic6,pic7;
-    private Button done;
     //Pics
     private final Texture groundPic = new Texture("pictures/ProfBackground.png");
     private final Texture editPic = new Texture("pictures/edit.png");
@@ -89,12 +86,12 @@ public class ProfileMenu extends Menu {
     }
 
     private void profNew(){
-        changeUser = new TextField("", controller.getSkin());
-        changeNick = new TextField("", controller.getSkin());
-        changePass = new TextField("", controller.getSkin());
-        changeEmail = new TextField("", controller.getSkin());
-        changeSlogan = new TextField("", controller.getSkin());
-        submit = new TextButton("Submit",controller.getSkin());
+        changeUser = new TextField("", Controller.getSkin());
+        changeNick = new TextField("", Controller.getSkin());
+        changePass = new TextField("", Controller.getSkin());
+        changeEmail = new TextField("", Controller.getSkin());
+        changeSlogan = new TextField("", Controller.getSkin());
+        submit = new TextButton("Submit", Controller.getSkin());
         Drawable backBut = new TextureRegionDrawable(new TextureRegion(backPic));
         Drawable but = new TextureRegionDrawable(new TextureRegion(boardPic));
         Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
@@ -107,54 +104,57 @@ public class ProfileMenu extends Menu {
         editBut5 = new ImageButton(edit);
     }
     private void newChanges(){
-        news = new TextField("",controller.getSkin());
+        news = new TextField("", Controller.getSkin());
         Drawable delete = new TextureRegionDrawable(new TextureRegion(trashPic));
         delBut = new ImageButton(delete);
     }
     private void newChangePass(){
-        window = new Window("Change Password",controller.getSkin());
-        captcha = new TextField("", controller.getSkin());
-        oldPass = new TextField("",controller.getSkin());
-        newPass = new TextField("",controller.getSkin());
-        showPass = new CheckBox("Show Password", controller.getSkin());
-        showNew = new CheckBox("Show New Password", Main.getController().getSkin());
-        changePassBut = new TextButton("Change", Main.getController().getSkin());
-        backBut = new TextButton("Back", controller.getSkin());
+        window = new Window("Change Password", Controller.getSkin());
+        captcha = new TextField("", Controller.getSkin());
+        oldPass = new TextField("", Controller.getSkin());
+        newPass = new TextField("", Controller.getSkin());
+        showPass = new CheckBox("Show Password", Controller.getSkin());
+        showNew = new CheckBox("Show New Password", Controller.getSkin());
+        changePassBut = new TextButton("Change", Controller.getSkin());
+        backBut = new TextButton("Back", Controller.getSkin());
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(controller.getCaptchaPath()));
         captchaButton = new ImageButton(drawable);
         passCaptcha = new Captcha();
         Texture captchaTexture = new Texture("saved.png");
         captchaImage = new Image(captchaTexture);
-        table = new Table(controller.getSkin());
+        table = new Table(Controller.getSkin());
     }
     private void newLeader(){
         num = new String[DataBase.getPlayers().size()];
         user = new String[DataBase.getPlayers().size()];
         score = new String[DataBase.getPlayers().size()];
-        backBut = new TextButton("Back", controller.getSkin());
-        listNum = new List(controller.getSkin(),"prof");
-        listUser = new List(controller.getSkin(),"prof");
-        listScore = new List(controller.getSkin(),"prof");
-        leaderBoard = new Table(controller.getSkin());
-        scrollPane = new ScrollPane(leaderBoard,controller.getSkin());
+        backBut = new TextButton("Back", Controller.getSkin());
+        listNum = new List(Controller.getSkin(),"prof");
+        listUser = new List(Controller.getSkin(),"prof");
+        listScore = new List(Controller.getSkin(),"prof");
+        leaderBoard = new Table(Controller.getSkin());
+        scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
     }
     private void newImage(){
-        windowPic = new Window("Change Avatar",controller.getSkin());
-        done = new TextButton("Submit",controller.getSkin());
+        defaultPic = new Avatars(Avatars.getPic(0),Avatars.getPic(0),0);
+        pic1 = new Avatars(Avatars.getPic(1),Avatars.getPic(1),1);
+        pic2 = new Avatars(Avatars.getPic(2),Avatars.getPic(2),2);
+        pic3 = new Avatars(Avatars.getPic(3),Avatars.getPic(3),2);
+        pic4 = new Avatars(Avatars.getPic(4),Avatars.getPic(4),4);
+        pic5 = new Avatars(Avatars.getPic(5),Avatars.getPic(5),5);
+        pic6 = new Avatars(Avatars.getPic(6),Avatars.getPic(6),6);
+        pic7 = new Avatars(Avatars.getPic(7),Avatars.getPic(7),7);
     }
     private void profileMenu(){
-        error = new Label("",controller.getSkin());
         int type = DataBase.getCurrentPlayer().getProfImage();
         avatar = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
-        addActor(avatar,400,620,130,100);
+        addActor(avatar,400,650,130,100);
         addActor(changeUser,350,590,250,50);
         addActor(changeNick,350,530,250,50);
         addActor(changePass,350,470,250,50);
         addActor(changeEmail,350,410,250,50);
         addActor(changeSlogan,350,350,250,50);
         addActor(submit,410,285,130,50);
-        error.setPosition(250,170);
-        behindStage.addActor(error);
         addActor(back,355,240,45,140);
         addActor(board,550,285,45,45);
         addActor(editBut1,560,600,30,30);
@@ -185,9 +185,9 @@ public class ProfileMenu extends Menu {
 
     private void changes(String type){
         behindStage.clear();
-        Window changeWindow = new Window("Changes " + type, controller.getSkin());
-        Button changeBut = new TextButton("Changes " + type, Main.getController().getSkin());
-        error = new Label("",controller.getSkin());
+        Window changeWindow = new Window("Changes " + type, Controller.getSkin());
+        Button changeBut = new TextButton("Changes " + type, Controller.getSkin());
+        error = new Label("", Controller.getSkin());
         changeWindow.setBounds(230,230,500, 500);
         news.setMessageText("New " + type);
         changeWindow.add(news).pad(10, 0, 10, 0);
@@ -236,7 +236,7 @@ public class ProfileMenu extends Menu {
 
     private void changePass(){
         behindStage.clear();
-        error = new Label("",controller.getSkin());
+        error = new Label("", Controller.getSkin());
         window.setBounds(230,200,500, 700);
         oldPass.setMessageText("Old Password");
         newPass.setMessageText("New Password");
@@ -312,22 +312,31 @@ public class ProfileMenu extends Menu {
     }
     private void avatarMenu(){
         behindStage.clear();
-        window.setBounds(130,100,700, 800);
-        defaultPic = new Avatars(Avatars.getPic(0),Avatars.getPic(0),0);
-        window.add(defaultPic).pad(10,0,10,10);
-//        pic1 = new ImageButtons(ImageButtons.getPic(1),ImageButtons.getPic(1),1);
-//        pic1.setPosition(270,400);
-//        pic1.setSize(160,130);
-//        pic2 = new ImageButtons(ImageButtons.getPic(2),ImageButtons.getPic(2),2);
-//        pic2.setPosition(480,400);
-//        pic2.setSize(140,140);
-//        pic3 = new ImageButtons(ImageButtons.getPic(3),ImageButtons.getPic(3),2);
-//        pic3.setPosition(90,230);
-//        pic3.setSize(140,140);
-//        pic4 = new ImageButtons(ImageButtons.getPic(4),ImageButtons.getPic(4),4);
-//        pic4.setPosition(270,230);
-//        pic4.setSize(140,140);
-        behindStage.addActor(window);
+        //avatar
+        Table tablePic = new Table(Controller.getSkin());
+        ScrollPane scroll = new ScrollPane(tablePic, Controller.getSkin());
+        tablePic.add(defaultPic).pad(10,10,10,10);
+        tablePic.add(pic1).pad(10,10,10,10).row();
+        tablePic.add(pic2).pad(10,10,10,10);
+        tablePic.add(pic3).pad(10,10,10,10).row();
+        tablePic.add(pic4).pad(10,10,10,10);
+        tablePic.add(pic5).pad(10,10,10,10).row();
+        tablePic.add(pic6).pad(10,10,10,10);
+        tablePic.add(pic7).pad(10,10,10,10).row();
+        scroll.setSize(700,600);
+        scroll.setPosition(150,200);
+        scroll.setForceScroll(false,true);
+        addActor(backBut,300,100,300,80);
+        backListener(backBut);
+        picListener(defaultPic);
+        picListener(pic1);
+        picListener(pic2);
+        picListener(pic3);
+        picListener(pic4);
+        picListener(pic5);
+        picListener(pic6);
+        picListener(pic7);
+        behindStage.addActor(scroll);
     }
 
     private void addActor(Actor actor,int x,int y,int width,int height){
@@ -490,5 +499,30 @@ public class ProfileMenu extends Menu {
         }
         behindStage.clear();
         profileMenu();
+    }
+    private void picListener(final ImageButton imageButton){
+        imageButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (imageButton.equals(pic1)) {
+                    DataBase.getCurrentPlayer().setProfImage(1);
+                } else if (imageButton.equals(pic2)) {
+                    DataBase.getCurrentPlayer().setProfImage(2);
+                } else if (imageButton.equals(pic3)) {
+                    DataBase.getCurrentPlayer().setProfImage(3);
+                } else if (imageButton.equals(pic4)) {
+                    DataBase.getCurrentPlayer().setProfImage(4);
+                } else if (imageButton.equals(pic5)) {
+                    DataBase.getCurrentPlayer().setProfImage(5);
+                } else if (imageButton.equals(pic6)) {
+                    DataBase.getCurrentPlayer().setProfImage(6);
+                }else if (imageButton.equals(pic7)) {
+                    DataBase.getCurrentPlayer().setProfImage(7);
+                }else {
+                    DataBase.getCurrentPlayer().setProfImage(0);
+                }
+            }
+        });
     }
 }
