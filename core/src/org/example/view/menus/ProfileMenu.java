@@ -2,6 +2,7 @@ package org.example.view.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import org.example.control.Controller;
 import org.example.control.comparetors.PlayerComparator;
 import org.example.control.enums.ProfileMenuMessages;
@@ -29,9 +31,11 @@ import static com.badlogic.gdx.Gdx.graphics;
 
 public class ProfileMenu extends Menu {
     private Label error;
+
     //changes
     private TextField news;
     private ImageButton delBut;
+
     //changePass
     private Window window;
     private Table table;
@@ -41,23 +45,33 @@ public class ProfileMenu extends Menu {
     private Captcha passCaptcha;
     private Image captchaImage;
     private ImageButton captchaButton;
+
     //profileMenu
     private TextField changeUser,changeNick,changePass,changeEmail,changeSlogan;
     private Button submit;
     private ImageButton editBut1,editBut2,editBut3,editBut4,editBut5,board,back,avatar;
+
     //leaderBoard
     private String[] num,user,score;
     private Table leaderBoard;
     private ScrollPane scrollPane;
+    private Button select;
     private List listNum,listUser,listScore;
     private ImageButton defaultPic,pic1,pic2,pic3,pic4,pic5,pic6,pic7;
+
+    //selectedProf
+    private Window windowSelect;
+    private ImageButton prof,copy;
+    private TextField username,nickname,slogan;
+    private Button backBoard;
+
     //Pics
     private final Texture groundPic = new Texture("pictures/ProfBackground.png");
     private final Texture editPic = new Texture("pictures/edit.png");
     private final Texture trashPic = new Texture("pictures/trash.png");
     private final Texture backPic = new Texture("pictures/back.jpg");
     private final Texture boardPic = new Texture("pictures/leaderBoard.png");
-
+    private final Texture copyPic = new Texture("pictures/copy.png");
 
 
     public ProfileMenu() {
@@ -74,6 +88,7 @@ public class ProfileMenu extends Menu {
         newChanges();
         newChangePass();
         newLeader();
+        newSelect();
         newImage();
     }
     @Override
@@ -109,7 +124,6 @@ public class ProfileMenu extends Menu {
         delBut = new ImageButton(delete);
     }
     private void newChangePass(){
-        window = new Window("Change Password", Controller.getSkin());
         captcha = new TextField("", Controller.getSkin());
         oldPass = new TextField("", Controller.getSkin());
         newPass = new TextField("", Controller.getSkin());
@@ -122,18 +136,26 @@ public class ProfileMenu extends Menu {
         passCaptcha = new Captcha();
         Texture captchaTexture = new Texture("saved.png");
         captchaImage = new Image(captchaTexture);
-        table = new Table(Controller.getSkin());
     }
     private void newLeader(){
         num = new String[DataBase.getPlayers().size()];
         user = new String[DataBase.getPlayers().size()];
         score = new String[DataBase.getPlayers().size()];
         backBut = new TextButton("Back", Controller.getSkin());
+        select = new TextButton("Select", Controller.getSkin());
         listNum = new List(Controller.getSkin(),"prof");
         listUser = new List(Controller.getSkin(),"prof");
         listScore = new List(Controller.getSkin(),"prof");
         leaderBoard = new Table(Controller.getSkin());
         scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
+    }
+    private void newSelect(){
+        username = new TextField("", Controller.getSkin());
+        nickname = new TextField("", Controller.getSkin());
+        slogan = new TextField("", Controller.getSkin());
+        backBoard = new TextButton("Back", Controller.getSkin());
+        Drawable cop = new TextureRegionDrawable(new TextureRegion(copyPic));
+        copy = new ImageButton(cop);
     }
     private void newImage(){
         defaultPic = new Avatars(Avatars.getPic(0),Avatars.getPic(0),0);
@@ -146,9 +168,10 @@ public class ProfileMenu extends Menu {
         pic7 = new Avatars(Avatars.getPic(7),Avatars.getPic(7),7);
     }
     private void profileMenu(){
+        behindStage.clear();
         int type = DataBase.getCurrentPlayer().getProfImage();
         avatar = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
-        addActor(avatar,graphics.getWidth()/4.7f,graphics.getHeight()/1.53f,130,100);
+        addActor(avatar,graphics.getWidth()/4.7f,graphics.getHeight()/1.5f,130,100);
         addActor(changeUser,graphics.getWidth()/5.5f,graphics.getHeight()/1.65f,250,50);
         addActor(changeNick,graphics.getWidth()/5.5f,graphics.getHeight()/1.84f,250,50);
         addActor(changePass,graphics.getWidth()/5.5f,graphics.getHeight()/2.07f,250,50);
@@ -172,7 +195,6 @@ public class ProfileMenu extends Menu {
         changeEmail.setDisabled(true);
         changeSlogan.setText(ProfileMenuController.showSlogan());
         changeSlogan.setDisabled(true);
-        backListener(submit);
         imageListener(avatar);
         imageListener(editBut1);
         imageListener(editBut2);
@@ -188,7 +210,7 @@ public class ProfileMenu extends Menu {
         Window changeWindow = new Window("Changes " + type, Controller.getSkin());
         Button changeBut = new TextButton("Changes " + type, Controller.getSkin());
         error = new Label("", Controller.getSkin());
-        changeWindow.setBounds(230,230,500, 500);
+        changeWindow.setBounds(graphics.getWidth()/6f,graphics.getHeight()/3f,400, 400);
         news.setMessageText("New " + type);
         changeWindow.add(news).pad(10, 0, 10, 0);
         if(type.equals("Slogan")){
@@ -236,8 +258,10 @@ public class ProfileMenu extends Menu {
 
     private void changePass(){
         behindStage.clear();
+        window = new Window("Change Password", Controller.getSkin());
+        table = new Table(Controller.getSkin());
         error = new Label("", Controller.getSkin());
-        window.setBounds(230,200,500, 700);
+        window.setBounds(graphics.getWidth()/6f,graphics.getHeight()/5f,500, 600);
         oldPass.setMessageText("Old Password");
         newPass.setMessageText("New Password");
         newPass.addListener(new ChangeListener() {
@@ -269,7 +293,7 @@ public class ProfileMenu extends Menu {
                 captchaImage.remove();
                 captchaImage = new Image(new Texture("saved.png"));
                 table.addActorAfter(captchaButton,captchaImage);
-               captchaImage.setPosition(100,4);
+                captchaImage.setPosition(window.getX()/3.8f, window.getY()/15f);
             }
         });
         table.row();
@@ -286,7 +310,7 @@ public class ProfileMenu extends Menu {
     private void leaderBoard(){
         behindStage.clear();
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
-        int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer());
+        int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer())+1;
         Player player;
         for(int i=0;i<DataBase.getPlayers().size();i++){
             player = DataBase.getPlayers().get(i);
@@ -303,16 +327,59 @@ public class ProfileMenu extends Menu {
         leaderBoard.add(listNum).left().pad(10,0,30,70);
         leaderBoard.add(listUser).center().pad(10,10,30,70);
         leaderBoard.add(listScore).right().pad(10,10,10,0);
-        scrollPane.setSize(500,500);
-        scrollPane.setPosition(700,300);
+        scrollPane.setSize(400,500);
+        scrollPane.setPosition(graphics.getWidth()/5.5f,graphics.getHeight()/3.7f);
         scrollPane.setForceScroll(false,true);
-        addActor(backBut,850,150,200,60);
+        addActor(backBut,graphics.getWidth()/5f,graphics.getHeight()/5f,100,60);
+        addActor(select,graphics.getWidth()/3.2f,graphics.getHeight()/5f,100,60);
         backListener(backBut);
+        select.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if(listUser.getSelected().toString().equals(DataBase.getCurrentPlayer().getUsername())){
+                    profileMenu();
+                }else{
+                    selectedProf(listUser.getSelected().toString());
+                }
+            }
+        });
         behindStage.addActor(scrollPane);
+    }
+    private void selectedProf(String user){
+        behindStage.clear();
+        windowSelect = new Window(user + " Profile",Controller.getSkin());
+        windowSelect.setBounds(graphics.getWidth()/5.5f,graphics.getHeight()/3.7f,500,500);
+        Player player = DataBase.getPlayerByUsername(user);
+        int type = player.getProfImage();
+        prof = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
+        windowSelect.add(prof).center().colspan(2).padBottom(30);
+        windowSelect.addActorAfter(prof,copy);
+        copy.setPosition(windowSelect.getWidth()/1.27f,windowSelect.getHeight()/2.04f);
+        windowSelect.row();
+        username.setText(player.getUsername());
+        username.setDisabled(true);
+        nickname.setText(player.getNickname());
+        nickname.setDisabled(true);
+        slogan.setText(player.getSlogan());
+        slogan.setDisabled(true);
+        windowSelect.add(username).size(250,50).padBottom(20).row();
+        windowSelect.add(nickname).size(250,50).padBottom(20).row();
+        windowSelect.add(slogan).size(250,50);
+        addActor(backBoard,graphics.getWidth()/4f,graphics.getHeight()/6.5f,200,80);
+        backListener(backBoard);
+        copy.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                DataBase.getCurrentPlayer().setProfImage(type);
+            }
+        });
+        behindStage.addActor(windowSelect);
+        behindStage.addActor(backBoard);
     }
     private void avatarMenu(){
         behindStage.clear();
-        //avatar
         Table tablePic = new Table(Controller.getSkin());
         ScrollPane scroll = new ScrollPane(tablePic, Controller.getSkin());
         tablePic.add(defaultPic).pad(10,10,10,10);
@@ -324,9 +391,9 @@ public class ProfileMenu extends Menu {
         tablePic.add(pic6).pad(10,10,10,10);
         tablePic.add(pic7).pad(10,10,10,10).row();
         scroll.setSize(700,600);
-        scroll.setPosition(150,200);
+        scroll.setPosition(graphics.getWidth()/3.1f,graphics.getHeight()/3.7f);
         scroll.setForceScroll(false,true);
-        addActor(backBut,300,100,300,80);
+        addActor(backBut,graphics.getWidth()/2.2f,graphics.getHeight()/6.5f,200,80);
         backListener(backBut);
         picListener(defaultPic);
         picListener(pic1);
@@ -402,10 +469,9 @@ public class ProfileMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 if (button.equals(backBut)) {
-                    behindStage.clear();
                     profileMenu();
-                }else if (button.equals(submit)) {
-                    controller.setScreen(new MainMenu());
+                }else if (button.equals(backBoard)){
+                    leaderBoard();
                 }
             }
         });
