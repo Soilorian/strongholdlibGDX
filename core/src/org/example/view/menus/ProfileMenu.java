@@ -22,6 +22,8 @@ import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.view.enums.Avatars;
+import org.example.view.enums.Menus;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -93,11 +95,8 @@ public class ProfileMenu extends Menu {
     }
     @Override
     public void render(float delta){
-        Gdx.gl.glViewport(0, 0, graphics.getWidth(), graphics.getHeight());
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         batch.begin();
-        batch.draw(groundPic,0,0);
+        batch.draw(Controller.resizer(graphics.getWidth(), graphics.getHeight(), groundPic),0,0);
         batch.end();
         behindStage.act();
         behindStage.draw();
@@ -463,6 +462,7 @@ public class ProfileMenu extends Menu {
                         changeSlogan();
                         break;
                 }
+                profileMenu();
             }
         });
     }
@@ -499,10 +499,14 @@ public class ProfileMenu extends Menu {
                 } else if (imageButton.equals(avatar)) {
                     avatarMenu();
                 } else{
-                    controller.setScreen(new MainMenu());
+                    back();
                 }
             }
         });
+    }
+
+    private void back() {
+        controller.changeMenu(Menus.MAIN_MENU.getMenu(), this);
     }
 
     private void changeUsername() {

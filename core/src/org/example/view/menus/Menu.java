@@ -23,12 +23,12 @@ import org.example.control.Controller;
 
 public abstract class Menu implements Screen {
     protected Controller controller = Main.getController();
-    protected final TextButton okButton = new TextButton("ok", controller.getSkin()), cancelButton = new TextButton(
+    protected final TextButton okButton = new TextButton("ok", Controller.getSkin()), cancelButton = new TextButton(
 
-            "cancel", controller.getSkin());
-    protected final Slider timerSlider = new Slider(0, 500, 1, false, controller.getSkin());
-    protected final Dialog messageDialog = new Dialog("", controller.getSkin());
-    protected final Label messageLabel = new Label("", controller.getSkin());
+            "cancel", Controller.getSkin());
+    protected final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
+    protected final Dialog messageDialog = new Dialog("", Controller.getSkin());
+    protected final Label messageLabel = new Label("", Controller.getSkin());
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
     protected Stage stage = new Stage();
@@ -81,7 +81,7 @@ public abstract class Menu implements Screen {
         if (!Controller.manager.isFinished()) {
             batch.begin();
             batch.draw(controller.getLoadingBG(), 0, 0);
-            Slider slider = new Slider(0, 1, 0.001f, false, controller.getSkin());
+            Slider slider = new Slider(0, 1, 0.001f, false, Controller.getSkin());
             slider.setValue(Controller.manager.getProgress());
             slider.updateVisualValue();
             slider.setDisabled(true);

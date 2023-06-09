@@ -28,7 +28,7 @@ public class LoadingMenu implements Screen {
         slider.setDisabled(true);
         slider.setWidth(Gdx.graphics.getWidth() / 4f * 3);
         slider.setPosition(Gdx.graphics.getWidth() / 2f - slider.getWidth() / 2f, Gdx.graphics.getHeight() / 4f);
-        behindStage.addActor(new Image(controller.getLoadingBG()));
+        behindStage.addActor(new Image(Controller.resizer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), controller.getLoadingBG())));
         behindStage.addActor(slider);
     }
 
