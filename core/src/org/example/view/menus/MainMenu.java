@@ -50,19 +50,19 @@ public class MainMenu extends Menu {
     private Model model;
     private Environment environment;
     private AnimationController animationController;
+    private ModelInstance modelInstance;
 
     public MainMenu() {
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
         backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
-        threeDPrep();
         startGameButton = new TextButton("start new game", Controller.getSkin());
         mapEditorButton = new TextButton("map editor", Controller.getSkin());
         settingsButton = new TextButton("settings", Controller.getSkin());
         profileButton = new TextButton("profile", Controller.getSkin());
         exitButton = new TextButton("exit", Controller.getSkin());
         logoutButton = new TextButton("logout", Controller.getSkin());
-        twoDPrep();
+
     }
 
     private void twoDPrep() {
@@ -156,12 +156,8 @@ public class MainMenu extends Menu {
         UBJsonReader ubJsonReader = new UBJsonReader();
         G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
         model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
-        Model model1 = modelLoader.loadModel(Gdx.files.getFileHandle("Model/BlenderRetroIso.g3db", Files.FileType.Internal));
-        ModelInstance modelInstance = new ModelInstance(model);
+        modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(160, 0, -40);
-        ModelInstance modelInstance1 = new ModelInstance(model1);
-        modelInstance1.transform.translate(200, 0, 0);
-        instances.add(modelInstance);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -179,7 +175,7 @@ public class MainMenu extends Menu {
         camera.update();
         animationController.update(graphics.getDeltaTime());
         modelBatch.begin(camera);
-        modelBatch.render(instances, environment);
+        modelBatch.render(modelInstance, environment);
         modelBatch.end();
         stageInput.draw();
         stageInput.act();
@@ -229,6 +225,8 @@ public class MainMenu extends Menu {
     @Override
     public void create() {
         controller.getRainSound().play();
+        threeDPrep();
+        twoDPrep();
         Gdx.input.setInputProcessor(stageInput);
     }
 
