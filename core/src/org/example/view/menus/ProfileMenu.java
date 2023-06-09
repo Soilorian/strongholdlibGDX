@@ -26,6 +26,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Collections;
 
+import static com.badlogic.gdx.Gdx.graphics;
+
 public class ProfileMenu extends Menu {
     private Label error;
     //changes
@@ -90,7 +92,7 @@ public class ProfileMenu extends Menu {
         changePass = new TextField("", Controller.getSkin());
         changeEmail = new TextField("", Controller.getSkin());
         changeSlogan = new TextField("", Controller.getSkin());
-        submit = new TextButton("Submit", Controller.getSkin());
+        submit = new TextButton("Slogan", Controller.getSkin());
         Drawable backBut = new TextureRegionDrawable(new TextureRegion(backPic));
         Drawable but = new TextureRegionDrawable(new TextureRegion(boardPic));
         Drawable edit = new TextureRegionDrawable(new TextureRegion(editPic));
@@ -147,12 +149,12 @@ public class ProfileMenu extends Menu {
     private void profileMenu(){
         int type = DataBase.getCurrentPlayer().getProfImage();
         avatar = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
-        addActor(avatar,400,650,130,100);
-        addActor(changeUser,350,590,250,50);
-        addActor(changeNick,350,530,250,50);
-        addActor(changePass,350,470,250,50);
-        addActor(changeEmail,350,410,250,50);
-        addActor(changeSlogan,350,350,250,50);
+        addActor(avatar,graphics.getWidth()/4.7f,graphics.getHeight()/1.53f,130,100);
+        addActor(changeUser,graphics.getWidth()/5.5f,graphics.getHeight()/1.65f,250,50);
+        addActor(changeNick,graphics.getWidth()/5.5f,graphics.getHeight()/1.84f,250,50);
+        addActor(changePass,graphics.getWidth()/5.5f,graphics.getHeight()/2.07f,250,50);
+        addActor(changeEmail,graphics.getWidth()/5.5f,graphics.getHeight()/2.38f,250,50);
+        addActor(changeSlogan,graphics.getWidth()/5.5f,graphics.getHeight()/2.8f,250,50);
         addActor(submit,410,285,130,50);
         addActor(back,355,240,45,140);
         addActor(board,550,285,45,45);
@@ -338,7 +340,7 @@ public class ProfileMenu extends Menu {
         behindStage.addActor(scroll);
     }
 
-    private void addActor(Actor actor,int x,int y,int width,int height){
+    private void addActor(Actor actor,float x,float y,int width,int height){
         actor.setPosition(x,y);
         actor.setSize(width,height);
         behindStage.addActor(actor);

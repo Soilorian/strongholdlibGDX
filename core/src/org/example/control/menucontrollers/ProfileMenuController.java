@@ -112,7 +112,7 @@ public class ProfileMenuController {
         Player player = DataBase.getCurrentPlayer();
         slogan = player.getSlogan();
         if (slogan.isEmpty()) return "Slogan is empty";
-        return "Slogan: " + slogan;
+        return slogan;
     }
 
 }
