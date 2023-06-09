@@ -31,18 +31,17 @@ public class SelectSizeMenu extends Menu {
     private final Window window;
     private final Slider widthSlider, hieghtSlider;
     private final Label widthLabel, heightLabel;
-    private final Image backgroundImage;
 
 
     public SelectSizeMenu() {
         //begin
         super();
-        window = new Window("", controller.getSkin());
-        widthSlider = new Slider(200, 400, 1, false, controller.getSkin());
-        hieghtSlider = new Slider(200, 400, 1, true, controller.getSkin());
-        widthLabel = new Label(String.valueOf(200), controller.getSkin());
-        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
-        heightLabel = new Label(String.valueOf(200), controller.getSkin());
+        window = new Window("", Controller.getSkin());
+        widthSlider = new Slider(200, 400, 1, false, Controller.getSkin());
+        hieghtSlider = new Slider(200, 400, 1, true, Controller.getSkin());
+        widthLabel = new Label(String.valueOf(200), Controller.getSkin());
+        Image backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+        heightLabel = new Label(String.valueOf(200), Controller.getSkin());
 
         //body
         window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
@@ -151,6 +150,6 @@ public class SelectSizeMenu extends Menu {
     }
 
     private void cancelSizeSelection() {
-        GameStartUpMenuController.cancel();
+        controller.changeMenu(Menus.MAIN_MENU.getMenu(), this);
     }
 }

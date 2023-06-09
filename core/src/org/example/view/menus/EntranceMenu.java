@@ -35,7 +35,6 @@ import org.example.model.Captcha;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.regex.Matcher;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -44,6 +43,7 @@ import org.example.view.enums.commands.Slogans;
 
 import static com.badlogic.gdx.Gdx.graphics;
 
+@SuppressWarnings("CommentedOutCode")
 public class EntranceMenu extends Menu {
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
@@ -72,21 +72,22 @@ public class EntranceMenu extends Menu {
         super();
         camera = new PerspectiveCamera(75, graphics.getWidth(), graphics.getHeight());
         modelBatch = new ModelBatch();
-        loginUsernameText = new TextField("", controller.getSkin());
-        loginPasswordText = new TextField("", controller.getSkin());
-        loginCaptchaText = new TextField("", controller.getSkin());
+        loginUsernameText = new TextField("", Controller.getSkin());
+        loginPasswordText = new TextField("", Controller.getSkin());
+        loginCaptchaText = new TextField("", Controller.getSkin());
 
-        registerUsernameText = new TextField("", controller.getSkin());
-        registerPasswordText = new TextField("", controller.getSkin());
-        registerPasswordConfirmationText = new TextField("", controller.getSkin());
-        registerCaptchaText = new TextField("", controller.getSkin());
-        registerEmailText = new TextField("", controller.getSkin());
-        registerNicknameText = new TextField("", controller.getSkin());
-        registerSloganText = new TextField("", controller.getSkin());
-        registerAnswerText = new TextField("", controller.getSkin());
+        registerUsernameText = new TextField("", Controller.getSkin());
+        registerPasswordText = new TextField("", Controller.getSkin());
+        registerPasswordConfirmationText = new TextField("", Controller.getSkin());
+        registerCaptchaText = new TextField("", Controller.getSkin());
+        registerEmailText = new TextField("", Controller.getSkin());
+        registerNicknameText = new TextField("", Controller.getSkin());
+        registerSloganText = new TextField("", Controller.getSkin());
+        registerAnswerText = new TextField("", Controller.getSkin());
 
-        questions = new SelectBox<>(controller.getSkin());
+        questions = new SelectBox<>(Controller.getSkin());
         questions.setItems("What is the first game you played?","When did you meet Mossayeb?","What is your favorite patoq in university?");
+        questions.setWidth(350);
         questions.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -94,10 +95,10 @@ public class EntranceMenu extends Menu {
             }
         });
 
-        stayLogged = new CheckBox("Remember Me", controller.getSkin());
+        stayLogged = new CheckBox("Remember Me", Controller.getSkin());
 
-        loginSubmit = new TextButton("Submit", controller.getSkin());
-        registerSubmit = new TextButton("register", controller.getSkin());
+        loginSubmit = new TextButton("Submit", Controller.getSkin());
+        registerSubmit = new TextButton("register", Controller.getSkin());
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(controller.getCaptchaPath()));
         Drawable refresh = new TextureRegionDrawable(new TextureRegion(controller.getRefreshPath()));
@@ -108,10 +109,10 @@ public class EntranceMenu extends Menu {
         randomSlogan = new ImageButton(refresh);
         showPassword = new ImageButton(showPass);
 
-        login = new Label("login", controller.getSkin());
-        loginResult = new Label("", controller.getSkin());
-        register = new Label("register", controller.getSkin());
-        registerResult = new Label("", controller.getSkin());
+        login = new Label("login", Controller.getSkin());
+        loginResult = new Label("", Controller.getSkin());
+        register = new Label("register", Controller.getSkin());
+        registerResult = new Label("", Controller.getSkin());
 
         loginCaptcha = new Captcha();
         Texture captchaTexture = new Texture("saved.png");
@@ -121,7 +122,7 @@ public class EntranceMenu extends Menu {
         loginPasswordImage = new Image(controller.getLock());
         registerPasswordImage = new Image(controller.getLock());
         loginCaptchaImage = new Image(captchaTexture);
-        background = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getEntranceBack()));
+        background = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getEntranceBack()));
         registerCaptcha = new Captcha();
         captchaTexture = new Texture("saved.png");
         registerCaptchaImage = new Image(captchaTexture);
@@ -357,50 +358,50 @@ public class EntranceMenu extends Menu {
         });
     }
 
-    private void generateNewCaptcha(Captcha captcha, Image image,
-                                    int x , int y , int width , int height) {
-        captcha.generateCaptcha();
-        image.remove();
-        image = new Image(new Texture("saved.png"));
-        addActor(image, x, y, width, height);
-    }
-
-    private void createNewUser(Matcher matcher, int type) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-
-    }
-
-
-    private void forgetPassword(Matcher matcher) {
-        String username = Controller.removeQuotes(matcher.group("Username"));
-        if (Controller.isFieldEmpty(username)) {
-            System.out.println(EntranceMenuMessages.EMPTY_FIELD);
-            return;
-        }
-        String result = EntranceMenuController.checkForUsername(username);
-        if (result.equals(EntranceMenuMessages.SUCCEED.toString())) {
-            System.out.println("Answer your security question\n" + EntranceMenuController.getSecurityQuestion(username));
-            String commands;
-            //noinspection ConditionalBreakInInfiniteLoop
-            do {
-                commands = ""; // TODO: 6/1/2023 create new menu
-                if (commands.matches("^back$"))
-                    return;
-                if (EntranceMenuController.checkSecurityAnswer(username, commands))
-                    break;
-                else
-                    System.out.println("wrong answer");
-            } while (true);
-            System.out.println("that was right, now enter your new password");
-            do {
-                commands = ""; // TODO: 6/1/2023 create new menu
-                if (commands.matches("^back$"))
-                    return;
-                result = EntranceMenuController.changePassword(username, commands);
-                System.out.println(result);
-            } while (!result.equals(EntranceMenuMessages.SUCCEED.toString()));
-        } else
-            System.out.println(result);
-    }
+//    private void generateNewCaptcha(Captcha captcha, Image image,
+//                                    int x , int y , int width , int height) {
+//        captcha.generateCaptcha();
+//        image.remove();
+//        image = new Image(new Texture("saved.png"));
+//        addActor(image, x, y, width, height);
+//    }
+//
+//    private void createNewUser(Matcher matcher, int type) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+//
+//    }
+//
+//
+//    private void forgetPassword(Matcher matcher) {
+//        String username = Controller.removeQuotes(matcher.group("Username"));
+//        if (Controller.isFieldEmpty(username)) {
+//            System.out.println(EntranceMenuMessages.EMPTY_FIELD);
+//            return;
+//        }
+//        String result = EntranceMenuController.checkForUsername(username);
+//        if (result.equals(EntranceMenuMessages.SUCCEED.toString())) {
+//            System.out.println("Answer your security question\n" + EntranceMenuController.getSecurityQuestion(username));
+//            String commands;
+//            //noinspection ConditionalBreakInInfiniteLoop
+//            do {
+//                commands = ""; // TODO: 6/1/2023 create new menu
+//                if (commands.matches("^back$"))
+//                    return;
+//                if (EntranceMenuController.checkSecurityAnswer(username, commands))
+//                    break;
+//                else
+//                    System.out.println("wrong answer");
+//            } while (true);
+//            System.out.println("that was right, now enter your new password");
+//            do {
+//                commands = ""; // TODO: 6/1/2023 create new menu
+//                if (commands.matches("^back$"))
+//                    return;
+//                result = EntranceMenuController.changePassword(username, commands);
+//                System.out.println(result);
+//            } while (!result.equals(EntranceMenuMessages.SUCCEED.toString()));
+//        } else
+//            System.out.println(result);
+//    }
 
     private void login() throws IOException {
         if (loginCaptcha.isFilledCaptchaValid(loginCaptchaText.getText())) {
