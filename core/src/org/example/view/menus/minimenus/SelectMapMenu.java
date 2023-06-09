@@ -21,18 +21,18 @@ import java.util.regex.Pattern;
 import static com.badlogic.gdx.Gdx.graphics;
 
 public class SelectMapMenu extends Menu {
-    private final SelectBox<String> mapSelectBox = new SelectBox<>(controller.getSkin()), randomMapSelectBox =
-            new SelectBox<>(controller.getSkin());
+    private final SelectBox<String> mapSelectBox = new SelectBox<>(Controller.getSkin()), randomMapSelectBox =
+            new SelectBox<>(Controller.getSkin());
     private final Image backgroundImage;
-    private final TextButton buildButton = new TextButton("build", controller.getSkin());
+    private final TextButton buildButton = new TextButton("build", Controller.getSkin());
     private final ImageButton randomMapButton, showMapsButton, createBlankMapButton;
     private Image mapImage;
 
     public SelectMapMenu() {
         randomMapButton = new ImageButton(new TextureRegionDrawable(controller.getRandomMapIcon()));
-        backgroundImage = new Image(controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         showMapsButton = new ImageButton(new TextureRegionDrawable(controller.getShowAllMapsIcon()));
-        createBlankMapButton = new ImageButton(new TextureRegionDrawable(controller.resizer(222, 227, controller.getBlankMapIcon())));
+        createBlankMapButton = new ImageButton(new TextureRegionDrawable(Controller.resizer(222, 227, controller.getBlankMapIcon())));
     }
 
     @Override
@@ -82,6 +82,19 @@ public class SelectMapMenu extends Menu {
         });
 
         okButton.setDisabled(true);
+        okButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goToGameStartUp();
+            }
+        });
+
+        cancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                back();
+            }
+        });
 
         buildButton.setPosition(graphics.getWidth(), graphics.getHeight());
 
@@ -98,16 +111,24 @@ public class SelectMapMenu extends Menu {
         randomMapSelectBox.setItems("rock land", "island", "normal");
         randomMapSelectBox.setSelected("normal");
         randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY()/2);
-        randomMapSelectBox.setWidth(200);
-        randomMapSelectBox.setHeight(100);
+        randomMapSelectBox.setWidth(100);
+        randomMapSelectBox.setHeight(80);
         randomMapSelectBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 buildRandomMap(randomMapSelectBox.getSelected());
             }
         });
-
         showMiniPrev();
+    }
+
+    private void back() {
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), this);
+    }
+
+    private void goToGameStartUp(){
+        GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
+        controller.changeMenu(Menus.GAME_START_UP_MENU.getMenu(), this);
     }
 
     private void showMaps() {
@@ -177,8 +198,9 @@ public class SelectMapMenu extends Menu {
         showMiniPrev();
     }
     private void showMiniPrev() {
+        behindStage.getActors().removeValue(mapImage, true);
         mapImage = new Image(GameMenuController.getMapPrev(getSelectedMap(), 4));
-        mapImage.setPosition(graphics.getWidth() / 4f * 3, graphics.getHeight() / 4f);
+        mapImage.setPosition(graphics.getWidth() /2f - mapImage.getWidth()/2f, 0);
         behindStage.addActor(mapImage);
     }
 

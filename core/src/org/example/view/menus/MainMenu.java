@@ -47,8 +47,7 @@ public class MainMenu extends Menu {
     private final Stage stageInput = new Stage();
     private final Image backgroundImage;
     private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton, logoutButton;
-    private Model model, model1;
-    private ModelInstance modelInstance, modelInstance1;
+    private Model model;
     private Environment environment;
     private AnimationController animationController;
 
@@ -57,12 +56,12 @@ public class MainMenu extends Menu {
         modelBatch = new ModelBatch();
         backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         threeDPrep();
-        startGameButton = new TextButton("start new game", controller.getSkin());
-        mapEditorButton = new TextButton("map editor", controller.getSkin());
-        settingsButton = new TextButton("settings", controller.getSkin());
-        profileButton = new TextButton("profile", controller.getSkin());
-        exitButton = new TextButton("exit", controller.getSkin());
-        logoutButton = new TextButton("logout", controller.getSkin());
+        startGameButton = new TextButton("start new game", Controller.getSkin());
+        mapEditorButton = new TextButton("map editor", Controller.getSkin());
+        settingsButton = new TextButton("settings", Controller.getSkin());
+        profileButton = new TextButton("profile", Controller.getSkin());
+        exitButton = new TextButton("exit", Controller.getSkin());
+        logoutButton = new TextButton("logout", Controller.getSkin());
         twoDPrep();
     }
 
@@ -87,44 +86,44 @@ public class MainMenu extends Menu {
         mapEditorButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                    mapEditor();
+                mapEditor();
             }
         });
 
         settingsButton.setPosition(graphics.getWidth() / 3f, graphics.getHeight() / 8f * 4);
         settingsButton.setWidth(typicalWidth);
         settingsButton.setHeight(typicalHeight);
-        settingsButton.addListener(new ClickListener(){
+        settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 settings();
             }
         });
 
-        profileButton.setPosition(graphics.getWidth() /3f, graphics.getHeight()/8f *3);
+        profileButton.setPosition(graphics.getWidth() / 3f, graphics.getHeight() / 8f * 3);
         profileButton.setHeight(typicalHeight);
         profileButton.setWidth(typicalWidth);
-        profileButton.addListener(new ClickListener(){
+        profileButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 profile();
             }
         });
 
-        exitButton.setPosition(graphics.getWidth() /3f, graphics.getHeight()/8f *2);
+        exitButton.setPosition(graphics.getWidth() / 3f, graphics.getHeight() / 8f);
         exitButton.setWidth(typicalWidth);
         exitButton.setHeight(typicalHeight);
-        exitButton.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exitApp();
             }
         });
 
-        logoutButton.setPosition(graphics.getWidth()/3f, graphics.getHeight()/8f);
+        logoutButton.setPosition(graphics.getWidth() / 3f, graphics.getHeight() / 8f * 2);
         logoutButton.setWidth(typicalWidth);
         logoutButton.setHeight(typicalHeight);
-        logoutButton.addListener(new ClickListener(){
+        logoutButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 logout();
@@ -157,10 +156,10 @@ public class MainMenu extends Menu {
         UBJsonReader ubJsonReader = new UBJsonReader();
         G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
         model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
-        model1 = modelLoader.loadModel(Gdx.files.getFileHandle("Model/BlenderRetroIso.g3db", Files.FileType.Internal));
-        modelInstance = new ModelInstance(model);
+        Model model1 = modelLoader.loadModel(Gdx.files.getFileHandle("Model/BlenderRetroIso.g3db", Files.FileType.Internal));
+        ModelInstance modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(160, 0, -40);
-        modelInstance1 = new ModelInstance(model1);
+        ModelInstance modelInstance1 = new ModelInstance(model1);
         modelInstance1.transform.translate(200, 0, 0);
         instances.add(modelInstance);
         environment = new Environment();
@@ -235,16 +234,16 @@ public class MainMenu extends Menu {
 
     public void startNewGame() {
         GameMenuController.setCurrentGame(new Game());
-        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(),  this);
+        controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), this);
     }
 
     public void profile() {
         MainMenuController.profile();
-        controller.setScreen(new ProfileMenu());
+        controller.changeMenu(Menus.PROFILE_MENU.getMenu(), this);
     }
 
     public void settings() {
-        System.out.println("this menu will be completed for the 2nd faz");
+        System.out.println("there is nothing here :)");
     }
 
     public void logout() {

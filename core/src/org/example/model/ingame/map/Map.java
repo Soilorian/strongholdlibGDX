@@ -1,11 +1,17 @@
 package org.example.model.ingame.map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import org.example.control.Controller;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Castle;
+import org.example.model.ingame.castle.Colors;
+import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.enums.TileTypes;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -238,7 +244,11 @@ public class Map {
         for (int j = 0; j < groundHeight; j++) {
             for (int k = 0; k < groundWidth; k++) {
                 if (tiles[groundHeight - j - 1][k].getBuilding() != null) {
-                    pixmap.setColor(tiles[groundHeight - j - 1][k].getBuilding().getOwner().getColor().toColor());
+                    Empire owner = tiles[groundHeight - j - 1][k].getBuilding().getOwner();
+                    if (owner == null || owner.getColor() == null)
+                        pixmap.setColor(Color.DARK_GRAY);
+                    else
+                        pixmap.setColor(owner.getColor().toColor());
                 } else if (!tiles[groundHeight - j - 1][k].getTroops().isEmpty()) {
                     pixmap.setColor(tiles[groundHeight - j - 1][k].getTroops().get(0).getKing().getColor().toColor());
                 } else
@@ -247,7 +257,15 @@ public class Map {
             }
         }
         for (Integer integer : castles.keySet()) {
-
+            Castle castle = castles.get(integer);
+            Texture textureShield = Controller.getShield();
+            if (!textureShield.getTextureData().isPrepared())
+                textureShield.getTextureData().prepare();
+            pixmap.drawPixmap(textureShield.getTextureData().consumePixmap(), i * castle.getX(), i * castle.getY());
+            Texture textureNumber = Controller.getPictureOf(integer);
+            if (!textureNumber.getTextureData().isPrepared())
+                textureNumber.getTextureData().prepare();
+            pixmap.drawPixmap(textureNumber.getTextureData().consumePixmap(), i * castle.getX(), i * castle.getY());
         }
     }
 }
