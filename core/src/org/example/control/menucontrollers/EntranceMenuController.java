@@ -1,12 +1,16 @@
 package org.example.control.menucontrollers;
 
 
+import com.badlogic.gdx.Screen;
+import org.example.Main;
 import org.example.control.Controller;
 import org.example.control.enums.EntranceMenuMessages;
 import org.example.model.Captcha;
 import org.example.model.DataBase;
 import org.example.model.Player;
 import org.example.view.enums.Menus;
+import org.example.view.menus.EntranceMenu;
+import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -16,6 +20,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.example.control.Controller.isFieldEmpty;
+import static org.example.control.Controller.setCurrentMenu;
 
 public class EntranceMenuController {
 
@@ -176,15 +181,11 @@ public class EntranceMenuController {
     }
 
     public static void passwordDelay() {
-        int timeToWait = 5 * passwordMiss; //second
-        try {
-            for (int i = 0; i < timeToWait; i++) {
-                Thread.sleep(1000);
-                // TODO: 5/11/2023 move this to view if possible
-                System.out.println("Wait " + (timeToWait - i) + " Second(s)");
+        if (passwordMiss % 5 == 0){
+            Screen screen = Main.getController().getScreen();
+            if (screen instanceof EntranceMenu) {
+                ((EntranceMenu) screen).delay();
             }
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
         }
     }
 

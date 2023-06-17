@@ -268,4 +268,10 @@ public class Map {
             pixmap.drawPixmap(textureNumber.getTextureData().consumePixmap(), i * castle.getX(), i * castle.getY());
         }
     }
+
+    public void clear() {
+        for (int i = 0; i < groundHeight; i++)
+            for (int j = 0; j < groundWidth; j++) tiles[i][j] = new Tile(i, j, TileTypes.GRASS);
+        castles.clear();
+    }
 }

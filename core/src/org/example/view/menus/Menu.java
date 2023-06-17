@@ -22,13 +22,13 @@ import org.example.Main;
 import org.example.control.Controller;
 
 public abstract class Menu implements Screen {
-    protected Controller controller = Main.getController();
     protected final TextButton okButton = new TextButton("ok", Controller.getSkin()), cancelButton = new TextButton(
 
             "cancel", Controller.getSkin());
     protected final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
     protected final Dialog messageDialog = new Dialog("", Controller.getSkin());
     protected final Label messageLabel = new Label("", Controller.getSkin());
+    protected Controller controller = Main.getController();
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
     protected Stage stage = new Stage();
@@ -78,32 +78,16 @@ public abstract class Menu implements Screen {
 
     @Override
     public void render(float delta) {
-        if (!Controller.manager.isFinished()) {
-            batch.begin();
-            batch.draw(controller.getLoadingBG(), 0, 0);
-            Slider slider = new Slider(0, 1, 0.001f, false, Controller.getSkin());
-            slider.setValue(Controller.manager.getProgress());
-            slider.updateVisualValue();
-            slider.setDisabled(true);
-            slider.setWidth(Gdx.graphics.getWidth() / 4f * 3);
-            slider.setPosition(Gdx.graphics.getWidth() / 2f - slider.getWidth() / 2f, Gdx.graphics.getHeight() / 4f);
-            behindStage.addActor(slider);
-            behindStage.draw();
-            behindStage.act();
-        } else {
-            ScreenUtils.clear(Color.BLACK);
-            batch.begin();
-            timerSlider.setValue(timerSlider.getValue() + 1);
-            timerSlider.updateVisualValue();
-            behindStage.draw();
-            stage.draw();
-            frontStage.draw();
-            frontStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-            stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
-            behindStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-            batch.end();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+        ScreenUtils.clear(Color.BLACK);
+        batch.begin();
+        batch.end();
+        behindStage.draw();
+        stage.draw();
+        frontStage.draw();
+        frontStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        behindStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             if (Gdx.input.getInputProcessor().equals(behindStage))
                 Gdx.input.setInputProcessor(frontStage);
             else

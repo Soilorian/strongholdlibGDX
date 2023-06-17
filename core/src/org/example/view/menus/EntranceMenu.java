@@ -26,7 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.UBJsonReader;
+import jdk.javadoc.internal.doclets.toolkit.taglets.UserTaglet;
 import org.example.control.Controller;
 import org.example.control.enums.EntranceMenuMessages;
 import org.example.control.menucontrollers.EntranceMenuController;
@@ -42,6 +44,7 @@ import org.example.view.enums.Menus;
 import org.example.view.enums.commands.Slogans;
 
 import static com.badlogic.gdx.Gdx.graphics;
+import static com.badlogic.gdx.Gdx.input;
 
 @SuppressWarnings("CommentedOutCode")
 public class EntranceMenu extends Menu {
@@ -126,6 +129,10 @@ public class EntranceMenu extends Menu {
         registerCaptcha = new Captcha();
         captchaTexture = new Texture("saved.png");
         registerCaptchaImage = new Image(captchaTexture);
+    }
+
+    public static void delayRequest() {
+
     }
 
 
@@ -411,5 +418,34 @@ public class EntranceMenu extends Menu {
             if (login1.equals(EntranceMenuMessages.SUCCEED.toString()))
                 controller.changeMenu(Menus.MAIN_MENU.getMenu() , this);
         } else loginResult.setText("Invalid Captcha");
+    }
+
+    public void delay() {
+        Window window = new Window("too many attempts", Controller.getSkin());
+        Slider slider = new Slider(0 , 1000, 1, false, Controller.getSkin());
+        Label label = new Label("you have entered a wrogn password too many times", Controller.getSkin());
+        slider.setDisabled(true);
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (slider.isOver()){
+                    frontStage.getActors().removeValue(window, true);
+                    input.setInputProcessor(behindStage);
+                }
+            }
+        });
+        window.add(label).row();
+        window.add(slider);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                slider.setValue(slider.getValue() + 1);
+                slider.updateVisualValue();
+            }
+        }, 0, 10, 1000);
+        window.setPosition(graphics.getWidth()/ 2f - window.getWidth() / 2,
+                graphics.getHeight() / 2f - window.getHeight() / 2);
+        frontStage.addActor(window);
+        input.setInputProcessor(frontStage);
     }
 }

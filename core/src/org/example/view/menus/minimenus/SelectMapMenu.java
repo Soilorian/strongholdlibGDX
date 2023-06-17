@@ -102,7 +102,6 @@ public class SelectMapMenu extends Menu {
         buildButton.setPosition(graphics.getWidth(), graphics.getHeight());
 
         mapSelectBox.setWidth(graphics.getWidth() / 2f);
-        mapSelectBox.setHeight(graphics.getHeight() / 8f);
         mapSelectBox.setPosition(graphics.getWidth() / 4f, graphics.getHeight() / 3f * 1.9f);
         mapSelectBox.addListener(new ChangeListener() {
             @Override
@@ -115,7 +114,6 @@ public class SelectMapMenu extends Menu {
         randomMapSelectBox.setSelected("normal");
         randomMapSelectBox.setPosition(mapSelectBox.getX(), mapSelectBox.getY() / 2);
         randomMapSelectBox.setWidth(100);
-        randomMapSelectBox.setHeight(80);
         randomMapSelectBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -184,6 +182,7 @@ public class SelectMapMenu extends Menu {
     }
 
     private void buildRandomMap(String selected) {
+        Controller.getCurrentMap().clear();
         switch (selected) {
             case "rock land": {
                 MapBuilderMenuController.createRockLand();
@@ -202,8 +201,11 @@ public class SelectMapMenu extends Menu {
     }
 
     private void showMiniPrev() {
-        stage.clear();
-        mapImage = new Image(GameMenuController.getMapPrev(getSelectedMap(), 4));
+        if (mapImage != null) {
+            stage.getActors().removeValue(mapImage, true);
+            mapImage.remove();
+        }
+        mapImage = new Image(controller.addBoarder(Controller.resizer(400, 400, GameMenuController.getMapPrev(getSelectedMap(), 4))));
         mapImage.setPosition(graphics.getWidth() / 2f - mapImage.getWidth() / 2f, 0);
         stage.addActor(mapImage);
     }

@@ -85,13 +85,13 @@ public class ProfileMenu extends Menu {
     }
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(behindStage);
         profileMenu();
         newChanges();
         newChangePass();
         newLeader();
         newSelect();
         newImage();
+        Gdx.input.setInputProcessor(behindStage);
     }
     @Override
     public void render(float delta){
@@ -156,8 +156,7 @@ public class ProfileMenu extends Menu {
         nickname = new TextField("", Controller.getSkin());
         slogan = new TextField("", Controller.getSkin());
         backBoard = new TextButton("Back", Controller.getSkin());
-        Drawable cop = new TextureRegionDrawable(new TextureRegion(copyPic));
-        copy = new ImageButton(cop);
+        copy = new ImageButton(new TextureRegionDrawable(new TextureRegion(copyPic)));
     }
     private void newImage(){
         defaultPic = new Avatars(Avatars.getPic(0),Avatars.getPic(0),0);

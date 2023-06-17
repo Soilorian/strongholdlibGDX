@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import static com.badlogic.gdx.Gdx.graphics;
+
 
 public class GameStartUpMenu extends Menu {
     private final SelectBox<Colors> colorsSelectBox;
@@ -40,13 +42,14 @@ public class GameStartUpMenu extends Menu {
     private final ArrayList<Label> playerLabels = new ArrayList<>();
     private final Image background;
     private int choosingPlayer = 0;
+    private Image mapImage;
 
     public GameStartUpMenu() {
-        this.colorsSelectBox = new SelectBox<>(controller.getSkin());
-        this.castleSelectBox = new SelectBox<>(controller.getSkin());
-        this.addUsername = new TextField("",controller.getSkin());
-        this.addUser = new TextButton("add", controller.getSkin());
-        playersWindow = new Window("players",controller.getSkin());
+        this.colorsSelectBox = new SelectBox<>(Controller.getSkin());
+        this.castleSelectBox = new SelectBox<>(Controller.getSkin());
+        this.addUsername = new TextField("", Controller.getSkin());
+        this.addUser = new TextButton("add", Controller.getSkin());
+        playersWindow = new Window("players", Controller.getSkin());
         background = new Image(controller.getGameStartBG());
     }
 
@@ -85,13 +88,12 @@ public class GameStartUpMenu extends Menu {
     private void setActors() {
 
 
-        playersWindow.setWidth(Gdx.graphics.getWidth() / 4f * 3 - 20);
+        playersWindow.setWidth(Gdx.graphics.getWidth() / 3f * 2);
         playersWindow.setHeight(Gdx.graphics.getHeight() / 2f);
-        playersWindow.setPosition(0, Gdx.graphics.getHeight()/ 2f);
-        Label label = new Label(makeLabelForPlayer(DataBase.getCurrentPlayer()), controller.getSkin());
+        playersWindow.setPosition(0, Gdx.graphics.getHeight() / 2f);
+        Label label = new Label(makeLabelForPlayer(DataBase.getCurrentPlayer()), Controller.getSkin());
         playerLabels.add(label);
         playersWindow.addActor(label);
-
 
 
         colorsSelectBox.setPosition(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 3f);
@@ -117,27 +119,38 @@ public class GameStartUpMenu extends Menu {
         addUsername.setPosition(Gdx.graphics.getWidth() / 5f - addUsername.getWidth(), Gdx.graphics.getHeight() / 3f);
         addUsername.setMessageText("username");
         addUser.setPosition(addUsername.getX(), addUsername.getY() - addUser.getHeight() - 10);
-        addUser.addListener(new ClickListener(){
+        addUser.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 addPlayer();
             }
         });
 
-        okButton.addListener(new ClickListener(){
+        okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 next();
             }
         });
 
-        cancelButton.addListener(new ClickListener(){
+        cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 cancelGameStartUp();
             }
         });
+        showMiniPrev();
+    }
 
+    private void showMiniPrev() {
+        if (mapImage != null) {
+            stage.getActors().removeValue(mapImage, true);
+            mapImage.remove();
+        }
+        mapImage = new Image(controller.addBoarder(Controller.resizer(graphics.getWidth() / 3f, graphics.getHeight() / 2f,
+                GameMenuController.getMapPrev(Controller.getCurrentMap(), 4))));
+        mapImage.setPosition(graphics.getWidth() - mapImage.getWidth(), graphics.getHeight() - mapImage.getHeight());
+        stage.addActor(mapImage);
     }
 
     private Array<Integer> turnToArray(Set<Integer> integers) {
@@ -148,7 +161,7 @@ public class GameStartUpMenu extends Menu {
         return res;
     }
 
-    private void selectCastle(){
+    private void selectCastle() {
         Label label = playerLabels.get(choosingPlayer);
         StringBuilder text = label.getText();
         if (!isNotDigit((text.substring(text.length - 2))))
@@ -167,7 +180,7 @@ public class GameStartUpMenu extends Menu {
         colorsSelectBox.getItems().removeValue(colorsSelectBox.getSelected(), true);
     }
 
-    private String  makeLabelForPlayer(Player player) {
+    private String makeLabelForPlayer(Player player) {
         return player.getNickname() + " | @" + player.getUsername() + " | " + player.getSlogan();
     }
 
@@ -193,7 +206,6 @@ public class GameStartUpMenu extends Menu {
             }
         } while (true);
     }
-
 
 
     private void showMaps() {

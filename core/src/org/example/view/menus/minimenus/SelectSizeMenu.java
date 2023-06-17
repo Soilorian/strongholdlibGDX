@@ -31,6 +31,7 @@ public class SelectSizeMenu extends Menu {
     private final Window window;
     private final Slider widthSlider, hieghtSlider;
     private final Label widthLabel, heightLabel;
+    private final Image backgroundImage;
 
 
     public SelectSizeMenu() {
@@ -40,10 +41,22 @@ public class SelectSizeMenu extends Menu {
         widthSlider = new Slider(200, 400, 1, false, Controller.getSkin());
         hieghtSlider = new Slider(200, 400, 1, true, Controller.getSkin());
         widthLabel = new Label(String.valueOf(200), Controller.getSkin());
-        Image backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
         heightLabel = new Label(String.valueOf(200), Controller.getSkin());
+        backgroundImage = new Image(Controller.resizer(graphics.getWidth(), graphics.getHeight(), controller.getMainMenuBackground()));
+    }
 
-        //body
+    private void addAssets() {
+        behindStage.clear();
+        behindStage.addActor(backgroundImage);
+        behindStage.addActor(window);
+        behindStage.addActor(widthSlider);
+        behindStage.addActor(hieghtSlider);
+        behindStage.addActor(okButton);
+        behindStage.addActor(cancelButton);
+    }
+
+    private void setAssets() {
+        window.clear();
         window.setWidth(graphics.getWidth() * getPercentage(widthSlider.getValue()));
         window.setHeight(graphics.getHeight() * getPercentage(hieghtSlider.getValue()));
         window.setPosition((float) graphics.getWidth() / 2 - window.getWidth() / 2,
@@ -52,9 +65,9 @@ public class SelectSizeMenu extends Menu {
         window.add(heightLabel);
         window.add(widthLabel).expand().bottom();
 
-
         widthSlider.setPosition((float) graphics.getWidth() / 2 - (graphics.getWidth() * 0.7f) / 2,
                 (float) graphics.getHeight() / 10);
+        widthSlider.setValue(200);
         widthSlider.setWidth(graphics.getWidth() * 0.7f);
         widthSlider.addListener(new ChangeListener() {
             @Override
@@ -66,6 +79,7 @@ public class SelectSizeMenu extends Menu {
 
         hieghtSlider.setPosition((float) graphics.getWidth() / 10,
                 graphics.getHeight()/2f - (graphics.getHeight() * 0.7f) / 2);
+        hieghtSlider.setValue(200);
         hieghtSlider.setHeight(graphics.getHeight() * 0.7f);
         hieghtSlider.addListener(new ChangeListener() {
             @Override
@@ -87,15 +101,6 @@ public class SelectSizeMenu extends Menu {
                 cancelSizeSelection();
             }
         });
-
-        //end
-        behindStage.clear();
-        behindStage.addActor(backgroundImage);
-        behindStage.addActor(window);
-        behindStage.addActor(widthSlider);
-        behindStage.addActor(hieghtSlider);
-        behindStage.addActor(okButton);
-        behindStage.addActor(cancelButton);
     }
 
     private void ok() {
@@ -146,6 +151,8 @@ public class SelectSizeMenu extends Menu {
 
     @Override
     public void create() {
+        setAssets();
+        addAssets();
         Gdx.input.setInputProcessor(behindStage);
     }
 

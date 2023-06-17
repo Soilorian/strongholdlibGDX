@@ -45,7 +45,7 @@ public class Controller extends Game {
     private final String captchaPath = "EntranceAssets/captcha.png";
     private final String backgroundMainMenu = "pictures/background-main-menu.jpg";
     private final String rainSoundAddress = "sounds/rain.mp3";
-    private final String gameStartUpBG = "pictures/game-start-up-background.png";
+    private final String gameStartUpBG = "pictures/game-start-up-background.jpg";
     private final String refresh = "EntranceAssets/Refresh.png";
     private final String showPassPath = "EntranceAssets/showPass.png";
     private final String entranceBack = "EntranceAssets/Dragon.jpg";
@@ -115,10 +115,7 @@ public class Controller extends Game {
                 0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
                 0, 0, pixmap100.getWidth(), pixmap100.getHeight()
         );
-        Texture result = new Texture(pixmap100);
-        pixmap200.dispose();
-//        pixmap100.dispose();
-        return result;
+        return new Texture(pixmap100);
     }
 
     public static Texture getPictureOf(int i) {
@@ -140,7 +137,7 @@ public class Controller extends Game {
             nextMenu = from;
     }
 
-    @Override
+
     public void setScreen(Screen screen) {
         if (screen instanceof Menu)
             ((Menu) screen).create();
@@ -267,7 +264,10 @@ public class Controller extends Game {
     }
 
     public Music getRainSound() {
-        return manager.get(rainSoundAddress);
+        Music music = manager.get(rainSoundAddress);
+        music.setVolume(0.1f);
+        music.setLooping(true);
+        return music;
     }
 
     public Texture getGameStartBG() {
@@ -308,16 +308,16 @@ public class Controller extends Game {
     }
 
     public Texture addBoarder(Texture texture) {
-        if (!texture.getTextureData().isPrepared())
-            texture.getTextureData().prepare();
-        Pixmap pixmap = texture.getTextureData().consumePixmap();
-        Texture boarder = resizer(pixmap.getWidth(), pixmap.getHeight(), getBoarder());
-        if (!boarder.getTextureData().isPrepared())
-            boarder.getTextureData().prepare();
-        pixmap.drawPixmap(boarder.getTextureData().consumePixmap(), 0, 0);
-        Texture texture1 = new Texture(pixmap);
-        pixmap.dispose();
-        return texture1;
+        Texture boarder = resizer(texture.getWidth(), texture.getHeight(), getBoarder());
+        if (!boarder.getTextureData().isPrepared()) boarder.getTextureData().prepare();
+        Pixmap pixmap = boarder.getTextureData().consumePixmap();
+        Texture fitTexture = resizer(texture.getWidth() / 10f * 9, texture.getHeight() / 10f * 9, texture);
+        if (!fitTexture.getTextureData().isPrepared()) {
+            fitTexture.getTextureData().prepare();
+        }
+        pixmap.drawPixmap(fitTexture.getTextureData().consumePixmap(), texture.getWidth() / 20,
+                texture.getHeight() / 20);
+        return new Texture(pixmap);
     }
 
     private Texture getBoarder() {

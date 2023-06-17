@@ -47,6 +47,8 @@ public class MainMenu extends Menu {
     private final Stage stageInput = new Stage();
     private final Image backgroundImage;
     private final TextButton startGameButton, mapEditorButton, settingsButton, profileButton, exitButton, logoutButton;
+    private final UBJsonReader ubJsonReader;
+    private final G3dModelLoader modelLoader;
     private Model model;
     private Environment environment;
     private AnimationController animationController;
@@ -62,7 +64,12 @@ public class MainMenu extends Menu {
         profileButton = new TextButton("profile", Controller.getSkin());
         exitButton = new TextButton("exit", Controller.getSkin());
         logoutButton = new TextButton("logout", Controller.getSkin());
-
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        ubJsonReader = new UBJsonReader();
+        modelLoader = new G3dModelLoader(ubJsonReader);
+        model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
     }
 
     private void twoDPrep() {
@@ -150,17 +157,13 @@ public class MainMenu extends Menu {
 
     private void threeDPrep() {
         camera.position.set(210, 150, 270);
+        // dodo dodo do do do do dod dod dod do do doro doro dodod dod do do do do do do
         camera.lookAt(0, 210, 0);
         camera.near = 0.1f;
         camera.far = 3000f;
-        UBJsonReader ubJsonReader = new UBJsonReader();
-        G3dModelLoader modelLoader = new G3dModelLoader(ubJsonReader);
-        model = modelLoader.loadModel(Gdx.files.getFileHandle("Model/Crouch To Stand.g3db", Files.FileType.Internal));
         modelInstance = new ModelInstance(model);
+        //man ye parandam arezoo daram ke ba man bashid to yaram bashi
         modelInstance.transform.translate(160, 0, -40);
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         animationController = new AnimationController(modelInstance);
         animationController.setAnimation("mixamo.com", 1);
     }

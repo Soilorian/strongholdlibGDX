@@ -18,9 +18,15 @@ import static org.example.model.ingame.castle.Buildings.KEEP;
 
 
 public class MapBuilderMenuController {
-    private static final Map map = Controller.getCurrentMap();
-    private static final int width = map.getGroundWidth();
-    private static final int height = map.getGroundHeight();
+    private static Map map = Controller.getCurrentMap();
+    private static int width = map.getGroundWidth();
+    private static int height = map.getGroundHeight();
+
+    public void update(){
+        map = Controller.getCurrentMap();
+        width = map.getGroundWidth();
+        height = map.getGroundHeight();
+    }
 
     private static int dropTreeAndRock() {
         int amount, dif;
