@@ -146,8 +146,6 @@ public class ProfileMenu extends Menu {
         listNum = new List(Controller.getSkin(),"prof");
         listUser = new List(Controller.getSkin(),"prof");
         listScore = new List(Controller.getSkin(),"prof");
-        leaderBoard = new Table(Controller.getSkin());
-        scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
     }
     private void newSelect(){
         username = new TextField("", Controller.getSkin());
@@ -184,13 +182,14 @@ public class ProfileMenu extends Menu {
         addActor(editBut3,graphics.getWidth()/3.43f,graphics.getHeight()/2.02f,30,30);
         addActor(editBut4,graphics.getWidth()/3.43f,graphics.getHeight()/2.32f,30,30);
         addActor(editBut5,graphics.getWidth()/3.43f,graphics.getHeight()/2.73f,30,30);
-        changeUser.setText(DataBase.getCurrentPlayer().getUsername());
+        int index = (DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer())) + 1;
+        changeUser.setText(DataBase.getPlayers().get(index).getUsername());
         changeUser.setDisabled(true);
-        changeNick.setText(DataBase.getCurrentPlayer().getNickname());
+        changeNick.setText(DataBase.getPlayers().get(index).getNickname());
         changeNick.setDisabled(true);
         changePass.setText("**********");
         changePass.setDisabled(true);
-        changeEmail.setText(DataBase.getCurrentPlayer().getEmail());
+        changeEmail.setText(DataBase.getPlayers().get(index).getEmail());
         changeEmail.setDisabled(true);
         changeSlogan.setText(ProfileMenuController.showSlogan());
         changeSlogan.setDisabled(true);
@@ -309,6 +308,8 @@ public class ProfileMenu extends Menu {
 
     private void leaderBoard(){
         behindStage.clear();
+        leaderBoard = new Table(Controller.getSkin());
+        scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
         int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer())+1;
         Player player;

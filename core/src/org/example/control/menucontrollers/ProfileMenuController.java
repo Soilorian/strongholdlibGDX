@@ -23,7 +23,10 @@ public class ProfileMenuController {
         if (Controller.isFieldEmpty(username)) {
             return ProfileMenuMessages.EMPTY_USERNAME.toString();
         }
-        DataBase.getCurrentPlayer().setUsername(username);
+        Player player = DataBase.getCurrentPlayer();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setUsername(username);
+        player.setUsername(username);
         return ProfileMenuMessages.SUCCEED.toString();
     }
 
@@ -39,6 +42,8 @@ public class ProfileMenuController {
             return ProfileMenuMessages.EMPTY_NICKNAME.toString();
         }
         Player player = DataBase.getCurrentPlayer();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setNickname(nickname);
         player.setNickname(nickname);
         return ProfileMenuMessages.SUCCEED.toString();
     }
@@ -57,6 +62,8 @@ public class ProfileMenuController {
             return ProfileMenuMessages.EMPTY_EMAIL.toString();
         }
         Player player = DataBase.getCurrentPlayer();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setEmail(email);
         player.setEmail(email);
         return ProfileMenuMessages.SUCCEED.toString();
     }
@@ -81,6 +88,8 @@ public class ProfileMenuController {
         if (!player.checkPassword(oldPassword)) {
             return ProfileMenuMessages.INCORRECT_PASSWORD.toString();
         }
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setPassword(newPassword);
         player.setPassword(newPassword);
         return ProfileMenuMessages.SUCCEED.toString();
     }
@@ -97,19 +106,23 @@ public class ProfileMenuController {
             return ProfileMenuMessages.EMPTY_SLOGAN.toString();
         }
         Player player = DataBase.getCurrentPlayer();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setSlogan(slogan);
         player.setSlogan(slogan);
         return ProfileMenuMessages.SUCCEED.toString();
     }
 
     public static void removeSlogan() {
         Player player = DataBase.getCurrentPlayer();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        DataBase.getPlayers().get(index).setSlogan("");
         player.setSlogan("");
     }
 
     public static String showSlogan() {
-        String slogan;
         Player player = DataBase.getCurrentPlayer();
-        slogan = player.getSlogan();
+        int index = (DataBase.getPlayers().indexOf(player)) + 1;
+        String slogan = DataBase.getPlayers().get(index).getSlogan();
         if (slogan.isEmpty()) return "Slogan is empty";
         return slogan;
     }
