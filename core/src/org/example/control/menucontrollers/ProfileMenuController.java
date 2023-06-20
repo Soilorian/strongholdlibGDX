@@ -101,6 +101,7 @@ public class ProfileMenuController {
         }
         return ProfileMenuMessages.SUCCEED.toString();
     }
+
     public static String changeSlogan(String slogan) {
         if (Controller.isFieldEmpty(slogan)) {
             return ProfileMenuMessages.EMPTY_SLOGAN.toString();
