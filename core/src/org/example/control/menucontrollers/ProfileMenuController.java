@@ -23,8 +23,7 @@ public class ProfileMenuController {
         if (Controller.isFieldEmpty(username)) {
             return ProfileMenuMessages.EMPTY_USERNAME.toString();
         }
-        Player player = DataBase.getCurrentPlayer();
-        player.setUsername(username);
+        DataBase.getCurrentPlayer().setUsername(username);
         return ProfileMenuMessages.SUCCEED.toString();
     }
 
