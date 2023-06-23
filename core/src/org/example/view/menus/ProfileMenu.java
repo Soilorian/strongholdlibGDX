@@ -2,7 +2,6 @@ package org.example.view.menus;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -121,7 +120,6 @@ public class ProfileMenu extends Menu {
         editBut5 = new ImageButton(edit);
     }
     private void newChanges(){
-        news = new TextField("", Controller.getSkin());
         Drawable delete = new TextureRegionDrawable(new TextureRegion(trashPic));
         delBut = new ImageButton(delete);
     }
@@ -148,8 +146,6 @@ public class ProfileMenu extends Menu {
         listNum = new List(Controller.getSkin(),"prof");
         listUser = new List(Controller.getSkin(),"prof");
         listScore = new List(Controller.getSkin(),"prof");
-        leaderBoard = new Table(Controller.getSkin());
-        scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
     }
     private void newSelect(){
         username = new TextField("", Controller.getSkin());
@@ -186,13 +182,14 @@ public class ProfileMenu extends Menu {
         addActor(editBut3,graphics.getWidth()/3.43f,graphics.getHeight()/2.02f,30,30);
         addActor(editBut4,graphics.getWidth()/3.43f,graphics.getHeight()/2.32f,30,30);
         addActor(editBut5,graphics.getWidth()/3.43f,graphics.getHeight()/2.73f,30,30);
-        changeUser.setText(DataBase.getCurrentPlayer().getUsername());
+        int index = (DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer())) + 1;
+        changeUser.setText(DataBase.getPlayers().get(index).getUsername());
         changeUser.setDisabled(true);
-        changeNick.setText(DataBase.getCurrentPlayer().getNickname());
+        changeNick.setText(DataBase.getPlayers().get(index).getNickname());
         changeNick.setDisabled(true);
         changePass.setText("**********");
         changePass.setDisabled(true);
-        changeEmail.setText(DataBase.getCurrentPlayer().getEmail());
+        changeEmail.setText(DataBase.getPlayers().get(index).getEmail());
         changeEmail.setDisabled(true);
         changeSlogan.setText(ProfileMenuController.showSlogan());
         changeSlogan.setDisabled(true);
@@ -208,8 +205,9 @@ public class ProfileMenu extends Menu {
 
     private void changes(String type){
         behindStage.clear();
-        Window changeWindow = new Window("Changes " + type, Controller.getSkin());
-        Button changeBut = new TextButton("Changes " + type, Controller.getSkin());
+        news = new TextField("", Controller.getSkin());
+        Window changeWindow = new Window("Change " + type, Controller.getSkin());
+        Button changeBut = new TextButton("Change " + type, Controller.getSkin());
         error = new Label("", Controller.getSkin());
         changeWindow.setBounds(graphics.getWidth()/6f,graphics.getHeight()/3f,400, 400);
         news.setMessageText("New " + type);
@@ -311,6 +309,8 @@ public class ProfileMenu extends Menu {
     @SuppressWarnings("unchecked")
     private void leaderBoard(){
         behindStage.clear();
+        leaderBoard = new Table(Controller.getSkin());
+        scrollPane = new ScrollPane(leaderBoard, Controller.getSkin());
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
         int rank = DataBase.getPlayers().indexOf(DataBase.getCurrentPlayer())+1;
         Player player;
@@ -446,7 +446,7 @@ public class ProfileMenu extends Menu {
                 super.clicked(event, x, y);
                 switch (type) {
                     case "Username":
-                        changeUsername();
+                        changeUsername(news.getText());
                         break;
                     case "Nickname":
                         changeNickname();
@@ -510,69 +510,54 @@ public class ProfileMenu extends Menu {
         controller.changeMenu(Menus.MAIN_MENU.getMenu(), this);
     }
 
-    private void changeUsername() {
-        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+    private void changeUsername(String text) {
+        if(!error.getText().equalsIgnoreCase("")) {
             return;
         }
-        String message = ProfileMenuController.changeUsername(news.getText());
+        String message = ProfileMenuController.changeUsername(text);
         if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
-            return;
         }
-        behindStage.clear();
-        profileMenu();
     }
 
     private void changeNickname() {
-        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+        if(!error.getText().equalsIgnoreCase("")) {
             return;
         }
         String message = ProfileMenuController.changeNickname(news.getText());
         if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
-            return;
         }
-        behindStage.clear();
-        profileMenu();
     }
 
     private void changeEmail() {
-        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+        if(!error.getText().equalsIgnoreCase("")) {
             return;
         }
         String message = ProfileMenuController.changeEmail(news.getText());
         if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
-            return;
         }
-        behindStage.clear();
-        profileMenu();
     }
 
     private void changePassword() {
-        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+        if(!error.getText().equalsIgnoreCase("")) {
             return;
         }
         String message = ProfileMenuController.changePassword(oldPass.getText(),newPass.getText());
         if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
-            return;
         }
-        behindStage.clear();
-        profileMenu();
     }
 
     private void changeSlogan() {
-        if(!error.getText().equalsIgnoreCase(ProfileMenuMessages.SUCCEED.toString())) {
+        if(!error.getText().equalsIgnoreCase("")) {
             return;
         }
         String message = ProfileMenuController.changeSlogan(news.getText());
         if (!(message.equals(ProfileMenuMessages.SUCCEED.toString()))){
             error.setText(message);
-            return;
         }
-        behindStage.clear();
-        profileMenu();
     }
     private void picListener(final ImageButton imageButton){
         imageButton.addListener(new ClickListener() {
