@@ -76,26 +76,27 @@ public class GameStartUpMenuController {
         DataBase.getCurrentEmpire().setColor(color);
     }
 
-    public static void enterGameMenu() {
-        Controller.setCurrentMenu(Menus.GAME_MENU);
-    }
+//    public static void enterGameMenu() {
+//        Controller.setCurrentMenu(Menus.GAME_MENU);
+//    }
+//
+//    private static boolean colorChosen(Colors colors) {
+//        for (Empire empire : GameMenuController.getCurrentGame().getEmpires())
+//            if (empire.getColor() != null && empire.getColor().equals(colors)) return true;
+//        return false;
+//    }
 
-    private static boolean colorChosen(Colors colors) {
-        for (Empire empire : GameMenuController.getCurrentGame().getEmpires())
-            if (empire.getColor() != null && empire.getColor().equals(colors)) return true;
-        return false;
-    }
-
-    public static GameStartUpMenuMessages selectCastle(int castle) {
+    public static void selectCastle(int castle) {
+        System.out.println(castle);
         HashMap<Integer, Castle> castles = GameMenuController.getCurrentGame().getCurrentMap().getCastles();
         Castle oldCastle = DataBase.getCurrentEmpire().getCastle();
         if (oldCastle != null) oldCastle.clearEmpire();
         if (!castles.containsKey(castle))
-            return GameStartUpMenuMessages.NO_CASTLE;
+            return;
         if (castles.get(castle).getEmpire() != null)
-            return GameStartUpMenuMessages.ALREADY_CHOSEN;
+            return;
+        System.out.println(castle);
         castles.get(castle).setEmpire(DataBase.getCurrentEmpire());
-        return GameStartUpMenuMessages.SUCCESS;
     }
 
     public static void selectSize(int width, int height) {
@@ -112,12 +113,9 @@ public class GameStartUpMenuController {
                 DataBase.setCurrentEmpire(empire);
                 return GameStartUpMenuMessages.NEXT_PLAYER;
             }
-        GameMenuController.setCurrentGame(GameMenuController.getCurrentGame());
         for (Empire empire : GameMenuController.getCurrentGame().getEmpires()) {
             Castle castle = empire.getCastle();
             castle.setLord();
-            castle.setEmpire(empire);
-            castle.setOwner(empire);
             castle.setTile();
             for (Storage value : Storage.values()) {
                 if (!value.equals(Storage.MAIN_CASTLE))

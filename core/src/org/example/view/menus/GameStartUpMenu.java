@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.StringBuilder;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.enums.GameStartUpMenuMessages;
@@ -19,6 +18,7 @@ import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.castle.Colors;
+import org.example.model.ingame.castle.Empire;
 import org.example.view.enums.Menus;
 import org.example.view.enums.Sounds;
 import org.example.view.enums.commands.GameStartUpMenuCommands;
@@ -26,7 +26,6 @@ import org.example.view.enums.commands.GameStartUpMenuCommands;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.regex.Matcher;
 
@@ -39,12 +38,13 @@ public class GameStartUpMenu extends Menu {
     private final TextField addUsername;
     private final TextButton addUser;
     private final Window playersWindow;
-    private final ArrayList<Label> playerLabels = new ArrayList<>();
     private final Image background;
     private int choosingPlayer = 0;
     private Image mapImage;
+    private Table selectionTable;
 
     public GameStartUpMenu() {
+        super();
         this.colorsSelectBox = new SelectBox<>(Controller.getSkin());
         this.castleSelectBox = new SelectBox<>(Controller.getSkin());
         this.addUsername = new TextField("", Controller.getSkin());
@@ -77,46 +77,20 @@ public class GameStartUpMenu extends Menu {
         behindStage.clear();
         behindStage.addActor(background);
         behindStage.addActor(playersWindow);
-        behindStage.addActor(colorsSelectBox);
-        behindStage.addActor(castleSelectBox);
-        behindStage.addActor(addUsername);
-        behindStage.addActor(addUser);
+        behindStage.addActor(selectionTable);
         behindStage.addActor(okButton);
         behindStage.addActor(cancelButton);
     }
 
     private void setActors() {
-
-
         playersWindow.setWidth(Gdx.graphics.getWidth() / 3f * 2);
         playersWindow.setHeight(Gdx.graphics.getHeight() / 2f);
         playersWindow.setPosition(0, Gdx.graphics.getHeight() / 2f);
-        Label label = new Label(makeLabelForPlayer(DataBase.getCurrentPlayer()), Controller.getSkin());
-        playerLabels.add(label);
-        playersWindow.addActor(label);
+        playersWindow.setMovable(false);
+        playersWindow.setRound(true);
 
+        selectionTable = new Table(Controller.getSkin());
 
-        colorsSelectBox.setPosition(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 3f);
-        colorsSelectBox.setWidth(100);
-        colorsSelectBox.setItems(Colors.values());
-        colorsSelectBox.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                selectColor();
-            }
-        });
-
-        castleSelectBox.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 3f);
-        castleSelectBox.setWidth(100);
-        castleSelectBox.setItems(turnToArray(GameMenuController.getCurrentGame().getCurrentMap().getCastles().keySet()));
-        castleSelectBox.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                selectCastle();
-            }
-        });
-
-        addUsername.setPosition(Gdx.graphics.getWidth() / 5f - addUsername.getWidth(), Gdx.graphics.getHeight() / 3f);
         addUsername.setMessageText("username");
         addUser.setPosition(addUsername.getX(), addUsername.getY() - addUser.getHeight() - 10);
         addUser.addListener(new ClickListener() {
@@ -126,6 +100,31 @@ public class GameStartUpMenu extends Menu {
             }
         });
 
+        colorsSelectBox.setWidth(100);
+        colorsSelectBox.setItems(Colors.values());
+        colorsSelectBox.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectColor();
+            }
+        });
+
+        castleSelectBox.setWidth(100);
+        castleSelectBox.setItems(turnToArray(GameMenuController.getCurrentGame().getCurrentMap().getCastles().keySet()));
+        castleSelectBox.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectCastle();
+            }
+        });
+
+        selectionTable.add(addUsername).pad(10);
+        selectionTable.add(new Label("select your color: ", Controller.getSkin())).pad(10);
+        selectionTable.add(colorsSelectBox).pad(10);
+        selectionTable.add(new Label("select your castle: ", Controller.getSkin())).pad(10);
+        selectionTable.add(castleSelectBox).pad(10).row();
+        selectionTable.add(addUser).pad(10);
+        selectionTable.setPosition(graphics.getWidth() / 6f, graphics.getHeight() / 3f);
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -140,6 +139,7 @@ public class GameStartUpMenu extends Menu {
             }
         });
         showMiniPrev();
+        updatePlayerWindow();
     }
 
     private void showMiniPrev() {
@@ -162,26 +162,37 @@ public class GameStartUpMenu extends Menu {
     }
 
     private void selectCastle() {
-        Label label = playerLabels.get(choosingPlayer);
-        StringBuilder text = label.getText();
-        if (!isNotDigit((text.substring(text.length - 2))))
-            castleSelectBox.getItems().add(Integer.parseInt((text.substring(text.length - 2))));
-        label.setText(text + " | castle No. " + castleSelectBox.getSelected());
-        castleSelectBox.getItems().removeValue(castleSelectBox.getSelected(), true);
+        Integer selected = castleSelectBox.getSelected();
+        if (selected == null) return;
+        Array<Integer> items = castleSelectBox.getItems();
+        items.removeValue(selected, true);
+        if (DataBase.getCurrentEmpire().getCastle() != null)
+            items.add(GameMenuController.getCurrentGame().getCurrentMap().getCastleNumber(DataBase.getCurrentEmpire().getCastle()));
+        GameStartUpMenuController.selectCastle(selected);
+        updatePlayerWindow();
+        items.sort();
+        castleSelectBox.setItems(items);
     }
 
     private void selectColor() {
-        Label label = playerLabels.get(choosingPlayer);
-        Colors colors = Colors.turnToColors(label.getColor());
-        if (colors != null)
-            colorsSelectBox.getItems().add(colors);
-        label.setColor(colorsSelectBox.getSelected().toColor());
+        Array<Colors> items = colorsSelectBox.getItems();
+        items.removeValue(colorsSelectBox.getSelected(), false);
+        if (DataBase.getCurrentEmpire().getColor() != null)
+            items.add(DataBase.getCurrentEmpire().getColor());
         GameStartUpMenuController.selectColor(colorsSelectBox.getSelected());
-        colorsSelectBox.getItems().removeValue(colorsSelectBox.getSelected(), true);
+        updatePlayerWindow();
+        items.sort();
+        colorsSelectBox.setItems(items);
     }
 
-    private String makeLabelForPlayer(Player player) {
-        return player.getNickname() + " | @" + player.getUsername() + " | " + player.getSlogan();
+    private String makeLabelForEmpire(Empire empire) {
+        Player player = empire.getOwner();
+        String result = player.getNickname() + " | @" + player.getUsername() + " | " + player.getSlogan();
+        if (empire.getCastle() != null)
+            result += " | castle No. " + GameMenuController.getCurrentGame().getCurrentMap().getCastleNumber(empire.getCastle());
+        if (empire.getColor() != null)
+            result += " | color " + empire.getColor();
+        return result;
     }
 
 
@@ -228,9 +239,22 @@ public class GameStartUpMenu extends Menu {
     }
 
     private void addPlayer() {
-        showMessage(GameStartUpMenuController.addPlayer(addUsername.getText()).toString());
+        GameStartUpMenuMessages string = GameStartUpMenuController.addPlayer(addUsername.getText());
+        if (string.equals(GameStartUpMenuMessages.SUCCESS))
+            updatePlayerWindow();
+        else
+            showMessage(string.toString());
     }
 
+    private void updatePlayerWindow() {
+        playersWindow.clear();
+        for (Empire empire : GameMenuController.getCurrentGame().getEmpires()) {
+            Label label = new Label(makeLabelForEmpire(empire), Controller.getSkin());
+            playersWindow.add(label).top().row();
+        }
+    }
+
+/*
     private void selectCastle(Matcher matcher) {
         String castle = Controller.removeQuotes(matcher.group("Id"));
         if (Controller.isFieldEmpty(castle))
@@ -240,9 +264,11 @@ public class GameStartUpMenu extends Menu {
         else
             System.out.println(GameStartUpMenuController.selectCastle(Integer.parseInt(castle)));
     }
+*/
 
 
     private void cancelGameStartUp() {
         GameStartUpMenuController.cancel();
+        controller.changeMenu(Menus.SELECT_MAP_MENU.getMenu(), this);
     }
 }

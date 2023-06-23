@@ -60,6 +60,7 @@ public class GameMenu extends Menu {
             menuWindow.setVisible(false);
             frontStage.addActor(menuWindow);
         }
+        menuWindows[0].add((new ImageButton(new TextureRegionDrawable(Controller.getPictureOf(2)))));
         menuWindows[0].setVisible(true);
     }
 
@@ -89,13 +90,13 @@ public class GameMenu extends Menu {
         Buildings[] values = Buildings.values();
         for (int i = 0; i < values.length; i++) {
             if (i % 8 == 0) {
-                window = new Window("buildings", controller.getSkin());
+                window = new Window("buildings", Controller.getSkin());
                 window.setWidth(Gdx.graphics.getWidth() - 800);
                 window.setHeight(400);
                 window.setPosition(400, 0);
                 final int i1 = i / 8;
                 menuWindows[i1] = window;
-                ImageButton imageButton = new ImageButton(new TextureRegionDrawable(controller.getPictureOf(i1 + 1)));
+                ImageButton imageButton = new ImageButton(new TextureRegionDrawable(Controller.getPictureOf(i1 + 1)));
                 imageButton.setPosition(getButtonXForMenu(i / 8), getButtonYForMenu(i / 8));
                 imageButtons[i1] = imageButton;
                 imageButtons[i1].addListener(new ClickListener() {
@@ -167,7 +168,7 @@ public class GameMenu extends Menu {
                 Tile tile = getTile(getViewingX() - zoom / 2 + j,
                         getViewingY() - zoom / 2 + i);
                 image.addAction(new GetTileAction(tile));
-                TextTooltip listener = new MyTextTooltip("", controller.getSkin(), tile);
+                TextTooltip listener = new MyTextTooltip("", Controller.getSkin(), tile);
                 image.addListener(listener);
             }
             mapImages.add(images);
@@ -225,14 +226,14 @@ public class GameMenu extends Menu {
 
     private void viewPosition() {
         {
-            Window window = new Window("give me", controller.getSkin());
+            Window window = new Window("give me", Controller.getSkin());
             window.setWidth(2000);
             window.setHeight(200);
-            window.add(new Label("x: ", controller.getSkin()));
-            TextField xField = new TextField("", controller.getSkin());
+            window.add(new Label("x: ", Controller.getSkin()));
+            TextField xField = new TextField("", Controller.getSkin());
             window.add(xField);
-            window.add(new Label("y: ", controller.getSkin()));
-            TextField yField = new TextField("", controller.getSkin());
+            window.add(new Label("y: ", Controller.getSkin()));
+            TextField yField = new TextField("", Controller.getSkin());
             window.add(yField);
             window.add(okButton);
             okButton.addListener(new ClickListener() {

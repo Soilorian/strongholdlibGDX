@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import org.example.control.Controller;
 import org.example.control.SoundPlayer;
 import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.menucontrollers.GameStartUpMenuController;
 import org.example.control.menucontrollers.MainMenuController;
 import org.example.model.DataBase;
 import org.example.model.Game;
@@ -234,7 +235,7 @@ public class MainMenu extends Menu {
     }
 
     public void startNewGame() {
-        GameMenuController.setCurrentGame(new Game());
+        GameStartUpMenuController.startMakingGame();
         controller.changeMenu(Menus.SELECT_SIZE_MENU.getMenu(), this);
     }
 

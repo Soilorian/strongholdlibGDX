@@ -126,6 +126,13 @@ public class Controller extends Game {
         return manager.get(shieldAddress);
     }
 
+    public static Pixmap getCursorPixmap() {
+        Texture texture = new Texture("pictures/cursor.png");
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
+        return texture.getTextureData().consumePixmap();
+    }
+
     public void changeMenu(Menu menu, Menu from) {
         getRainSound().pause();
         if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {

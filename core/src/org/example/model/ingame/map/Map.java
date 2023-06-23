@@ -6,15 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Castle;
-import org.example.model.ingame.castle.Colors;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.enums.TileTypes;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Map {
@@ -205,7 +204,7 @@ public class Map {
 
 
     public boolean isInRange(int x, int y) {
-        return x >= 0 && y >= 0 && x <= groundWidth && y <= groundHeight;
+        return x >= 0 && y >= 0 && x < groundWidth && y < groundHeight;
     }
 
     public void closeGate(int x, int y, Direction direction) {
@@ -273,5 +272,16 @@ public class Map {
         for (int i = 0; i < groundHeight; i++)
             for (int j = 0; j < groundWidth; j++) tiles[i][j] = new Tile(i, j, TileTypes.GRASS);
         castles.clear();
+    }
+
+    public Integer getCastleNumber(Castle castle) {
+        AtomicInteger index = new AtomicInteger(-1);
+        castles.forEach( (x,y) -> {
+            if (castle == y) {
+                System.out.println("matched");
+                index.set(x);
+            }
+        });
+        return index.get();
     }
 }

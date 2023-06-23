@@ -308,6 +308,7 @@ public class ProfileMenu extends Menu {
         behindStage.addActor(window);
     }
 
+    @SuppressWarnings("unchecked")
     private void leaderBoard(){
         behindStage.clear();
         Collections.sort(DataBase.getPlayers(),new PlayerComparator());
@@ -352,6 +353,7 @@ public class ProfileMenu extends Menu {
         windowSelect = new Window(user + " Profile",Controller.getSkin());
         windowSelect.setBounds(graphics.getWidth()/5.5f,graphics.getHeight()/3.7f,500,500);
         Player player = DataBase.getPlayerByUsername(user);
+        assert player != null;
         int type = player.getProfImage();
         prof = new Avatars(Avatars.getPic(type),Avatars.getPic(type),type);
         windowSelect.add(prof).center().colspan(2).padBottom(30);
