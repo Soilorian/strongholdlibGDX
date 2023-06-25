@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.control.enums.GameMenuMessages;
-import org.example.control.enums.MapEditorMenuMessages;
 import org.example.model.DataBase;
 import org.example.model.Game;
 import org.example.model.Player;
@@ -34,15 +33,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Timer;
 
 import static org.example.control.Controller.isFieldEmpty;
-import static org.example.control.menucontrollers.MapEditMenuController.dropBuilding;
 
 public class GameMenuController {
     private static final ArrayList<Troop> selectedTroops = new ArrayList<>();
     private static Game currentGame;
     private static Building selectedBuilding;
     private static boolean hasAttacked = false;
+    private static final ArrayList<Tile> selectedTiles = new ArrayList<>();
 
     public static boolean isThereBuilding(int x, int y) {
         return Controller.getCurrentMap().getTile(y, x).getBuilding() != null;
@@ -100,17 +100,14 @@ public class GameMenuController {
         return GameMenuMessages.SUCCEED.toString();
     }
 
-    public static void dropBuildingGameMenu(int x, int y, Buildings buildings, Direction dir) {
-        String result = dropBuilding(x, y, buildings, "GameMenu");
+    public static GameMenuMessages dropBuildingGameMenu(int x, int y, Buildings buildings, Direction dir) {
         Building building = new Building(buildings);
         building.setOwner(DataBase.getCurrentEmpire());
-        if (!lookAround(x, y, DataBase.getCurrentEmpire(), 5).isEmpty());
-//            "There are enemies around" TODO error masseges
-        if (!Building.build(buildings, GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x)));
-//            return "unable to place building"; // TODO: 6/6/2023 error
+        if (!lookAround(x, y, DataBase.getCurrentEmpire(), 5).isEmpty()) return GameMenuMessages.ENEMY_AROUND;
         if (isGate(buildings))
             currentGame.getCurrentMap().addGate(x, y, dir);
         if (isWall(building)) Controller.getCurrentMap().dropWall(x, y, building);
+        return Building.build(buildings, GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x));
     }
 
     public static boolean isGate(Buildings buildings) {
@@ -142,7 +139,7 @@ public class GameMenuController {
     }
 
     private static void removeDeads(ArrayList<Troop> troops) {
-        for (Iterator<Troop> iterator = troops.iterator(); iterator.hasNext() ;) {
+        for (Iterator<Troop> iterator = troops.iterator(); iterator.hasNext(); ) {
             if ((iterator.next()).isDead())
                 iterator.remove();
         }
@@ -188,9 +185,10 @@ public class GameMenuController {
         ArrayList<Troop> enemy = new ArrayList<>();
         for (int i = 0; i < range; i++) {
             for (int j = 0; j < range; j++) {
-                for (Troop troop : Controller.getCurrentMap().getTile(y - 2 + i, x - 2 + j).getTroops())
-                    if (!troop.getKing().equals(empire))
-                        enemy.add(troop);
+                if (Controller.getCurrentMap().isInRange(x - 2 + j, y - 2 + i))
+                    for (Troop troop : Controller.getCurrentMap().getTile(y - 2 + i, x - 2 + j).getTroops())
+                        if (!troop.getKing().equals(empire))
+                            enemy.add(troop);
             }
         }
         return enemy;
@@ -271,7 +269,7 @@ public class GameMenuController {
                         int x = tile.getX();
                         int y = tile.getY();
                         switch (value) {
-                            case NORTH:{
+                            case NORTH: {
                                 if (currentGame.getCurrentMap().isInRange(x, y - 1))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y - 1, x)));
                                 else return GameMenuMessages.CANT_GO_THERE;
@@ -283,13 +281,13 @@ public class GameMenuController {
                                 else return GameMenuMessages.CANT_GO_THERE;
                                 break;
                             }
-                            case SOUTH : {
+                            case SOUTH: {
                                 if (currentGame.getCurrentMap().isInRange(x, y + 1))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y + 1, x)));
                                 else return GameMenuMessages.CANT_GO_THERE;
                                 break;
                             }
-                            case WEST : {
+                            case WEST: {
                                 if (currentGame.getCurrentMap().isInRange(x - 1, y))
                                     ((Engineer) selectedTroop).pourOil((currentGame.getCurrentMap().getTile(y, x - 1)));
                                 else return GameMenuMessages.CANT_GO_THERE;
@@ -369,7 +367,7 @@ public class GameMenuController {
         Empire currentEmpire = DataBase.getCurrentEmpire();
         final Tile placedOn = selectedBuilding.getTileUnder();
         switch (getSelectedBuilding().getBuilding()) {
-            case ENGINEER_GUILD : {
+            case ENGINEER_GUILD: {
                 if (!type.equalsIgnoreCase(Engineer.getName()))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -384,7 +382,7 @@ public class GameMenuController {
                     }
                 }
             }
-            case TUNNELERS_GUILD : {
+            case TUNNELERS_GUILD: {
                 if (!type.equalsIgnoreCase(Tunneler.getName()))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -399,7 +397,7 @@ public class GameMenuController {
                     }
                 }
             }
-            case BARRACK : {
+            case BARRACK: {
                 if (TrainingPlace.BARRACK.doesntHaveUnit(type))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -416,7 +414,7 @@ public class GameMenuController {
                     return GameMenuMessages.SUCCESS;
                 }
             }
-            case MERCENARY_POST : {
+            case MERCENARY_POST: {
                 if (TrainingPlace.MERCENARY_POST.doesntHaveUnit(type))
                     return GameMenuMessages.CANT_PRODUCE_UNIT;
                 else {
@@ -431,7 +429,7 @@ public class GameMenuController {
                     return GameMenuMessages.SUCCESS;
                 }
             }
-            default : {
+            default: {
                 return GameMenuMessages.CANT_PRODUCE_UNIT;
             }
         }
@@ -504,15 +502,15 @@ public class GameMenuController {
             empire.removeDeads();
             for (Troop troop : empire.getTroops()) {
                 switch (troop.getStatus()) {
-                    case DEFENSIVE :{
+                    case DEFENSIVE: {
                         troop.searchForEnemyWithHammingDistance(0);
                         break;
                     }
-                    case OFFENSIVE :{
+                    case OFFENSIVE: {
                         troop.searchForEnemyWithHammingDistance(2);
                         break;
                     }
-                    case NATURAL :{
+                    case NATURAL: {
                         troop.searchForEnemyWithHammingDistance(1);
                         break;
                     }
@@ -528,7 +526,7 @@ public class GameMenuController {
             empire.taxCollector();
         }
         Iterator<Empire> iterator = currentGame.getEmpires().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             if (iterator.next().isLordDead())
                 iterator.remove();
         }
@@ -587,7 +585,7 @@ public class GameMenuController {
     }
 
     public static Texture getMapPrev(Map selectedMap, int scale) {
-        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
+        Pixmap pixmap = new Pixmap(selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
                 Pixmap.Format.RGBA8888);
         selectedMap.setUpPixmap(pixmap, scale);
         Texture texture = new Texture(pixmap);
@@ -596,9 +594,17 @@ public class GameMenuController {
     }
 
     public static Pixmap getMapPrevPixmap(Map selectedMap, int scale) {
-        Pixmap pixmap = new Pixmap( selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
+        Pixmap pixmap = new Pixmap(selectedMap.getGroundWidth() * scale, selectedMap.getGroundHeight() * scale,
                 Pixmap.Format.RGBA8888);
         selectedMap.setUpPixmap(pixmap, scale);
         return pixmap;
+    }
+
+    public static ArrayList<Tile> getSelectedTiles() {
+        return selectedTiles;
+    }
+
+    public static void addSelectedTile(Tile tile){
+        selectedTiles.add(tile);
     }
 }

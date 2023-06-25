@@ -1,6 +1,7 @@
 package org.example.model.ingame.castle;
 
 import org.example.control.Controller;
+import org.example.control.enums.GameMenuMessages;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.humans.army.Troops;
@@ -62,23 +63,23 @@ public class Castle extends Building {
             for (int j = 0; j <= i; j++) {
                 if (map.isInRange(currentX + j, currentY + i - j)) {
                     tile = map.getTile(currentY + i - j, currentX + j);
-                    if (tile.getBuilding() == null && build(stockpile, tile))
+                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
                         return;
                 }
                 if (map.isInRange(currentX + j, currentY - i + j)) {
                     tile = map.getTile(currentY - i + j, currentX + j);
-                    if (tile.getBuilding() == null && build(stockpile, tile))
+                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
                         return;
 
                 }
                 if (map.isInRange(currentX - j, currentY + i - j)) {
                     tile = map.getTile(currentY + i - j, currentX - j);
-                    if (tile.getBuilding() == null && build(stockpile, tile))
+                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
                         return;
                 }
                 if (map.isInRange(currentX - j, currentY - i + j)) {
                     tile = map.getTile(currentY - i + j, currentX - j);
-                    if (tile.getBuilding() == null && build(stockpile, tile))
+                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
                         return;
                 }
             }

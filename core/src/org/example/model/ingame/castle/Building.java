@@ -3,6 +3,7 @@ package org.example.model.ingame.castle;
 import com.badlogic.gdx.graphics.Texture;
 import org.example.Main;
 import org.example.control.Controller;
+import org.example.control.enums.GameMenuMessages;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
@@ -18,7 +19,6 @@ import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 import org.example.view.enums.Menus;
-import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -71,18 +71,17 @@ public class Building {
         producingAmount = buildings.getProducingAmount();
     }
 
-    public static boolean build(Buildings building, Tile tile) {
+    public static GameMenuMessages build(Buildings building, Tile tile) {
         if (tile.getBuilding() != null) {
-            System.out.println("you are trying to replace a building");
-            return false;
+            return GameMenuMessages.ALREADY_BUILDING;
         }
         ArrayList<Resource> requirements = building.getRequirements();
         Empire currentEmpire = DataBase.getCurrentEmpire();
         for (Resource resource : requirements)
             if (currentEmpire.isThereNotResource(resource))
-                return false;
+                return GameMenuMessages.NOT_ENOUGH_RESOURCE;
         for (Resource requirement : requirements) currentEmpire.takeResource(requirement);
-        if (!building.getPlacableOn().contains(tile.getTile())) return false;
+        if (!building.getPlacableOn().contains(tile.getTile())) return GameMenuMessages.NOT_PLACEABLE_TILE;
         if (building.equals(Buildings.CAGED_WAR_DOGS))
             tile.setTrap(new DogCage(DataBase.getCurrentEmpire()));
         else if (building.equals(Buildings.KILLING_PIT))
@@ -96,7 +95,7 @@ public class Building {
             if (building.equals(Buildings.HOVEL)) GameMenuController.addPeasant();
         }
 
-        return true;
+        return GameMenuMessages.SUCCESS;
     }
 
     public String onClick() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {

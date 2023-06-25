@@ -27,9 +27,9 @@ public abstract class Menu implements Screen {
     protected final TextButton okButton = new TextButton("ok", Controller.getSkin()), cancelButton = new TextButton(
 
             "cancel", Controller.getSkin());
-    protected final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
-    protected final Dialog messageDialog = new Dialog("", Controller.getSkin());
-    protected final Label messageLabel = new Label("", Controller.getSkin());
+    protected static final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
+    protected static final Dialog messageDialog = new Dialog("", Controller.getSkin());
+    protected static final Label messageLabel = new Label("", Controller.getSkin());
     protected Controller controller = Main.getController();
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
@@ -41,12 +41,11 @@ public abstract class Menu implements Screen {
         TextButton hideButton = new TextButton("hide", Controller.getSkin());
 
         messageLabel.setColor(Color.BLACK);
-        messageDialog.setX(Gdx.graphics.getWidth() / 4f);
-        messageDialog.setY(Gdx.graphics.getHeight() /20f);
-        messageDialog.setWidth(Gdx.graphics.getWidth() / 2f);
+        messageDialog.setWidth(Gdx.graphics.getWidth() / 5f);
         messageDialog.setHeight(Gdx.graphics.getHeight() / 4f);
-        timerSlider.setWidth(200);
-        timerSlider.setHeight(20);
+        messageDialog.setX(Gdx.graphics.getWidth() - messageDialog.getWidth());
+        messageDialog.setY(Gdx.graphics.getHeight() /2f - messageDialog.getHeight());
+        timerSlider.setWidth(messageLabel.getWidth());
         messageDialog.setVisible(false);
         messageDialog.row();
         messageDialog.add(messageLabel);
@@ -62,6 +61,7 @@ public abstract class Menu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 messageDialog.setVisible(false);
+                Gdx.input.setInputProcessor(behindStage);
             }
         });
 
@@ -116,7 +116,7 @@ public abstract class Menu implements Screen {
         batch.dispose();
     }
 
-    protected void showMessage(String message) {
+    public static void showMessage(String message) {
         timerSlider.setValue(0);
         messageLabel.setColor(Color.TAN);
         messageLabel.setText(message);

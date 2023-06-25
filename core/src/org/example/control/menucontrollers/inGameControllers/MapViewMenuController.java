@@ -9,6 +9,7 @@ import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 
 public class MapViewMenuController {
+    private static final int MAX_ZOOM = 10;
     private static int viewingX;
     private static int viewingY;
     public static int zoom = 7;
@@ -145,6 +146,10 @@ public class MapViewMenuController {
         return GameMenuMessages.NOT_IN_RANGE.toString();
     }
 
+    public static String showDetails(Tile tile) {
+        return showDetails(tile.getX(), tile.getY());
+    }
+
     public static int getViewingX() {
         return viewingX;
     }
@@ -171,6 +176,10 @@ public class MapViewMenuController {
 
     public static void changeViewingX(int i) {
         viewingX += i;
+    }
+
+    public static int getZoomPrime() {
+        return MAX_ZOOM - zoom;
     }
 }
 

@@ -5,11 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import org.example.control.Controller;
@@ -33,6 +32,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.*;
@@ -42,6 +42,18 @@ public class GameMenu extends Menu {
     Window[] menuWindows = new Window[6];
     ImageButton[] imageButtons = new ImageButton[8];
     private Image mapPrevImage = new Image();
+    private Window detailWindow = new Window("details",Controller.getSkin());
+
+    public static void reload() {
+        ((GameMenu) Menus.GAME_MENU.getMenu()).reloadMap();
+    }
+
+    public void reloadMap() {
+        behindStage.clear();
+        setupMap();
+        addMapAssets();
+        Gdx.input.setInputProcessor(behindStage);
+    }
 
     private void addAssets() {
         addMapAssets();
@@ -55,13 +67,18 @@ public class GameMenu extends Menu {
     }
 
     private void addMenuAssets() {
-        for (Window menuWindow : menuWindows) for (ImageButton imageButton : imageButtons) menuWindow.add(imageButton);
         for (Window menuWindow : menuWindows) {
             menuWindow.setVisible(false);
             frontStage.addActor(menuWindow);
+            menuWindow.setDebug(true);
         }
-        menuWindows[0].add((new ImageButton(new TextureRegionDrawable(Controller.getPictureOf(2)))));
         menuWindows[0].setVisible(true);
+        for (Window menuWindow : menuWindows) {
+            for (ImageButton imageButton : imageButtons) {
+                menuWindow.add(imageButton);
+            }
+        }
+        menuWindows[0].add(imageButtons[0]);
     }
 
     private void addMiniMapAssets() {
@@ -85,7 +102,6 @@ public class GameMenu extends Menu {
     }
 
     private void setupMenus() {
-        menuWindows = new Window[6];
         Window window = null;
         Buildings[] values = Buildings.values();
         for (int i = 0; i < values.length; i++) {
@@ -97,7 +113,7 @@ public class GameMenu extends Menu {
                 final int i1 = i / 8;
                 menuWindows[i1] = window;
                 ImageButton imageButton = new ImageButton(new TextureRegionDrawable(Controller.getPictureOf(i1 + 1)));
-                imageButton.setPosition(getButtonXForMenu(i / 8), getButtonYForMenu(i / 8));
+                imageButton.setPosition(getButtonXForMenu(i1), getButtonYForMenu(i1));
                 imageButtons[i1] = imageButton;
                 imageButtons[i1].addListener(new ClickListener() {
                     @Override
@@ -156,20 +172,11 @@ public class GameMenu extends Menu {
     }
 
     private void setupMap() {
-        int zoom = MapViewMenuController.getZoom();
         for (int i = 0; i < zoom; i++) {
             ArrayList<Image> images = new ArrayList<>();
             for (int j = 0; j < zoom; j++) {
-                Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
-                        MapViewMenuController.getViewingY() - zoom / 2 + i, zoom));
-                image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
-                        (float) ((zoom - i - 1) * Gdx.graphics.getHeight()) / zoom);
+                Image image = getImage(i, j);
                 images.add(image);
-                Tile tile = getTile(getViewingX() - zoom / 2 + j,
-                        getViewingY() - zoom / 2 + i);
-                image.addAction(new GetTileAction(tile));
-                TextTooltip listener = new MyTextTooltip("", Controller.getSkin(), tile);
-                image.addListener(listener);
             }
             mapImages.add(images);
 
@@ -181,6 +188,21 @@ public class GameMenu extends Menu {
                 return super.keyDown(event, keycode);
             }
         });
+    }
+
+    private Image getImage(int i, int j) {
+        Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
+                MapViewMenuController.getViewingY() - zoom / 2 + i, zoom));
+        image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
+                (float) ((zoom - i - 1) * Gdx.graphics.getHeight()) / zoom);
+        Tile tile = getTile(getViewingX() - zoom / 2 + j,
+                getViewingY() - zoom / 2 + i);
+        image.addAction(new GetTileAction(tile));
+        TextTooltip listener = new MyTextTooltip("", Controller.getSkin(), tile);
+        listener.setActor(new Label(MapViewMenuController.showDetails(tile), Controller.getSkin()));
+        image.addListener(listener);
+        image.addListener(new SelectListener());
+        return image;
     }
 
     private Tile getTile(int x, int y) {
@@ -261,11 +283,9 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingY(-1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
-                    getViewingY() - zoom / 2, zoom));
-            image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
-                    (float) ((zoom - 1) * Gdx.graphics.getHeight()) / zoom);
+            Image image = getImage(j, 0);
             images.add(image);
+
             behindStage.addActor(image);
         }
         mapImages.set(0, images); // 0 --> dir
@@ -281,10 +301,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingY(1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + j,
-                    getViewingY() - zoom / 2 + zoom - 1, zoom));
-            image.setPosition((float) (j * Gdx.graphics.getWidth()) / zoom,
-                    0);
+            Image image = getImage(j, zoom - 1);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -304,9 +321,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingX(-1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2,
-                    getViewingY() - zoom / 2 + j, zoom));
-            image.setPosition(0, (float) ((zoom - j - 1) * Gdx.graphics.getHeight()) / zoom);
+            Image image = getImage(0, j);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -328,10 +343,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingX(1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = new Image(makeTextureForTile(MapViewMenuController.getViewingX() - zoom / 2 + zoom - 1,
-                    getViewingY() - zoom / 2 + j, zoom));
-            image.setPosition((float) ((zoom - 1) * Gdx.graphics.getWidth()) / zoom,
-                    (float) ((zoom - j - 1) * Gdx.graphics.getHeight()) / zoom);
+            Image image = getImage(zoom - 1, j);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -384,7 +396,6 @@ public class GameMenu extends Menu {
         mapPrevImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println(x + " " + y);
                 quickMove(x, y);
             }
         });
@@ -393,7 +404,7 @@ public class GameMenu extends Menu {
     private void quickMove(float x, float y) {
         MapViewMenuController.setViewingX((int) (x / 2));
         MapViewMenuController.setViewingY((int) (200 - y / 2));
-        create();
+        reloadMap();
     }
 
     private void exitApp() {
@@ -651,5 +662,30 @@ public class GameMenu extends Menu {
         GameMenuController.disbandUnit();
     }
 
+    public void showSelectedDetails(){
+        ArrayList<Tile> tiles = GameMenuController.getSelectedTiles();
+        detailWindow.clear();
+        /.
+    }
 
+
+    private class SelectListener extends ClickListener {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            Image target = (Image) event.getTarget();
+            target.setDrawable(new TextureRegionDrawable(Controller.addHighlight(Objects.requireNonNull(getTile(target)).getTexture(zoom))));
+            GameMenuController.addSelectedTile(getTile(target));
+            showSelectedDetails();
+            super.clicked(event, x, y);
+        }
+
+        private Tile getTile(Image target) {
+            for (Action action : target.getActions()) {
+                if (action instanceof GetTileAction){
+                    return ((GetTileAction) action).getTile();
+                }
+            }
+            return null;
+        }
+    }
 }

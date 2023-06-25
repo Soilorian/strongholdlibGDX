@@ -6,9 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
+import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
@@ -17,12 +20,14 @@ import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.LoadingMenu;
 import org.example.view.enums.Menus;
 import org.example.view.menus.*;
+import org.example.view.menus.Menu;
 import org.example.view.menus.ingamemenus.*;
 import org.example.view.menus.minimenus.SelectMapMenu;
 import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -131,6 +136,20 @@ public class Controller extends Game {
         if (!texture.getTextureData().isPrepared())
             texture.getTextureData().prepare();
         return texture.getTextureData().consumePixmap();
+    }
+
+    public static Texture addHighlight(Texture drawable) {
+        if (!drawable.getTextureData().isPrepared()) drawable.getTextureData().prepare();
+        Pixmap pixmap = drawable.getTextureData().consumePixmap();
+        pixmap.setColor(Color.YELLOW);
+        for (int i = 0; i < pixmap.getWidth(); i++) {
+            for (int j = 0; j < pixmap.getHeight(); j++) {
+                for (int k = 0; k < MapViewMenuController.getZoomPrime(); k++) {
+                    pixmap.drawPixel(Math.min(pixmap.getWidth(), i + k), Math.min(pixmap.getHeight(), j + k));
+                }
+            }
+        }
+        return new Texture(pixmap);
     }
 
     public void changeMenu(Menu menu, Menu from) {
@@ -337,5 +356,9 @@ public class Controller extends Game {
 
     public Texture getUnitBack() {
         return manager.get(unitBack);
+    }
+
+    public void copyToClipboard(String address){
+        ClipboardImage.write(Toolkit.getDefaultToolkit ().createImage(address));
     }
 }
