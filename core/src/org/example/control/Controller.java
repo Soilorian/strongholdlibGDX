@@ -358,7 +358,7 @@ public class Controller extends Game {
         return manager.get(unitBack);
     }
 
-    public void copyToClipboard(String address){
+    public static void copyToClipboard(String address){
         ClipboardImage.write(Toolkit.getDefaultToolkit ().createImage(address));
     }
 }

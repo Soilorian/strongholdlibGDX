@@ -2,6 +2,7 @@ package org.example.view.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +31,12 @@ public abstract class Menu implements Screen {
     protected static final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
     protected static final Dialog messageDialog = new Dialog("", Controller.getSkin());
     protected static final Label messageLabel = new Label("", Controller.getSkin());
+    private final Label label;
+
+    private String getStageInfo() {
+        return "controlling stage: " + currentStage();
+    }
+
     protected Controller controller = Main.getController();
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
@@ -87,6 +94,11 @@ public abstract class Menu implements Screen {
 
         frontStage.addActor(messageDialog);
         Gdx.input.setInputProcessor(behindStage);
+
+
+        label = new Label(getStageInfo(), Controller.getSkin());
+        label.setPosition(Gdx.graphics.getWidth() - label.getWidth(), Gdx.graphics.getHeight() - label.getHeight());
+        label.setColor(Color.YELLOW);
     }
 
     public abstract void create();
@@ -94,8 +106,6 @@ public abstract class Menu implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
-        batch.begin();
-        batch.end();
         behindStage.draw();
         stage.draw();
         frontStage.draw();
@@ -103,11 +113,27 @@ public abstract class Menu implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         behindStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            if (Gdx.input.getInputProcessor().equals(behindStage))
+            if (Gdx.input.getInputProcessor().equals(behindStage)) {
                 Gdx.input.setInputProcessor(frontStage);
-            else
+            }
+            else {
                 Gdx.input.setInputProcessor(behindStage);
+            }
+            label.setText(getStageInfo());
         }
+        batch.begin();
+        label.draw(batch, 1);
+        batch.end();
+    }
+
+    private String currentStage() {
+        if (Gdx.input.getInputProcessor() == null) {
+            return "no stage";
+        }
+            if (Gdx.input.getInputProcessor().equals(behindStage))
+                return "back stage";
+            else
+                return "front stage";
     }
 
     @Override

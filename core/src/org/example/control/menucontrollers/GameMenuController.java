@@ -26,6 +26,7 @@ import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 import org.example.view.enums.Menus;
+import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -43,6 +44,7 @@ public class GameMenuController {
     private static Building selectedBuilding;
     private static boolean hasAttacked = false;
     private static final ArrayList<Tile> selectedTiles = new ArrayList<>();
+    private static ArrayList<Buildings> copiedBuildings;
 
     public static boolean isThereBuilding(int x, int y) {
         return Controller.getCurrentMap().getTile(y, x).getBuilding() != null;
@@ -604,7 +606,27 @@ public class GameMenuController {
         return selectedTiles;
     }
 
-    public static void addSelectedTile(Tile tile){
+    public static boolean addSelectedTile(Tile tile){
+        if (selectedTiles.contains(tile)){
+            selectedTiles.remove(tile);
+            return true;
+        }
         selectedTiles.add(tile);
+        return false;
+    }
+
+    public static void transferSelectedIntoCopy() {
+        for (Tile selectedTile : selectedTiles) {
+            if (selectedTile.getBuilding() != null) {
+                copiedBuildings.add(selectedTile.getBuilding().getBuilding());
+                Controller.copyToClipboard(selectedTile.getBuilding().getBuilding().getTextureAddress());
+            }
+        }
+    }
+
+    public static void placeCopiedBuildings() {
+        for (int i = 0; i < Math.min(selectedTiles.size(), copiedBuildings.size()); i++) {
+            Menu.showMessage(Building.build(copiedBuildings.get(i), selectedTiles.get(i)).toString());
+        }
     }
 }

@@ -48,8 +48,6 @@ public class MapViewMenu extends Menu {
                 return super.keyDown(event, keycode);
             }
         });
-        behindStage.setDebugAll(true);
-
     }
 
 
