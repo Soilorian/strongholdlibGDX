@@ -98,6 +98,7 @@ public abstract class Menu implements Screen {
         label.setColor(Color.BLACK);
     }
 
+
     public abstract void create();
 
     @Override
