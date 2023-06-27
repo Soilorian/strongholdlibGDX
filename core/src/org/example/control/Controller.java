@@ -144,9 +144,11 @@ public class Controller extends Game {
         pixmap.setColor(Color.YELLOW);
         for (int i = 0; i < pixmap.getWidth(); i++) {
             for (int j = 0; j < pixmap.getHeight(); j++) {
-                for (int k = 0; k < MapViewMenuController.getZoomPrime(); k++) {
-                    pixmap.drawPixel(Math.min(pixmap.getWidth(), i + k), Math.min(pixmap.getHeight(), j + k));
-                }
+                if (j > MapViewMenuController.getZoomPrime() && j < pixmap.getHeight() - MapViewMenuController.getZoomPrime()){
+                    if (i<=MapViewMenuController.getZoomPrime() || i>=pixmap.getWidth() - MapViewMenuController.getZoomPrime())
+                        pixmap.drawPixel(i, j);
+                } else
+                    pixmap.drawPixel(i, j);
             }
         }
         return new Texture(pixmap);

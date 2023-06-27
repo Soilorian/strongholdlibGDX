@@ -17,7 +17,6 @@ public class MyTextTooltip extends TextTooltip {
 
     @Override
     public Container<Label> getContainer() {
-        setActor(new Label(tile.details(), new Label.LabelStyle(Controller.getSkin().getFont("default"), Color.BROWN)));
         return super.getContainer();
     }
 }

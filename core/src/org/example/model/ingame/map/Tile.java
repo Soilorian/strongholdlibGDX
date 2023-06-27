@@ -129,7 +129,7 @@ public class Tile {
     public String details() {
         StringBuilder stringBuilder = new StringBuilder(tile.getType());
         if (building != null) stringBuilder.append('\n').append(building.getBuildingName()).append(" , owner: ")
-                .append(building.getOwner().getColor());
+                .append(building.getOwner() == null ? building.getOwner().getColor() : "no one");
         HashMap<Colors, ArrayList<Troop>> troopsByEmpire;
         if ((troopsByEmpire = getPeasantsByEmpires()) != null) for (Colors colors : troopsByEmpire.keySet())
             stringBuilder.append("\n").append(colors).append(": ").append(troopsByEmpire.get(colors).size()).append(" peasants");

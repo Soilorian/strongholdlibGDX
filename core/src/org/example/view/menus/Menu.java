@@ -98,7 +98,7 @@ public abstract class Menu implements Screen {
 
         label = new Label(getStageInfo(), Controller.getSkin());
         label.setPosition(Gdx.graphics.getWidth() - label.getWidth(), Gdx.graphics.getHeight() - label.getHeight());
-        label.setColor(Color.YELLOW);
+        label.setColor(Color.BLACK);
     }
 
     public abstract void create();

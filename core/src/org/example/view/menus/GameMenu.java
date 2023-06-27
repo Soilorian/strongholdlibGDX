@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -178,8 +177,8 @@ public class GameMenu extends Menu {
     }
 
     private void setupMap() {
-        MapViewMenuController.setViewingY(GameMenuController.getCurrentGame().getCurrentMap().getGroundHeight()/2);
-        MapViewMenuController.setViewingX(GameMenuController.getCurrentGame().getCurrentMap().getGroundWidth()/2);
+        MapViewMenuController.setViewingY(GameMenuController.getCurrentGame().getCurrentMap().getGroundHeight() / 2);
+        MapViewMenuController.setViewingX(GameMenuController.getCurrentGame().getCurrentMap().getGroundWidth() / 2);
         for (int i = 0; i < zoom; i++) {
             ArrayList<Image> images = new ArrayList<>();
             for (int j = 0; j < zoom; j++) {
@@ -206,18 +205,16 @@ public class GameMenu extends Menu {
         Tile tile = getTile(getViewingX() - zoom / 2 + j,
                 getViewingY() - zoom / 2 + i);
         image.addAction(new GetTileAction(tile));
-        TextTooltip listener = new MyTextTooltip("", Controller.getSkin(), tile);
+        MyTextTooltip listener = new MyTextTooltip("", Controller.getSkin(), tile);
+        if (tile == null) listener.setActor(new Label("void", Controller.getSkin()));
+        else listener.setActor(new Label(tile.details(), Controller.getSkin()));
         image.addListener(listener);
-        image.addListener(new SelectListener());
+        image.addListener(new SelectListener(tile));
         return image;
     }
 
     private Tile getTile(int x, int y) {
         return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x);
-    }
-
-    private void hideDetails() {
-
     }
 
 
@@ -243,15 +240,11 @@ public class GameMenu extends Menu {
                 moveRight();
                 break;
             }
-            case Input.Keys.V: {
-                viewPosition();
-                break;
-            }
-            case Input.Keys.C:{
+            case Input.Keys.C: {
                 copy();
                 break;
             }
-            case Input.Keys.P:{
+            case Input.Keys.P: {
                 paste();
                 break;
             }
@@ -324,7 +317,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingY(1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = getImage( zoom - 1, j);
+            Image image = getImage(zoom - 1, j);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -344,7 +337,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingX(-1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = getImage( j, 0);
+            Image image = getImage(j, 0);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -366,7 +359,7 @@ public class GameMenu extends Menu {
         ArrayList<Image> images = new ArrayList<>();
         MapViewMenuController.changeViewingX(1); // --> dir
         for (int j = 0; j < zoom; j++) { // --> dir
-            Image image = getImage(j,zoom - 1);
+            Image image = getImage(j, zoom - 1);
             images.add(image);
             behindStage.addActor(image);
         }
@@ -691,12 +684,14 @@ public class GameMenu extends Menu {
         HashMap<Troops, Integer> troops = new HashMap<>();
         for (Tile tile : tiles) {
             Building building = tile.getBuilding();
-            if (building.getOwner().equals(DataBase.getCurrentEmpire()))
-                detailWindow.add(new Image(Controller.resizer(20, 20, building.getTexture()))).row();
+            if (building != null) {
+                if (building.getOwner().equals(DataBase.getCurrentEmpire()))
+                    detailWindow.add(new Image(Controller.resizer(20, 20, building.getTexture()))).row();
+            }
             for (Troop troop : tile.getTroops()) {
                 if (troop.getKing().equals(DataBase.getCurrentEmpire())) {
                     if (troops.containsKey(troop.getTroop())) {
-                        troops.put(troop.getTroop(), 1+ troops.get(troop.getTroop()));
+                        troops.put(troop.getTroop(), 1 + troops.get(troop.getTroop()));
                     } else
                         troops.put(troop.getTroop(), 1);
                 }
@@ -709,23 +704,25 @@ public class GameMenu extends Menu {
 
 
     private class SelectListener extends ClickListener {
+
+        private final Tile tile;
+
+        public SelectListener(Tile tile) {
+            this.tile = tile;
+        }
+
         @Override
         public void clicked(InputEvent event, float x, float y) {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-                Image target = (Image) event.getTarget();
-                if (GameMenuController.addSelectedTile(getTile(target))) {
+                Image target = (Image) event.getListenerActor();
+                if (GameMenuController.addSelectedTile(tile)) {
                     super.clicked(event, x, y);
                     return;
                 }
-                target.setDrawable(new TextureRegionDrawable(Controller.addHighlight(Objects.requireNonNull(getTile(target)).getTexture(zoom))));
+                target.setDrawable(new TextureRegionDrawable(Controller.addHighlight(Objects.requireNonNull(tile).getTexture(zoom))));
                 showSelectedDetails();
                 super.clicked(event, x, y);
             }
-        }
-
-        private Tile getTile(Image target) {
-            Action action = target.getActions().get(target.getActions().indexOf(GetTileAction.getInstance(), false));
-            return ((GetTileAction) action).getTile();
         }
     }
 }
