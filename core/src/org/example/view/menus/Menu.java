@@ -93,7 +93,6 @@ public abstract class Menu implements Screen {
         frontStage.addActor(messageDialog);
         Gdx.input.setInputProcessor(behindStage);
 
-
         label = new Label(getStageInfo(), Controller.getSkin());
         label.setPosition(Gdx.graphics.getWidth() - label.getWidth(), Gdx.graphics.getHeight() - label.getHeight());
         label.setColor(Color.BLACK);
