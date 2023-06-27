@@ -1,6 +1,7 @@
 package org.example.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.example.control.Controller;
 
 @XStreamAlias("player")
 
@@ -107,5 +108,8 @@ public class Player {
 
     public void setSecurityQuestion(String securityQuestion) {
         this.securityQuestion = securityQuestion;
+    }
+
+    public void message(String text){
     }
 }

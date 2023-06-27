@@ -47,7 +47,7 @@ public class GameMenu extends Menu {
     Window[] menuWindows = new Window[6];
     ImageButton[] imageButtons = new ImageButton[8];
     private Image mapPrevImage = new Image();
-    private Window detailWindow = new Window("details", Controller.getSkin());
+    private final Window detailWindow = new Window("details", Controller.getSkin());
 
     public static void reload() {
         ((GameMenu) Menus.GAME_MENU.getMenu()).reloadMap();
@@ -177,8 +177,6 @@ public class GameMenu extends Menu {
     }
 
     private void setupMap() {
-        MapViewMenuController.setViewingY(GameMenuController.getCurrentGame().getCurrentMap().getGroundHeight() / 2);
-        MapViewMenuController.setViewingX(GameMenuController.getCurrentGame().getCurrentMap().getGroundWidth() / 2);
         for (int i = 0; i < zoom; i++) {
             ArrayList<Image> images = new ArrayList<>();
             for (int j = 0; j < zoom; j++) {
@@ -247,6 +245,9 @@ public class GameMenu extends Menu {
             case Input.Keys.P: {
                 paste();
                 break;
+            }
+            case Input.Keys.Q:{
+                Menu.showMessage("whia osspdfjasdnhfkalsdfik");
             }
             default:
                 return;
@@ -390,6 +391,8 @@ public class GameMenu extends Menu {
 
     @Override
     public void create() {
+        MapViewMenuController.setViewingY(GameMenuController.getCurrentGame().getCurrentMap().getGroundHeight() / 2);
+        MapViewMenuController.setViewingX(GameMenuController.getCurrentGame().getCurrentMap().getGroundWidth() / 2);
         behindStage.clear();
         mapPrevImage.clear();
         mapImages.clear();

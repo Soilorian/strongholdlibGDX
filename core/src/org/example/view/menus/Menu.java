@@ -48,10 +48,8 @@ public abstract class Menu implements Screen {
         TextButton hideButton = new TextButton("hide", Controller.getSkin());
 
         messageLabel.setColor(Color.BLACK);
-        messageDialog.setWidth(Gdx.graphics.getWidth() / 5f);
-        messageDialog.setHeight(Gdx.graphics.getHeight() / 4f);
-        messageDialog.setX(Gdx.graphics.getWidth() - messageDialog.getWidth());
-        messageDialog.setY(Gdx.graphics.getHeight() /2f - messageDialog.getHeight());
+        messageDialog.setPosition(Gdx.graphics.getWidth() - messageDialog.getWidth(),
+                Gdx.graphics.getHeight() / 2f - messageDialog.getHeight()/2);
         timerSlider.setWidth(messageLabel.getWidth());
         messageDialog.setVisible(false);
         messageDialog.row();

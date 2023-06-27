@@ -14,23 +14,18 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
+import java.net.Socket;
 
-public class Main extends ApplicationAdapter {
+public class Main {
     static Controller controller;
-    @Override
+
+    public Main(Socket socket) {
+        Controller.setSocket(socket);
+    }
+
     public void create() {
         controller = new Controller();
-        controller.create();
-    }
-
-    @Override
-    public void render() {
-        controller.render();
-    }
-
-    @Override
-    public void dispose() {
-        controller.dispose();
+        controller.handleServer();
     }
 
     public static Controller getController() {
