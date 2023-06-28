@@ -605,10 +605,5 @@ public class ProfileMenu extends Menu {
             }
         });
     }
-//    public static void addPics() {
-//        tablePic.removeActor(pic8);
-//        pic8.remove();
-//        pic8 = new Avatars(Main.getPicture(), Main.getPicture(), 9);
-//        tablePic.addActor(pic8);
-//    }
+
 }
