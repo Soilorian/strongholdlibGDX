@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
+import org.example.model.Player;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
@@ -28,17 +29,28 @@ import org.example.view.menus.minimenus.SelectSizeMenu;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller extends Game {
     public static final AssetManager manager = new AssetManager();
+
+    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
     private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private static final String shieldAddress = "pictures/shield.png";
     private static Map currentMap;
     private static Menus currentMenu;
+    private static Socket socket;
+    private static DataInputStream in;
+    private static DataOutputStream out;
     private final String userAvatar = "EntranceAssets/users.png";
     private final String lock = "EntranceAssets/lock.png";
     private final String defaultMapAddress = "pictures/default-map.jpeg";
@@ -154,7 +166,15 @@ public class Controller extends Game {
         return new Texture(pixmap);
     }
 
+    public static void setSocket(Socket socket) {
+        Controller.socket = socket;
+    }
+
     public void changeMenu(Menu menu, Menu from) {
+        if (menu.equals(Menus.ENTRANCE_MENU.getMenu()))
+            playerGoneOffline();
+        if (from.equals(Menus.LOADING_MENU.getMenu()) || from.equals(Menus.ENTRANCE_MENU.getMenu()))
+            updatePlayers();
         getRainSound().pause();
         if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
             setScreen(nextMenu);
@@ -163,6 +183,16 @@ public class Controller extends Game {
             setScreen(menu);
         if (menu.equals(Menus.LOADING_MENU.getMenu()) || from.equals(Menus.MAP_EDIT_MENU.getMenu()))
             nextMenu = from;
+    }
+
+    private void playerGoneOffline() {
+        if (!players.remove(DataBase.getCurrentPlayer())) {
+            System.out.println("ummm, line 190, controller");
+        }
+    }
+
+    private void updatePlayers() {
+        players.add(DataBase.getCurrentPlayer());
     }
 
 
@@ -362,5 +392,11 @@ public class Controller extends Game {
 
     public static void copyToClipboard(String address){
         ClipboardImage.write(Toolkit.getDefaultToolkit ().createImage(address));
+    }
+
+    public void handleServer() {
+        while(true){
+
+        }
     }
 }

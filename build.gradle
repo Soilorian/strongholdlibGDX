@@ -74,6 +74,16 @@ project(":core") {
     }
 
 
+    dependencies {
+        implementation 'com.thoughtworks.xstream:xstream:1.4.20'
+    }
+
+
+    dependencies {
+        implementation 'kryonet:kryonet:2.21-2'
+    }
+
+
 }
 
 

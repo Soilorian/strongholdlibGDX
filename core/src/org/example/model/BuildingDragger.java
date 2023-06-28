@@ -41,7 +41,7 @@ public class BuildingDragger extends DragListener {
             return;
         }
         event.getStage().getActors().removeValue(clone, true);
-        int placingX = Math.floorDiv((int) (Gdx.input.getX()),
+        int placingX = Math.floorDiv(Gdx.input.getX(),
                 Gdx.graphics.getWidth() / zoom) + MapViewMenuController.getViewingX() - zoom / 2;
         int placingY = Math.floorDiv((int) (y),
                 Gdx.graphics.getHeight() / zoom) + MapViewMenuController.getViewingY() - zoom / 2;
