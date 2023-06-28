@@ -27,7 +27,6 @@ public class Main {
         controller = new Controller();
         controller.handleServer();
     }
-
     public static Controller getController() {
         return controller;
     }
