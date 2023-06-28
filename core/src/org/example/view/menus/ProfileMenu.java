@@ -102,7 +102,7 @@ public class ProfileMenu extends Menu {
         newLeader();
         newSelect();
         newImage();
-        behindStage.addActor(chat);
+        //behindStage.addActor(chat);
         Gdx.input.setInputProcessor(behindStage);
     }
 
@@ -598,7 +598,7 @@ public class ProfileMenu extends Menu {
                     DataBase.getCurrentPlayer().setProfImage(7);
                 }else if (imageButton.equals(pic8)) {
 //                    addPics();
-                    DataBase.getCurrentPlayer().setProfImage(9);
+                    DataBase.getCurrentPlayer().setProfImage(8);
                 }else {
                     DataBase.getCurrentPlayer().setProfImage(0);
                 }
