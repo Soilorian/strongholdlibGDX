@@ -1,26 +1,19 @@
 package org.example.control.menucontrollers;
 
 
-import com.badlogic.gdx.Screen;
-import org.example.Main;
 import org.example.control.Controller;
 import org.example.control.enums.EntranceMenuMessages;
 import org.example.model.Captcha;
 import org.example.model.DataBase;
 import org.example.model.Player;
-import org.example.view.enums.Menus;
-import org.example.view.menus.EntranceMenu;
-import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.example.control.Controller.isFieldEmpty;
-import static org.example.control.Controller.setCurrentMenu;
 
 public class EntranceMenuController {
 
@@ -165,7 +158,6 @@ public class EntranceMenuController {
             return EntranceMenuMessages.USERNAME_NOT_EXIST.toString();
         if (isPasswordIncorrect(player, password)) {
             passwordMiss++;
-            passwordDelay();
             return EntranceMenuMessages.INCORRECT_PASSWORD.toString();
         }
         passwordMiss = 0;
@@ -180,14 +172,6 @@ public class EntranceMenuController {
         DataBase.setStayLoggedIn(true);
     }
 
-    public static void passwordDelay() {
-        if (passwordMiss % 5 == 0){
-            Screen screen = Main.getController().getScreen();
-            if (screen instanceof EntranceMenu) {
-                ((EntranceMenu) screen).delay();
-            }
-        }
-    }
 
     static public String changePassword(String username, String newPassword) {
         Player player = DataBase.getPlayerByUsername(username);

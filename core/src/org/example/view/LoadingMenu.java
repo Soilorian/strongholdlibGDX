@@ -2,7 +2,6 @@ package org.example.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,8 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import org.example.control.Controller;
 import org.example.model.DataBase;
 import org.example.view.enums.Menus;
-import org.example.view.menus.EntranceMenu;
-import org.example.view.menus.Menu;
 
 import static org.example.control.Controller.manager;
 

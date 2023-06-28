@@ -1,6 +1,6 @@
 package org.example.view.enums;
 
-import org.example.view.menus.*;
+import org.example.view.menus.Menu;
 
 public enum Menus {
     ENTRANCE_MENU("entrance menu"),
@@ -24,7 +24,8 @@ public enum Menus {
     FORGOT_PASSWORD("forgot password"),
     New("select map menu"),
 
-    LOADING_MENU("loading menu");
+    LOADING_MENU("loading menu"),
+    RECONNECTING_MENU("reconnecting menu");
 
     private final String menuName;
 
@@ -37,7 +38,7 @@ public enum Menus {
     public static String getNameByObj(Menu menu) {
         for (Menus value : values()) {
             if (value.getMenu().equals(menu))
-                return value.getMenuName();
+                return value.name();
         }
         return null;
     }

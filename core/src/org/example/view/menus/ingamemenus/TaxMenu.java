@@ -15,21 +15,17 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
-import org.example.control.SoundPlayer;
 import org.example.control.menucontrollers.inGameControllers.TaxMenuController;
-import org.example.model.DataBase;
-import org.example.view.enums.Menus;
-import org.example.view.enums.Sounds;
-import org.example.view.enums.commands.InGameMenuCommands;
 import org.example.view.menus.Menu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.util.regex.Matcher;
 
 import static com.badlogic.gdx.Gdx.graphics;
 

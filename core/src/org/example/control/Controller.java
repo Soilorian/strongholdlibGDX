@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Timer;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
@@ -18,13 +19,7 @@ import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
-import org.example.view.LoadingMenu;
 import org.example.view.enums.Menus;
-import org.example.view.menus.*;
-import org.example.view.menus.Menu;
-import org.example.view.menus.ingamemenus.*;
-import org.example.view.menus.minimenus.SelectMapMenu;
-import org.example.view.menus.minimenus.SelectSizeMenu;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -33,21 +28,19 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Controller extends Game {
+public class Controller{
     public static final AssetManager manager = new AssetManager();
+    private static Timer timer;
 
     public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
     private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private static final String shieldAddress = "pictures/shield.png";
     private static Map currentMap;
-    private static Menus currentMenu;
     private static Socket socket;
     private static DataInputStream in;
     private static DataOutputStream out;
@@ -107,9 +100,6 @@ public class Controller extends Game {
         Controller.currentMap = currentMap;
     }
 
-    public static void setCurrentMenu(Menus menus) {
-        //currentMenu = menus;
-    }
 
     public static Texture getTexture(String textureAddress) {
         return manager.get(textureAddress);
@@ -117,6 +107,9 @@ public class Controller extends Game {
 
     public static Texture getPeseantTexture() {
         return null;
+    }
+
+    public Controller() {
     }
 
     public static Skin getSkin() {
@@ -170,19 +163,8 @@ public class Controller extends Game {
         Controller.socket = socket;
     }
 
-    public void changeMenu(Menu menu, Menu from) {
-        if (menu.equals(Menus.ENTRANCE_MENU.getMenu()))
-            playerGoneOffline();
-        if (from.equals(Menus.LOADING_MENU.getMenu()) || from.equals(Menus.ENTRANCE_MENU.getMenu()))
-            updatePlayers();
-        getRainSound().pause();
-        if (!menu.equals(Menus.MAIN_MENU.getMenu()) && nextMenu != null) {
-            setScreen(nextMenu);
-            nextMenu = null;
-        } else
-            setScreen(menu);
-        if (menu.equals(Menus.LOADING_MENU.getMenu()) || from.equals(Menus.MAP_EDIT_MENU.getMenu()))
-            nextMenu = from;
+    public static void setCurrentMenu(Menus menus) {
+
     }
 
     private void playerGoneOffline() {
@@ -195,19 +177,6 @@ public class Controller extends Game {
         players.add(DataBase.getCurrentPlayer());
     }
 
-
-    public void setScreen(Screen screen) {
-        if (screen instanceof Menu)
-            ((Menu) screen).create();
-        super.setScreen(screen);
-    }
-
-    @Override
-    public void create() {
-        DataBase.generateInfoFromJson();
-        manageAssets();
-        setScreen(new LoadingMenu(this));
-    }
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
@@ -240,45 +209,6 @@ public class Controller extends Game {
         manager.load(shopBack, Texture.class);
         manager.load(taxBack, Texture.class);
         manager.load(unitBack, Texture.class);
-    }
-
-    public void createMenus() {
-        Menus.MUSIC_CONTROL_MENU.setMenu(new MusicMenu());
-        Menus.MAP_EDIT_MENU.setMenu(new MapEditMenu());
-        Menus.TRADE_MENU.setMenu(new TradeMenu());
-        Menus.MAP_VIEW_MENU.setMenu(new MapViewMenu());
-        Menus.GAME_START_UP_MENU.setMenu(new GameStartUpMenu());
-        Menus.ENTRANCE_MENU.setMenu(new EntranceMenu());
-        Menus.GAME_MENU.setMenu(new GameMenu());
-        Menus.GRANARY_MENU.setMenu(new GranaryMenu());
-        Menus.MAIN_MENU.setMenu(new MainMenu());
-        Menus.RANDOM_MAP_MENU.setMenu(new RandomMapMenu());
-        Menus.PROFILE_MENU.setMenu(new ProfileMenu());
-        Menus.SETTINGS_MENU.setMenu(new SettingsMenu());
-        Menus.SHOP_MENU.setMenu(new ShopMenu());
-        Menus.TAX_MENU.setMenu(new TaxMenu());
-        Menus.UNIT_CREATING_MENU.setMenu(new UnitCreatingMenu());
-        Menus.SELECT_MAP_MENU.setMenu(new SelectMapMenu());
-        Menus.SELECT_SIZE_MENU.setMenu(new SelectSizeMenu());
-    }
-
-    @Override
-    public void render() {
-        super.render();
-    }
-
-    @Override
-    public void dispose() {
-        try {
-            DataBase.updatePlayersXS();
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            DataBase.updateMaps();
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public Texture getUserAvatar() {
@@ -336,14 +266,6 @@ public class Controller extends Game {
         return manager.get(entranceBack);
     }
 
-    public void exitGame() {
-//        for (Menus value : Menus.values()) {
-//            value.getMenu().dispose();
-//        }
-        dispose();
-        Gdx.app.exit();
-    }
-
     public Texture getBlackMap() {
         return manager.get(blackTileAddress);
     }
@@ -395,8 +317,42 @@ public class Controller extends Game {
     }
 
     public void handleServer() {
+
         while(true){
 
         }
+    }
+
+    private void setupConnection(String host, int port) {
+        try {
+            socket = new Socket(host, port);
+            in = new DataInputStream(socket.getInputStream());
+            out = new DataOutputStream(socket.getOutputStream());
+            timer.clear();
+        } catch (IOException ignored) {
+            System.out.println("reconnecting in 5 seconds...");
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    setupConnection(host, port);
+                }
+            }, 5000);
+        }
+    }
+
+    public void setScreen(org.example.view.menus.Menu menu) {
+
+    }
+
+    public void changeMenu(org.example.view.menus.Menu menu, org.example.view.menus.Menu menu1) {
+
+    }
+
+    public void createMenus() {
+
+    }
+
+    public void exitGame() {
+
     }
 }

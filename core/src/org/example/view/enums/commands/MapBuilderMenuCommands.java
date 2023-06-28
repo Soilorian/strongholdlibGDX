@@ -11,7 +11,7 @@ public enum MapBuilderMenuCommands {
     final Pattern pattern;
 
     MapBuilderMenuCommands(String regex) {
-        this.pattern = java.util.regex.Pattern.compile(regex);
+        this.pattern = Pattern.compile(regex);
     }
 
     static public Matcher getMatcher(String input, MapBuilderMenuCommands command) {

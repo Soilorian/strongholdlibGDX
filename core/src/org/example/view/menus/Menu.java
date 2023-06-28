@@ -2,26 +2,24 @@ package org.example.view.menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import org.example.Main;
 import org.example.control.Controller;
-
-import javax.swing.*;
 
 public abstract class Menu implements Screen {
 //    private static Cursor cursor = Gdx.graphics.newCursor(Controller.getCursorPixmap(), 0, 20);
@@ -48,8 +46,10 @@ public abstract class Menu implements Screen {
         TextButton hideButton = new TextButton("hide", Controller.getSkin());
 
         messageLabel.setColor(Color.BLACK);
-        messageDialog.setPosition(Gdx.graphics.getWidth() - messageDialog.getWidth(),
-                Gdx.graphics.getHeight() / 2f - messageDialog.getHeight()/2);
+        messageDialog.setWidth(Gdx.graphics.getWidth() / 5f);
+        messageDialog.setHeight(Gdx.graphics.getHeight() / 4f);
+        messageDialog.setX(Gdx.graphics.getWidth() - messageDialog.getWidth());
+        messageDialog.setY(Gdx.graphics.getHeight() /2f - messageDialog.getHeight());
         timerSlider.setWidth(messageLabel.getWidth());
         messageDialog.setVisible(false);
         messageDialog.row();
@@ -92,12 +92,10 @@ public abstract class Menu implements Screen {
 
         frontStage.addActor(messageDialog);
         Gdx.input.setInputProcessor(behindStage);
-
         label = new Label(getStageInfo(), Controller.getSkin());
         label.setPosition(Gdx.graphics.getWidth() - label.getWidth(), Gdx.graphics.getHeight() - label.getHeight());
         label.setColor(Color.BLACK);
     }
-
 
     public abstract void create();
 

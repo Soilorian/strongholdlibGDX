@@ -1,12 +1,17 @@
 package org.example.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.example.control.Controller;
+import org.example.model.chat.Chat;
+import org.example.model.chat.Group;
+import org.example.model.chat.PrivateChat;
+
+import java.util.ArrayList;
 
 @XStreamAlias("player")
 
 public class Player {
 
+    ArrayList<Chat> chats;
     String username;
 
     String password;
@@ -110,6 +115,27 @@ public class Player {
         this.securityQuestion = securityQuestion;
     }
 
-    public void message(String text){
+    public ArrayList<Chat> getChats() {
+        return chats;
+    }
+
+    public void addChat(Chat chat){
+        chats.add(chat);
+    }
+
+    public PrivateChat getPrivateChatById(String id) {
+        for (Chat chat : chats) {
+            if (chat instanceof PrivateChat && chat.getId().equalsIgnoreCase(id))
+                return (PrivateChat) chat;
+        }
+        return null;
+    }
+
+    public Group getGroupById(String id) {
+        for (Chat chat : chats) {
+            if (chat instanceof Group && chat.getId().equalsIgnoreCase(id))
+                return (Group) chat;
+        }
+        return null;
     }
 }
