@@ -1,6 +1,7 @@
 package org.example.view.menus;
 
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.example.Main;
 import org.example.control.Controller;
 import org.example.control.comparetors.PlayerComparator;
 import org.example.control.enums.ProfileMenuMessages;
@@ -32,6 +34,7 @@ import static com.badlogic.gdx.Gdx.graphics;
 
 public class ProfileMenu extends Menu {
     private Label error;
+    private static Table tablePic;
 
     //changes
     private TextField news;
@@ -58,7 +61,15 @@ public class ProfileMenu extends Menu {
     private ScrollPane scrollPane;
     private Button select;
     private List listNum,listUser,listScore;
-    private ImageButton defaultPic,pic1,pic2,pic3,pic4,pic5,pic6,pic7;
+    private ImageButton defaultPic;
+    private ImageButton pic1;
+    private ImageButton pic2;
+    private ImageButton pic3;
+    private ImageButton pic4;
+    private ImageButton pic5;
+    private ImageButton pic6;
+    private ImageButton pic7;
+    private static ImageButton pic8;
 
     //selectedProf
     private Window windowSelect;
@@ -73,6 +84,7 @@ public class ProfileMenu extends Menu {
     private final Texture backPic = new Texture("pictures/back.jpg");
     private final Texture boardPic = new Texture("pictures/leaderBoard.png");
     private final Texture copyPic = new Texture("pictures/copy.png");
+
 
 
     public ProfileMenu() {
@@ -90,8 +102,11 @@ public class ProfileMenu extends Menu {
         newLeader();
         newSelect();
         newImage();
+        //behindStage.addActor(chat);
         Gdx.input.setInputProcessor(behindStage);
     }
+
+
     @Override
     public void render(float delta){
         batch.begin();
@@ -163,6 +178,7 @@ public class ProfileMenu extends Menu {
         pic5 = new Avatars(Avatars.getPic(5),Avatars.getPic(5),5);
         pic6 = new Avatars(Avatars.getPic(6),Avatars.getPic(6),6);
         pic7 = new Avatars(Avatars.getPic(7),Avatars.getPic(7),7);
+        pic8 = new Avatars(Avatars.getPic(8),Avatars.getPic(8),8);
     }
     private void profileMenu(){
         behindStage.clear();
@@ -383,16 +399,17 @@ public class ProfileMenu extends Menu {
     }
     private void avatarMenu(){
         behindStage.clear();
-        Table tablePic = new Table(Controller.getSkin());
+        tablePic = new Table(Controller.getSkin());
         ScrollPane scroll = new ScrollPane(tablePic, Controller.getSkin());
         tablePic.add(defaultPic).pad(10,10,10,10);
-        tablePic.add(pic1).pad(10,10,10,10).row();
-        tablePic.add(pic2).pad(10,10,10,10);
-        tablePic.add(pic3).pad(10,10,10,10).row();
+        tablePic.add(pic1).pad(10,10,10,10);
+        tablePic.add(pic2).pad(10,10,10,10).row();
+        tablePic.add(pic3).pad(10,10,10,10);
         tablePic.add(pic4).pad(10,10,10,10);
         tablePic.add(pic5).pad(10,10,10,10).row();
         tablePic.add(pic6).pad(10,10,10,10);
-        tablePic.add(pic7).pad(10,10,10,10).row();
+        tablePic.add(pic7).pad(10,10,10,10);
+        tablePic.add(pic8).pad(10,10,10,10).row();
         scroll.setSize(700,600);
         scroll.setPosition(graphics.getWidth()/3.1f,graphics.getHeight()/3.7f);
         scroll.setForceScroll(false,true);
@@ -406,6 +423,7 @@ public class ProfileMenu extends Menu {
         picListener(pic5);
         picListener(pic6);
         picListener(pic7);
+        picListener(pic8);
         behindStage.addActor(scroll);
     }
 
@@ -578,10 +596,14 @@ public class ProfileMenu extends Menu {
                     DataBase.getCurrentPlayer().setProfImage(6);
                 }else if (imageButton.equals(pic7)) {
                     DataBase.getCurrentPlayer().setProfImage(7);
+                }else if (imageButton.equals(pic8)) {
+//                    addPics();
+                    DataBase.getCurrentPlayer().setProfImage(8);
                 }else {
                     DataBase.getCurrentPlayer().setProfImage(0);
                 }
             }
         });
     }
+
 }
