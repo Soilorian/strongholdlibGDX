@@ -1,8 +1,6 @@
 package org.example.control;
 
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
@@ -19,7 +16,6 @@ import org.example.model.Game;
 import org.example.model.Player;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
-import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
@@ -27,7 +23,6 @@ import org.example.view.enums.Menus;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -71,8 +66,8 @@ public class Controller {
     private final String boarderAddress = "pictures/frame.png";
     private final String blackTileAddress = "pictures/black-tile.png";
     private Menu nextMenu;
-    private Gson gson = new Gson();
-    private Logger log;
+    public static final Gson gson = new Gson();
+    public static final Logger log = Logger.getLogger( Thread.currentThread().getName() + ".logger");
     private Player player;
 
     public static String removeQuotes(String string) {
@@ -117,8 +112,7 @@ public class Controller {
         return null;
     }
 
-    public Controller() {
-        log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
+    public Controller(){
         log.setLevel(Level.ALL);
         ConsoleHandler handler = new ConsoleHandler();
         handler.setLevel(Level.FINER);
@@ -370,11 +364,11 @@ public class Controller {
 
     private void sendGames() {
         try {
-            Game[] toSendGame = (Game[]) games.toArray();
+            Game[] toSendGame = (Game[]) games.stream().toArray();
             out.writeUTF(gson.toJson(toSendGame, Game[].class));
         }
         catch (Exception e) {
-            //TODO mahdi
+            safeDisconnect();
         }
 
     }
@@ -384,19 +378,21 @@ public class Controller {
         try {
             player = gson.fromJson(json, Player.class);
             updatePlayers(player);
+            return;
         } catch (Exception ignored) {
         }
         try {
             Game game = gson.fromJson(json, Game.class);
             handleGame(game);
 
+            return;
         } catch (Exception ignored) {
         }
     }
 
     private void handleGame(Game game) {
         Game searchedGame;
-        if ((searchedGame = getGameById(game.getId())) == null)
+        if ((searchedGame = getGameById(game.getGameId())) == null)
         games.add(game);
         else {
 
@@ -445,7 +441,7 @@ public class Controller {
 
     public Game getGameById(String id) {
         for (Game game : games)
-            if (game.getId().equals(id))
+            if (game.getGameId().equals(id))
                 return game;
         return null;
     }

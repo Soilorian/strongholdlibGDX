@@ -29,7 +29,7 @@ public class GameStartUpMenuController {
         DataBase.setCurrentEmpire(empire);
         GameMenuController.getCurrentGame().getEmpires().add(empire);
         GameMenuController.getCurrentGame().getAllEmpires().add(empire);
-        GameMenuController.getCurrentGame().getPlayers().add(DataBase.getCurrentPlayer());
+//        GameMenuController.getCurrentGame().getPlayers().add(DataBase.getCurrentPlayer());
     }
 
 
@@ -67,9 +67,9 @@ public class GameStartUpMenuController {
         Player playerByUsername = DataBase.getPlayerByUsername(username);
         if (playerByUsername == null)
             return GameStartUpMenuMessages.NO_PLAYER;
-        else if (GameMenuController.getCurrentGame().getPlayers().contains(playerByUsername))
-            return GameStartUpMenuMessages.PLAYER_ALREADY_ADDED;
-        GameMenuController.getCurrentGame().addPlayer(playerByUsername);
+//        else if (GameMenuController.getCurrentGame().getPlayers().contains(playerByUsername))
+//            return GameStartUpMenuMessages.PLAYER_ALREADY_ADDED;
+//        GameMenuController.getCurrentGame().addPlayer(playerByUsername);
         return GameStartUpMenuMessages.SUCCESS;
     }
 
