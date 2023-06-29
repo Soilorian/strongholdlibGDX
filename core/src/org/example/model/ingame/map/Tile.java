@@ -21,7 +21,6 @@ import org.example.model.ingame.map.enums.TreeTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class Tile {
     private final int x;
@@ -37,9 +36,6 @@ public class Tile {
     private boolean isPassable = true;
     private boolean isWall = false;
     private Trap trap = null;
-    private Random random = new Random();
-
-
     private boolean isTunnel = false;
 
 

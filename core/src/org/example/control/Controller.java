@@ -21,8 +21,12 @@ import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
 
 import java.awt.*;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -33,13 +37,14 @@ import java.util.regex.Pattern;
 
 public class Controller {
     public static final AssetManager manager = new AssetManager();
-    private static java.util.Timer timer;
-
     public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
+    public static final Gson gson = new Gson();
+    public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
     private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private static final String shieldAddress = "pictures/shield.png";
+    private static java.util.Timer timer;
     private static Map currentMap;
     private static Socket socket;
     private static DataInputStream in;
@@ -66,9 +71,17 @@ public class Controller {
     private final String boarderAddress = "pictures/frame.png";
     private final String blackTileAddress = "pictures/black-tile.png";
     private Menu nextMenu;
-    public static final Gson gson = new Gson();
-    public static final Logger log = Logger.getLogger( Thread.currentThread().getName() + ".logger");
     private Player player;
+
+    public Controller() {
+        log.setLevel(Level.ALL);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel(Level.FINER);
+        handler.setFormatter(new SimpleFormatter());
+        log.addHandler(handler);
+        timer = new java.util.Timer();
+        setupConnection();
+    }
 
     public static String removeQuotes(String string) {
         if (string.isEmpty()) return string;
@@ -103,23 +116,12 @@ public class Controller {
         Controller.currentMap = currentMap;
     }
 
-
     public static Texture getTexture(String textureAddress) {
         return manager.get(textureAddress);
     }
 
     public static Texture getPeseantTexture() {
         return null;
-    }
-
-    public Controller(){
-        log.setLevel(Level.ALL);
-        ConsoleHandler handler = new ConsoleHandler();
-        handler.setLevel(Level.FINER);
-        handler.setFormatter(new SimpleFormatter());
-        log.addHandler(handler);
-        timer = new java.util.Timer();
-        setupConnection();
     }
 
     public static Skin getSkin() {
@@ -177,6 +179,10 @@ public class Controller {
 
     }
 
+    public static void copyToClipboard(String address) {
+        ClipboardImage.write(Toolkit.getDefaultToolkit().createImage(address));
+    }
+
     private void playerGoneOffline() {
         if (!players.remove(DataBase.getCurrentPlayer())) {
             System.out.println("ummm, line 190, controller");
@@ -192,7 +198,6 @@ public class Controller {
             players.add(player);
         }
     }
-
 
     private void manageAssets() {
         manager.load(jsonSkinAddress, Skin.class);
@@ -328,10 +333,6 @@ public class Controller {
         return manager.get(unitBack);
     }
 
-    public static void copyToClipboard(String address) {
-        ClipboardImage.write(Toolkit.getDefaultToolkit().createImage(address));
-    }
-
     public void handleServer() {
         log.fine("started handling");
         if (sendData()) {
@@ -341,8 +342,7 @@ public class Controller {
 
         while (true) {
             try {
-                String json = in.readUTF();
-                handleIncomingJson(json);
+                handleIncomingJson();
             } catch (IOException e) {
                 safeDisconnect();
                 break;
@@ -366,34 +366,42 @@ public class Controller {
         try {
             Game[] toSendGame = (Game[]) games.stream().toArray();
             out.writeUTF(gson.toJson(toSendGame, Game[].class));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             safeDisconnect();
         }
 
     }
 
-    private void handleIncomingJson(String json) {
+    private void handleIncomingJson() throws IOException {
         log.finest("packet received!");
         try {
-            player = gson.fromJson(json, Player.class);
-            updatePlayers(player);
+            ObjectInputStream oos = new ObjectInputStream(in);
+            Map myString = gson.fromJson((String) oos.readObject(), Map.class);
+            System.out.println(myString.getId());
+            System.out.println(System.currentTimeMillis());
             return;
-        } catch (Exception ignored) {
+        } catch (ClassNotFoundException ignored){
+
         }
         try {
-            Game game = gson.fromJson(json, Game.class);
+            player = gson.fromJson(in.readUTF(), Player.class);
+            updatePlayers(player);
+            return;
+        }catch (RuntimeException ignored){}
+        try {
+            Game game = gson.fromJson(in.readUTF(), Game.class);
             handleGame(game);
 
             return;
-        } catch (Exception ignored) {
+        } catch (RuntimeException ignored) {
         }
+
     }
 
     private void handleGame(Game game) {
         Game searchedGame;
         if ((searchedGame = getGameById(game.getGameId())) == null)
-        games.add(game);
+            games.add(game);
         else {
 
             games.remove(searchedGame);

@@ -12,7 +12,8 @@ public enum Status {
     OFFENSIVE("offensive"),
     DIGGING("digging"),
 
-    ON_THE_WAY_BACK("going back to work");
+    ON_THE_WAY_BACK("going back to work"),
+    SICK("sick");
     private final String status;
 
     Status(String status) {

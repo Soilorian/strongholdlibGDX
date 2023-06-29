@@ -292,7 +292,7 @@ public class Troop {
         this.hitPoint = value;
     }
 
-    public Tile getDestination() {
+    public Tile getTileDestination() {
         return destination;
     }
 
@@ -308,12 +308,12 @@ public class Troop {
         return damage;
     }
 
-    public Status getStatus() {
+    public Status getHumanStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setHumanStatus(Status humanStatus) {
+        this.status = humanStatus;
     }
 
     public String getType() {

@@ -27,11 +27,6 @@ public enum RockTypes {
         return type;
     }
 
-    @Override
-    public String toString() {
-        return ConsoleColors.turnToColoredString(symbols.get(direction.getDedicatedNumber() % symbols.size()), colors);
-    }
-
     public Direction getDirection() {
         return direction;
     }

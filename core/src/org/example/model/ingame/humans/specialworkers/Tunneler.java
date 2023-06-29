@@ -8,7 +8,7 @@ import org.example.model.ingame.map.Tile;
 
 public class Tunneler extends Peasant {
     private Tile tunnelStart;
-    private Tile destination;
+    private Tile tileDestination;
     private int movesLeft = 5;
 
     public Tunneler(Empire empire, Tile tile) {
@@ -25,13 +25,13 @@ public class Tunneler extends Peasant {
 
     @Override
     public GameMenuMessages update() {
-        if (!getStatus().equals(Status.DIGGING)) return GameMenuMessages.NOT_DIGGING;
+        if (!getHumanStatus().equals(Status.DIGGING)) return GameMenuMessages.NOT_DIGGING;
         if (movesLeft == 0) return GameMenuMessages.CANT_DIG;
-        if (getCurrentTile().equals(destination)) {
-            destination.getBuilding().destroy();
+        if (getCurrentTile().equals(tileDestination)) {
+            tileDestination.getBuilding().destroy();
             return GameMenuMessages.SUCCEED;
         }
-        if (getCurrentTile().moveTunnel(destination))
+        if (getCurrentTile().moveTunnel(tileDestination))
             movesLeft--;
         return GameMenuMessages.SUCCEED;
     }
@@ -41,8 +41,8 @@ public class Tunneler extends Peasant {
     }
 
     @Override
-    public Tile getDestination() {
-        return destination;
+    public Tile getTileDestination() {
+        return tileDestination;
     }
 
     public int getMovesLeft() {
@@ -53,7 +53,7 @@ public class Tunneler extends Peasant {
         tunnelStart = getCurrentTile();
         tunnelStart.setTunnel(true);
         tunnelStart.addTunneler(this);
-        setStatus(Status.DIGGING);
-        destination = tile;
+        setHumanStatus(Status.DIGGING);
+        tileDestination = tile;
     }
 }

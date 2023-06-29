@@ -24,7 +24,7 @@ public class Peasant extends Troop {
     private Resource inNeed = null;
     private int hp = 80;
     private Building destinationBuilding = null;
-    private Status status = Status.NOTHINGNESS;
+    private Status humanStatus = Status.NOTHINGNESS;
 
     public Peasant(Empire empire, Tile tile) {
         super(Troops.PEASANT, empire, tile);
@@ -53,14 +53,18 @@ public class Peasant extends Troop {
     }
 
     public GameMenuMessages update() throws CoordinatesOutOfMap, NotInStoragesException {
-        switch (status) {
+        switch (humanStatus) {
+            case SICK:{
+                humanStatus = Status.NOTHINGNESS;
+                return GameMenuMessages.HEALED;
+            }
             case RECEIVING : {
-                if (takeFromStockpile()) status = Status.ON_THE_WAY;
+                if (takeFromStockpile()) humanStatus = Status.ON_THE_WAY;
                 else return GameMenuMessages.NOT_ENOUGH_RESOURCE;
                 break;
             }
             case DELIVERING : {
-                if (deliverGoods()) status = Status.RECEIVING;
+                if (deliverGoods()) humanStatus = Status.RECEIVING;
                 else return GameMenuMessages.STORAGE_FULL;
                 break;
             }
@@ -70,7 +74,7 @@ public class Peasant extends Troop {
                     if (destinationBuilding.equals(workplace)) {
                         workplace.setHolder(movingResource);
                         movingResource = null;
-                    } else status = Status.DELIVERING;
+                    } else humanStatus = Status.DELIVERING;
                 }
                 break;
             }
@@ -103,20 +107,20 @@ public class Peasant extends Troop {
     }
 
 
-    public Status getStatus() {
-        return status;
+    public Status getHumanStatus() {
+        return humanStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setHumanStatus(Status humanStatus) {
+        this.humanStatus = humanStatus;
     }
 
     public void sendToGet(Resource resource, Resource toDeliver) throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException, LineUnavailableException, IOException {
-        setStatus(Status.ON_THE_WAY);
+        setHumanStatus(Status.ON_THE_WAY);
         setDestinationBuilding(getKing().whereToGet(resource, getCurrentTile().getX(), getCurrentTile().getY()));
         if (destinationBuilding == null) {
             SoundPlayer.play(Sounds.AKHEY); //TODO replace with proper sound
-            setStatus(Status.AT_WORK);
+            setHumanStatus(Status.AT_WORK);
         } else {
             inNeed = resource;
             movingResource = toDeliver;

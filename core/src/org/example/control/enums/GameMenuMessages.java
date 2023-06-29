@@ -48,7 +48,8 @@ public enum GameMenuMessages {
     CANT_TUNNEL("too far away"),
     NOT_YOUR_TROOPS("you can't control others' troops"),
     NOT_PLACEABLE_TILE("can not place this building on this tile"),
-    ENEMY_AROUND("there are enemies around");
+    ENEMY_AROUND("there are enemies around"),
+    HEALED("peasant healed");
 
     private final String message;
 

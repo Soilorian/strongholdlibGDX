@@ -1,7 +1,6 @@
 package org.example.model.ingame.castle;
 
 
-import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
@@ -59,7 +58,7 @@ public class Empire {
             ArrayList<Peasant> subset = new ArrayList<>();
             int pop = popularity;
             for (Peasant peasant : peasants)
-                if (peasant.getStatus().equals(Status.NOTHINGNESS)) {
+                if (peasant.getHumanStatus().equals(Status.NOTHINGNESS)) {
                     if (pop == 0) break;
                     subset.add(peasant);
                     pop++;

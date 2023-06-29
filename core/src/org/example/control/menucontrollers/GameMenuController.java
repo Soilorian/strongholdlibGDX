@@ -43,7 +43,7 @@ public class GameMenuController {
     private static Building selectedBuilding;
     private static boolean hasAttacked = false;
     private static final ArrayList<Tile> selectedTiles = new ArrayList<>();
-    private static ArrayList<Buildings> copiedBuildings;
+    private static final ArrayList<Buildings> copiedBuildings = new ArrayList<>();
 
     public static boolean isThereBuilding(int x, int y) {
         return Controller.getCurrentMap().getTile(y, x).getBuilding() != null;
@@ -164,7 +164,7 @@ public class GameMenuController {
         for (Status value : Status.values())
             if (value.getStatus().equals(type)) {
                 for (Troop selectedTroop : selectedTroops) {
-                    selectedTroop.setStatus(value);
+                    selectedTroop.setHumanStatus(value);
                 }
                 return GameMenuMessages.SUCCESS;
             }
@@ -502,7 +502,7 @@ public class GameMenuController {
         for (Empire empire : currentGame.getEmpires()) {
             empire.removeDeads();
             for (Troop troop : empire.getTroops()) {
-                switch (troop.getStatus()) {
+                switch (troop.getHumanStatus()) {
                     case DEFENSIVE: {
                         troop.searchForEnemyWithHammingDistance(0);
                         break;

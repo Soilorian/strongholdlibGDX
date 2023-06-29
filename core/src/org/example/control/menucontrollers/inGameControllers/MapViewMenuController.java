@@ -1,6 +1,5 @@
 package org.example.control.menucontrollers.inGameControllers;
 
-import org.example.control.Controller;
 import org.example.control.enums.GameMenuMessages;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Castle;
@@ -78,7 +77,7 @@ public class MapViewMenuController {
                     row.append(pattern);
                     pattern = tile.toString();
                     for (Troop troop : tile.getTroops())
-                        if (troop.getDestination() != null) {
+                        if (troop.getTileDestination() != null) {
                             pattern = "\uD83C\uDFC3";
                             break;
                         }
@@ -90,7 +89,7 @@ public class MapViewMenuController {
                             break;
                         }
                     row.append(pattern);
-                } else row.append(tile.toString()).append(tile).append(tile);
+                } else row.append(tile).append(tile).append(tile);
                 if (tile.isWall()) {
                     row.append(" ⌝");
                 } else row.append(tile);
