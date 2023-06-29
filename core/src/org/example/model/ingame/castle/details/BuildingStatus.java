@@ -23,11 +23,14 @@ public enum BuildingStatus {
 
     public static BuildingStatus goNext(BuildingStatus productionStep) {
         BuildingStatus[] values = BuildingStatus.values();
-        List<BuildingStatus> productionSteps = Arrays.stream(values).toList();
-        for (int i = 0; i < values.length; i++)
-            if (productionSteps.get(i).equals(productionStep))
-                return productionSteps.get((i + 1) % 5);
-        return null;
+//        List<BuildingStatus> productionSteps = Arrays.stream(values).toList();
+//        for (int i = 0; i < values.length; i++)
+//            if (productionSteps.get(i).equals(productionStep))
+//                productionStep = productionSteps.get((i + 1) % 5);
+        for (int i = 0 ; i< values.length ; i++)
+            if (values[i].equals(productionStep))
+                productionStep = values[(i+1)%5];
+        return productionStep;
     }
 
     public String getStatus() {
