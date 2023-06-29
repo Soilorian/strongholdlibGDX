@@ -23,6 +23,7 @@ import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
+
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
@@ -35,7 +36,7 @@ import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Controller{
+public class Controller {
     public static final AssetManager manager = new AssetManager();
     private static java.util.Timer timer;
 
@@ -116,8 +117,8 @@ public class Controller{
         return null;
     }
 
-    public Controller(){
-        log = Logger.getLogger( Thread.currentThread().getName() + ".logger");
+    public Controller() {
+        log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
         log.setLevel(Level.ALL);
         ConsoleHandler handler = new ConsoleHandler();
         handler.setLevel(Level.FINER);
@@ -164,8 +165,8 @@ public class Controller{
         pixmap.setColor(Color.YELLOW);
         for (int i = 0; i < pixmap.getWidth(); i++) {
             for (int j = 0; j < pixmap.getHeight(); j++) {
-                if (j > MapViewMenuController.getZoomPrime() && j < pixmap.getHeight() - MapViewMenuController.getZoomPrime()){
-                    if (i<=MapViewMenuController.getZoomPrime() || i>=pixmap.getWidth() - MapViewMenuController.getZoomPrime())
+                if (j > MapViewMenuController.getZoomPrime() && j < pixmap.getHeight() - MapViewMenuController.getZoomPrime()) {
+                    if (i <= MapViewMenuController.getZoomPrime() || i >= pixmap.getWidth() - MapViewMenuController.getZoomPrime())
                         pixmap.drawPixel(i, j);
                 } else
                     pixmap.drawPixel(i, j);
@@ -189,8 +190,8 @@ public class Controller{
     }
 
     private void updatePlayers(Player player) {
-        log.fine( "players updated");
-        if (players.contains(player)){
+        log.fine("players updated");
+        if (players.contains(player)) {
             if (players.remove(player)) {
             }
         } else {
@@ -333,8 +334,8 @@ public class Controller{
         return manager.get(unitBack);
     }
 
-    public static void copyToClipboard(String address){
-        ClipboardImage.write(Toolkit.getDefaultToolkit ().createImage(address));
+    public static void copyToClipboard(String address) {
+        ClipboardImage.write(Toolkit.getDefaultToolkit().createImage(address));
     }
 
     public void handleServer() {
@@ -366,21 +367,48 @@ public class Controller{
         return false;
     }
 
+
+    private void sendGames() {
+        try {
+            Game[] toSendGame = (Game[]) games.toArray();
+            out.writeUTF(gson.toJson(toSendGame, Game[].class));
+        }
+        catch (Exception e) {
+            //TODO mahdi
+        }
+
+    }
+
     private void handleIncomingJson(String json) {
         log.finest("packet received!");
         try {
             player = gson.fromJson(json, Player.class);
             updatePlayers(player);
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
         try {
             Game game = gson.fromJson(json, Game.class);
-            games.add(game);
-        }catch (Exception ignored){}
+            handleGame(game);
+
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void handleGame(Game game) {
+        Game searchedGame;
+        if ((searchedGame = getGameById(game.getId())) == null)
+        games.add(game);
+        else {
+
+            games.remove(searchedGame);
+            if (game.getPlayersLength() != 0)
+                games.add(game);
+        }
     }
 
     private void safeDisconnect() {
         if (players.remove(player)) {
-            log.finest("player " + player.getUsername() +" disconnected");
+            log.finest("player " + player.getUsername() + " disconnected");
         }
     }
 
@@ -413,5 +441,12 @@ public class Controller{
 
     public void exitGame() {
 
+    }
+
+    public Game getGameById(String id) {
+        for (Game game : games)
+            if (game.getId().equals(id))
+                return game;
+        return null;
     }
 }

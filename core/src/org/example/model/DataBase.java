@@ -204,6 +204,7 @@ public class DataBase {
         stayLoggedIn = b;
     }
 
+
     public static Empire getNatural() {
         return new Empire(getPlayerByUsername("ar"));
     }
