@@ -6,16 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import org.example.Main;
@@ -26,6 +27,9 @@ public abstract class Menu implements Screen {
     protected final TextButton okButton = new TextButton("ok", Controller.getSkin()), cancelButton = new TextButton(
 
             "cancel", Controller.getSkin());
+    protected final Texture chatPic = new Texture("pictures/Chat.png");
+    protected final Drawable chatDraw = new TextureRegionDrawable(new TextureRegion(chatPic));
+    protected final ImageButton chat = new ImageButton(chatDraw);
     protected static final Slider timerSlider = new Slider(0, 500, 1, false, Controller.getSkin());
     protected static final Dialog messageDialog = new Dialog("", Controller.getSkin());
     protected static final Label messageLabel = new Label("", Controller.getSkin());
@@ -90,8 +94,18 @@ public abstract class Menu implements Screen {
             }
         });
 
+        chat.setSize(70,70);
+        chat.setY(Gdx.graphics.getHeight() / 20f);
+        chat.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("hih");
+            }
+        });
         frontStage.addActor(messageDialog);
         Gdx.input.setInputProcessor(behindStage);
+
         label = new Label(getStageInfo(), Controller.getSkin());
         label.setPosition(Gdx.graphics.getWidth() - label.getWidth(), Gdx.graphics.getHeight() - label.getHeight());
         label.setColor(Color.BLACK);
