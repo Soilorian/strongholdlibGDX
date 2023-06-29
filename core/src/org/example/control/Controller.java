@@ -1,9 +1,8 @@
 package org.example.control;
 
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -11,32 +10,37 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
+import org.example.model.Game;
 import org.example.model.Player;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
+import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller{
     public static final AssetManager manager = new AssetManager();
-    private static Timer timer;
+    private static java.util.Timer timer;
 
     public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
+    public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     private static final String jsonSkinAddress = "button/skin/sgx-ui.json";
     private static final String junkSkin = "junk-skin/skin/golden-ui-skin.json";
     private static final String shieldAddress = "pictures/shield.png";
@@ -66,6 +70,9 @@ public class Controller{
     private final String boarderAddress = "pictures/frame.png";
     private final String blackTileAddress = "pictures/black-tile.png";
     private Menu nextMenu;
+    private Gson gson = new Gson();
+    private Logger log;
+    private Player player;
 
     public static String removeQuotes(String string) {
         if (string.isEmpty()) return string;
@@ -109,7 +116,15 @@ public class Controller{
         return null;
     }
 
-    public Controller() {
+    public Controller(){
+        log = Logger.getLogger( Thread.currentThread().getName() + ".logger");
+        log.setLevel(Level.ALL);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel(Level.FINER);
+        handler.setFormatter(new SimpleFormatter());
+        log.addHandler(handler);
+        timer = new java.util.Timer();
+        setupConnection();
     }
 
     public static Skin getSkin() {
@@ -173,8 +188,14 @@ public class Controller{
         }
     }
 
-    private void updatePlayers() {
-        players.add(DataBase.getCurrentPlayer());
+    private void updatePlayers(Player player) {
+        log.fine( "players updated");
+        if (players.contains(player)){
+            if (players.remove(player)) {
+            }
+        } else {
+            players.add(player);
+        }
     }
 
 
@@ -317,24 +338,62 @@ public class Controller{
     }
 
     public void handleServer() {
+        log.fine("started handling");
+        if (sendData()) {
+            log.fine("connection lost!");
+            return;
+        }
 
-        while(true){
-
+        while (true) {
+            try {
+                String json = in.readUTF();
+                handleIncomingJson(json);
+            } catch (IOException e) {
+                safeDisconnect();
+                break;
+            }
         }
     }
 
-    private void setupConnection(String host, int port) {
+    private boolean sendData() {
         try {
-            socket = new Socket(host, port);
+            String j = gson.toJson(DataBase.getPlayers().toArray());
+            out.writeUTF(j);
+        } catch (IOException e) {
+            safeDisconnect();
+            return true;
+        }
+        return false;
+    }
+
+    private void handleIncomingJson(String json) {
+        log.finest("packet received!");
+        try {
+            player = gson.fromJson(json, Player.class);
+            updatePlayers(player);
+        }catch (Exception ignored){}
+        try {
+            Game game = gson.fromJson(json, Game.class);
+            games.add(game);
+        }catch (Exception ignored){}
+    }
+
+    private void safeDisconnect() {
+        if (players.remove(player)) {
+            log.finest("player " + player.getUsername() +" disconnected");
+        }
+    }
+
+    private void setupConnection() {
+        try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            timer.clear();
         } catch (IOException ignored) {
             System.out.println("reconnecting in 5 seconds...");
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    setupConnection(host, port);
+                    setupConnection();
                 }
             }, 5000);
         }

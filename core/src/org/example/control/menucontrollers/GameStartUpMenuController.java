@@ -46,20 +46,21 @@ public class GameStartUpMenuController {
     }
 
     public static GameStartUpMenuMessages selectMap(String id) throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
-        if (id.equals("blank")) {
-            Main.getController().setScreen(Menus.MAP_EDIT_MENU.getMenu());
-            GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
-        } else if (id.equals("random")) {
-            Main.getController().setScreen(Menus.RANDOM_MAP_MENU.getMenu());
-            GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
-        } else {
-            Map map = DataBase.getMapById(id);
-            if (map == null)
-                return GameStartUpMenuMessages.NO_MAP;
-            Controller.setCurrentMap(map);
-            GameMenuController.getCurrentGame().setCurrentMap(map);
-        }
-        return GameStartUpMenuMessages.SUCCESS;
+//        if (id.equals("blank")) {
+//            Main.getController().setScreen(Menus.MAP_EDIT_MENU.getMenu());
+//            GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
+//        } else if (id.equals("random")) {
+//            Main.getController().setScreen(Menus.RANDOM_MAP_MENU.getMenu());
+//            GameMenuController.getCurrentGame().setCurrentMap(Controller.getCurrentMap());
+//        } else {
+//            Map map = DataBase.getMapById(id);
+//            if (map == null)
+//                return GameStartUpMenuMessages.NO_MAP;
+//            Controller.setCurrentMap(map);
+//            GameMenuController.getCurrentGame().setCurrentMap(map);
+//        }
+//        return GameStartUpMenuMessages.SUCCESS;
+        return null;
     }
 
     public static GameStartUpMenuMessages addPlayer(String username) {

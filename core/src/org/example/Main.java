@@ -1,11 +1,16 @@
 package org.example;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import org.example.control.Controller;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class Main {
-    static Controller controller;
+    Controller controller;
 
     public Main(Socket socket) {
         Controller.setSocket(socket);
@@ -15,7 +20,9 @@ public class Main {
         controller = new Controller();
         controller.handleServer();
     }
-    public static Controller getController() {
+    public Controller getController() {
         return controller;
     }
+
+
 }

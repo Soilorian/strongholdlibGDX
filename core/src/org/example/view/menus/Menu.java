@@ -35,7 +35,7 @@ public abstract class Menu implements Screen {
         return "controlling stage: " + currentStage();
     }
 
-    protected Controller controller = Main.getController();
+    protected Controller controller;
     protected Stage behindStage = new Stage();
     protected Stage frontStage = new Stage();
     protected Stage stage = new Stage();

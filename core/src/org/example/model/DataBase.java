@@ -207,4 +207,6 @@ public class DataBase {
     public static Empire getNatural() {
         return new Empire(getPlayerByUsername("ar"));
     }
+
+
 }

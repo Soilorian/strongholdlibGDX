@@ -136,7 +136,7 @@ public class Building {
             }
             return stringBuilder.toString();
         } else
-            Main.getController().setScreen(menu.getMenu()); Main.getController().changeMenu(Menus.GAME_MENU.getMenu(), menu.getMenu());
+//            Main.getController().setScreen(menu.getMenu()); Main.getController().changeMenu(Menus.GAME_MENU.getMenu(), menu.getMenu());
         return "hp: " + hp;
     }
 
@@ -149,12 +149,13 @@ public class Building {
         final ArrayList<Troop> troops = GameMenuController.lookAround(tileUnder.getX(), tileUnder.getY(), owner, 5);
         switch (buildingStatus) {
             case WAITING_FOR_RESOURCE : {
-                if (holder.getResourceName().equals(consumingResource)) BuildingStatus.goNext(buildingStatus);
+                if (holder.getResourceName().equals(consumingResource)) buildingStatus =
+                        BuildingStatus.goNext(buildingStatus);
                 else employ();
                 break;
             }
             case STARTING_PRODUCTION: case IN_THE_MIDDLE_OF_PRODUCTION:case FINISHING_PRODUCTION : {
-                if (isWorking()) BuildingStatus.goNext(buildingStatus);
+                if (isWorking()) buildingStatus =  BuildingStatus.goNext(buildingStatus);
                 else employ();
                 break;
             }

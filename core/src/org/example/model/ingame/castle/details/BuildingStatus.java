@@ -21,12 +21,13 @@ public enum BuildingStatus {
         this.status = status;
     }
 
-    public static void goNext(BuildingStatus productionStep) {
+    public static BuildingStatus goNext(BuildingStatus productionStep) {
         BuildingStatus[] values = BuildingStatus.values();
         List<BuildingStatus> productionSteps = Arrays.stream(values).toList();
         for (int i = 0; i < values.length; i++)
             if (productionSteps.get(i).equals(productionStep))
-                productionStep = productionSteps.get((i + 1) % 5);
+                return productionSteps.get((i + 1) % 5);
+        return null;
     }
 
     public String getStatus() {

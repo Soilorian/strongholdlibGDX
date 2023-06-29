@@ -3,7 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.example.Main;
+import org.example.model.Player;
 
+import java.io.ObjectStreamException;
 import java.net.Socket;
 
 public class Connection extends Thread{
