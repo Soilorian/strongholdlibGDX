@@ -1,7 +1,10 @@
 package org.example.model.chat;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import org.example.model.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Chat {
@@ -10,6 +13,7 @@ public class Chat {
     private final Player owner;
     private final String id;
     private final String name;
+
     public Chat(Player owner, String id, String name) {
         this.owner = owner;
         this.id = id;
@@ -52,6 +56,10 @@ public class Chat {
             result+= "group";
         }
         return result;
+    }
+
+    public void draw(SpriteBatch batch, int x, int y){
+
     }
 
 
