@@ -10,10 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 import com.google.gson.Gson;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
-import org.example.model.ClipboardImage;
-import org.example.model.DataBase;
-import org.example.model.Game;
-import org.example.model.Player;
+import org.example.model.*;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.enums.TileTypes;
@@ -21,12 +18,8 @@ import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
 
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -72,6 +65,8 @@ public class Controller {
     private final String blackTileAddress = "pictures/black-tile.png";
     private Menu nextMenu;
     private Player player;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
 
     public Controller() {
         log.setLevel(Level.ALL);
@@ -339,7 +334,6 @@ public class Controller {
             log.fine("connection lost!");
             return;
         }
-
         while (true) {
             try {
                 handleIncomingJson();
@@ -352,6 +346,8 @@ public class Controller {
 
     private boolean sendData() {
         try {
+            ois = new ObjectInputStream(in);
+            oos = new ObjectOutputStream(out);
             String j = gson.toJson(DataBase.getPlayers().toArray());
             out.writeUTF(j);
         } catch (IOException e) {
@@ -365,7 +361,7 @@ public class Controller {
     private void sendGames() {
         try {
             Game[] toSendGame = (Game[]) games.stream().toArray();
-            out.writeUTF(gson.toJson(toSendGame, Game[].class));
+            oos.writeUTF(gson.toJson(toSendGame, Game[].class));
         } catch (Exception e) {
             safeDisconnect();
         }
@@ -373,29 +369,55 @@ public class Controller {
     }
 
     private void handleIncomingJson() throws IOException {
-        log.finest("packet received!");
+        Object json = null;
         try {
-            ObjectInputStream oos = new ObjectInputStream(in);
-            Map myString = gson.fromJson((String) oos.readObject(), Map.class);
-            System.out.println(myString.getId());
-            System.out.println(System.currentTimeMillis());
-            return;
-        } catch (ClassNotFoundException ignored){
-
+            json = ois.readObject();
+            log.fine("packet received!");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        System.out.println(json);
         try {
-            player = gson.fromJson(in.readUTF(), Player.class);
+            player = ((Player) json);
+            if (player == null) {
+                throw new RuntimeException();
+            }
             updatePlayers(player);
             return;
         }catch (RuntimeException ignored){}
         try {
-            Game game = gson.fromJson(in.readUTF(), Game.class);
+            Request request = ((Request) json);
+            if (request == null) {
+                throw new RuntimeException();
+            }
+            if (request.getString().equalsIgnoreCase("chats")){
+                System.out.println("yay");
+                sendChats();
+            }
+        }catch (RuntimeException ignored){}
+        try {
+            Map map = gson.fromJson(((String) json), Map.class);
+            if (map == null) {
+                throw new RuntimeException();
+            }
+            return;
+        } catch (RuntimeException ignored){}
+        try {
+            Game game = ((Game) json);
+            if (game == null) {
+                throw new RuntimeException();
+            }
             handleGame(game);
 
             return;
         } catch (RuntimeException ignored) {
         }
 
+    }
+
+    private void sendChats() throws IOException {
+        oos.writeObject(player.getChats());
+        System.out.println("hapoijf");
     }
 
     private void handleGame(Game game) {
