@@ -195,7 +195,9 @@ public class Controller {
 
     private void updatePlayers(Player player) {
         log.fine("players updated");
-        if (players.contains(player)) {
+        if (!DataBase.getPlayerByUsername(player.getUsername()).equals(player))
+            DataBase.getPlayerByUsername(player.getUsername()).update(player);
+        else if (players.contains(player)) {
             if (players.remove(player)) {
             }
         } else {
