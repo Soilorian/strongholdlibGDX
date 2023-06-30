@@ -465,6 +465,7 @@ public class Controller {
                 .addFriendShipRequest(friendShipRequest);
     }
 
+
     private void handleTile(Tile tile) {
         GameMenuController.getCurrentGame().getCurrentMap().setTile(tile);
     }
