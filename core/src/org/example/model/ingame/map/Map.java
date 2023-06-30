@@ -22,7 +22,7 @@ public class Map {
     private final HashMap<Integer, Castle> castles = new HashMap<>();
     private final int groundWidth;
     private final int groundHeight;
-    private final Tile[][] tiles;
+    private Tile[][] tiles;
     ArrayList<HashSet<Integer>> graph;
     private String id;
 
@@ -283,5 +283,10 @@ public class Map {
             }
         });
         return index.get();
+    }
+
+    public void setTile(Tile tile) {
+        tiles[tile.getY()][tile.getX()] = tile;
+
     }
 }

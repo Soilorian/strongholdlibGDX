@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 import com.google.gson.Gson;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.*;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
+import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
@@ -384,7 +386,8 @@ public class Controller {
             }
             updatePlayers(player);
             return;
-        }catch (RuntimeException ignored){}
+        } catch (RuntimeException ignored) {
+        }
         try {
             Request request = ((Request) json);
             if (request == null) {
@@ -412,7 +415,17 @@ public class Controller {
             return;
         } catch (RuntimeException ignored) {
         }
+        try {
+            Tile tile = gson.fromJson(in.readUTF(), Tile.class);
+            handleTile(tile);
 
+        } catch (RuntimeException ignored) {
+
+        }
+    }
+
+    private void handleTile(Tile tile) {
+        GameMenuController.getCurrentGame().getCurrentMap().setTile(tile);
     }
 
     private void sendChats() throws IOException {
