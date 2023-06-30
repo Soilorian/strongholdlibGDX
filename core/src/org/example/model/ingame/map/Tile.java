@@ -19,10 +19,11 @@ import org.example.model.ingame.map.enums.RockTypes;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Tile {
+public class Tile implements Serializable {
     private final int x;
     private final int y;
     private final ArrayList<Peasant> peasants = new ArrayList<>();

@@ -9,12 +9,13 @@ import org.example.model.ingame.map.Map;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class Game extends Thread {
+public class Game extends Thread implements Serializable {
     private final ArrayList<Empire> empires = new ArrayList<>();
     private final ArrayList<Empire> allEmpire = new ArrayList<>();
     private final HashMap<Player, Tunnel> players = new HashMap<>();

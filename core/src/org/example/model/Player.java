@@ -5,11 +5,12 @@ import org.example.model.chat.Chat;
 import org.example.model.chat.Group;
 import org.example.model.chat.PrivateChat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @XStreamAlias("player")
 
-public class Player {
+public class Player implements Serializable {
 
     ArrayList<Chat> chats;
     String username;

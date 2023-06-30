@@ -10,13 +10,14 @@ import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.enums.TileTypes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class Map {
+public class Map implements Serializable {
     public static int lastNumUsed = 1;
     private static Integer lastInteger = 1;
     private final HashMap<Integer, Castle> castles = new HashMap<>();
