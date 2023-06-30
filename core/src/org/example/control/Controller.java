@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 import com.google.gson.Gson;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ClipboardImage;
 import org.example.model.DataBase;
@@ -16,6 +17,7 @@ import org.example.model.Game;
 import org.example.model.Player;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
+import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.view.enums.Menus;
@@ -380,14 +382,15 @@ public class Controller {
             System.out.println(myString.getId());
             System.out.println(System.currentTimeMillis());
             return;
-        } catch (ClassNotFoundException ignored){
+        } catch (ClassNotFoundException ignored) {
 
         }
         try {
             player = gson.fromJson(in.readUTF(), Player.class);
             updatePlayers(player);
             return;
-        }catch (RuntimeException ignored){}
+        } catch (RuntimeException ignored) {
+        }
         try {
             Game game = gson.fromJson(in.readUTF(), Game.class);
             handleGame(game);
@@ -395,7 +398,17 @@ public class Controller {
             return;
         } catch (RuntimeException ignored) {
         }
+        try {
+            Tile tile = gson.fromJson(in.readUTF(), Tile.class);
+            handleTile(tile);
 
+        } catch (RuntimeException ignored) {
+
+        }
+    }
+
+    private void handleTile(Tile tile) {
+        GameMenuController.getCurrentGame().getCurrentMap().setTile(tile);
     }
 
     private void handleGame(Game game) {

@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class Game extends Thread{
+public class Game extends Thread {
     private final ArrayList<Empire> empires = new ArrayList<>();
     private final ArrayList<Empire> allEmpire = new ArrayList<>();
     private final HashMap<Player, Tunnel> players = new HashMap<>();
     private Player owner;
-    private int gameSize = 0 ;
+    private int gameSize = 0;
     private String id;
     private boolean isPrivate = false;
     int playerTurn = 0;
@@ -51,7 +51,6 @@ public class Game extends Thread{
     public void removeAClientFromPlayersAndEmpires(Player player) {
         allEmpire.remove(getEmpireByItsPlayer(player));
         players.remove(player);
-
     }
 
     public Empire getEmpireByItsPlayer(Player player) {
@@ -59,7 +58,6 @@ public class Game extends Thread{
             if (empire.getOwner().equals(player))
                 return empire;
         return null;
-
     }
 
     public int getPlayerTurn() {
@@ -116,10 +114,10 @@ public class Game extends Thread{
         while (iterator.hasNext()) {
             DataOutputStream out = iterator.next().out;
             try {
-                    out.writeUTF("are you alive?");
-                }catch (IOException e){
-                    iterator.remove();
-                }
+                out.writeUTF("are you alive?");
+            } catch (IOException e) {
+                iterator.remove();
+            }
         }
     }
 
@@ -128,7 +126,8 @@ public class Game extends Thread{
             DataOutputStream out = tun.out;
             try {
                 out.writeUTF("pause");
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
     }
 
@@ -203,6 +202,7 @@ public class Game extends Thread{
     public void setOwner(Player owner) {
         this.owner = owner;
     }
+
     public int getPlayersLength() {
         return players.size();
     }
