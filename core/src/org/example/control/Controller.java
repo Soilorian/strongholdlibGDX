@@ -372,56 +372,76 @@ public class Controller {
 
     private void handleIncomingJson() throws IOException {
         Object json = null;
+        Player playerTest = new Player("ar","ar","ar","ar","ar");
+        Game gameTest = new Game();
+        Tile tileTest = new Tile(10,10,TileTypes.BEACH);
+        Map mapTest = new Map(2,2,"mamad");
+        Request requestTest = new Request("oskol");
         try {
             json = ois.readObject();
             log.fine("packet received!");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(json);
-        try {
-            player = ((Player) json);
-            if (player == null) {
-                throw new RuntimeException();
-            }
-            updatePlayers(player);
-            return;
-        } catch (RuntimeException ignored) {
-        }
-        try {
+        if (json.getClass().equals(playerTest.getClass()))
+            updatePlayers(((Player) json));
+        else if (json.getClass().equals(requestTest.getClass())) {
             Request request = ((Request) json);
-            if (request == null) {
-                throw new RuntimeException();
-            }
             if (request.getString().equalsIgnoreCase("chats")){
                 System.out.println("yay");
                 sendChats();
             }
-        }catch (RuntimeException ignored){}
-        try {
-            Map map = gson.fromJson(((String) json), Map.class);
-            if (map == null) {
-                throw new RuntimeException();
-            }
-            return;
-        } catch (RuntimeException ignored){}
-        try {
-            Game game = ((Game) json);
-            if (game == null) {
-                throw new RuntimeException();
-            }
-            handleGame(game);
-
-            return;
-        } catch (RuntimeException ignored) {
+        } else if (json.getClass().equals(mapTest.getClass())) {
+            Map map = ((Map) json);
+        } else if (json.getClass().equals(gameTest.getClass())) {
+            handleGame(((Game) json));
+        } else if (json.getClass().equals(tileTest.getClass())) {
+            handleTile(((Tile) json));
         }
-        try {
-            Tile tile = gson.fromJson(in.readUTF(), Tile.class);
-            handleTile(tile);
-
-        } catch (RuntimeException ignored) {
-
-        }
+//        System.out.println(json);
+//        try {
+//            player = ((Player) json);
+//            if (player == null) {
+//                throw new RuntimeException();
+//            }
+//            updatePlayers(player);
+//            return;
+//        } catch (RuntimeException ignored) {
+//        }
+//        try {
+//            Request request = ((Request) json);
+//            if (request == null) {
+//                throw new RuntimeException();
+//            }
+//            if (request.getString().equalsIgnoreCase("chats")){
+//                System.out.println("yay");
+//                sendChats();
+//            }
+//        }catch (RuntimeException ignored){}
+//        try {
+//            Map map = gson.fromJson(((String) json), Map.class);
+//            if (map == null) {
+//                throw new RuntimeException();
+//            }
+//            return;
+//        } catch (RuntimeException ignored){}
+//        try {
+//            Game game = ((Game) json);
+//            if (game == null) {
+//                throw new RuntimeException();
+//            }
+//            handleGame(game);
+//
+//            return;
+//        } catch (RuntimeException ignored) {
+//        }
+//        try {
+//            Tile tile = gson.fromJson(in.readUTF(), Tile.class);
+//            handleTile(tile);
+//
+//        } catch (RuntimeException ignored) {
+//
+//        }
     }
 
     private void handleTile(Tile tile) {
