@@ -4,6 +4,7 @@ package org.example.model.ingame.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import org.example.Main;
 import org.example.control.Controller;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
@@ -18,6 +19,8 @@ import org.example.model.ingame.humans.specialworkers.Tunneler;
 import org.example.model.ingame.map.enums.RockTypes;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
+import org.example.view.enums.Menus;
+import org.example.view.menus.Menu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,8 +54,20 @@ public class Tile implements Serializable {
     }
 
     public void setPassable(boolean passable) {
-        isPassable = passable;
+            isPassable = passable;
+            sendTile();
     }
+
+    public void sendTile() {
+//        try {
+//            Controller.getClient().sendPacket(this);
+//        }
+//        catch (Exception e) {
+//            Main.getController().changeMenu(Menus.RECONNECTING_MENU.getMenu(), (Menu) Main.getController().getScreen());
+//        }
+    }
+
+
 
     public TileTypes getTile() {
         return tile;
@@ -60,6 +75,7 @@ public class Tile implements Serializable {
 
     public void setTile(TileTypes tile) {
         this.tile = tile;
+
     }
 
     public ArrayList<Troop> getTroops() {
@@ -72,6 +88,7 @@ public class Tile implements Serializable {
 
     public void setRock(RockTypes rock) {
         this.rock = rock;
+
     }
 
     public TreeTypes getTree() {
@@ -80,6 +97,7 @@ public class Tile implements Serializable {
 
     public void setTree(TreeTypes tree) {
         this.tree = tree;
+
     }
 
 
@@ -89,6 +107,7 @@ public class Tile implements Serializable {
 
     public void setBuilding(Building building) {
         this.building = building;
+        sendTile();
     }
 
     public boolean isWall() {
@@ -97,6 +116,7 @@ public class Tile implements Serializable {
 
     public void setWall(boolean wall) {
         isWall = wall;
+        sendTile();
     }
 
     public ArrayList<Peasant> getPeasants() {
@@ -109,10 +129,12 @@ public class Tile implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+
     }
 
     public void addPeasant(Peasant peasant) {
         peasants.add(peasant);
+        sendTile();
     }
 
     public int getX() {
@@ -180,6 +202,7 @@ public class Tile implements Serializable {
 
     public void addTroop(Troop troop1) {
         troops.add(troop1);
+        sendTile();
     }
 
     @Override
@@ -193,6 +216,7 @@ public class Tile implements Serializable {
 
     public void setTrap(Trap trap) {
         this.trap = trap;
+        sendTile();
     }
 
     public boolean hasEnemies(Empire currentEmpire) {
@@ -242,12 +266,14 @@ public class Tile implements Serializable {
         else tile = currentMap.getTile(y, x - 1);
         tile.addTunnelers(tunnelers);
         tunnelers.clear();
+        sendTile();
         return !tile.isTunnel();
     }
 
     private void addTunnelers(ArrayList<Tunneler> tunnelers) {
         this.tunnelers.addAll(tunnelers);
         isTunnel = true;
+        sendTile();
     }
 
     public Texture getTexture(int z) {
@@ -337,6 +363,7 @@ public class Tile implements Serializable {
 
     public void addTunneler(Tunneler tunneler) {
         tunnelers.add(tunneler);
+        sendTile();
     }
 
     public boolean isTunnel() {
@@ -345,5 +372,6 @@ public class Tile implements Serializable {
 
     public void setTunnel(boolean tunnel) {
         isTunnel = tunnel;
+        sendTile();
     }
 }

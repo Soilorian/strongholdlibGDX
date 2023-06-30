@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
 
-    ArrayList<Chat> chats;
+    static ArrayList<Chat> chats = new ArrayList<>();
     String username;
 
     String password;
@@ -37,6 +37,7 @@ public class Player implements Serializable {
         this.email = email;
         if (!slogan.equals("null"))
             this.slogan = slogan;
+
     }
 
 
@@ -132,11 +133,23 @@ public class Player implements Serializable {
         return null;
     }
 
-    public Group getGroupById(String id) {
+    public static Group getGroupById(String id) {
         for (Chat chat : chats) {
             if (chat instanceof Group && chat.getId().equalsIgnoreCase(id))
                 return (Group) chat;
         }
         return null;
+    }
+
+    public void update(Player player) {
+        chats = player.chats;
+        username = player.username;
+        password = player.password;
+        nickname = player.nickname;
+        email = player.email;
+        securityQuestion = player.securityQuestion;
+        slogan = player.slogan;
+        maxStore = player.maxStore;
+        profImage = player.profImage;
     }
 }

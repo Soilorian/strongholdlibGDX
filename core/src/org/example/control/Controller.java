@@ -17,7 +17,9 @@ import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
+import org.example.model.utils.Request;
 import org.example.view.enums.Menus;
+//import sun.management.jdp.JdpBroadcaster;
 
 import java.awt.*;
 import java.io.*;
@@ -178,6 +180,10 @@ public class Controller {
 
     public static void copyToClipboard(String address) {
         ClipboardImage.write(Toolkit.getDefaultToolkit().createImage(address));
+    }
+
+    public static void getClient() {
+
     }
 
     private void playerGoneOffline() {
@@ -378,6 +384,7 @@ public class Controller {
         Tile tileTest = new Tile(10,10,TileTypes.BEACH);
         Map mapTest = new Map(2,2,"mamad");
         Request requestTest = new Request("oskol");
+        System.out.println("truck father");
         try {
             json = ois.readObject();
             log.fine("packet received!");
@@ -389,14 +396,17 @@ public class Controller {
         else if (json.getClass().equals(requestTest.getClass())) {
             Request request = ((Request) json);
             if (request.getString().equalsIgnoreCase("chats")){
-                System.out.println("yay");
+                log.fine("request handled");
                 sendChats();
             }
         } else if (json.getClass().equals(mapTest.getClass())) {
+            log.fine("map received");
             Map map = ((Map) json);
         } else if (json.getClass().equals(gameTest.getClass())) {
+            log.fine("game collected");
             handleGame(((Game) json));
         } else if (json.getClass().equals(tileTest.getClass())) {
+            log.fine("tile arrived");
             handleTile(((Tile) json));
         }
 //        System.out.println(json);
