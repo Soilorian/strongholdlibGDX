@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.example.model.chat.Chat;
 import org.example.model.chat.Group;
 import org.example.model.chat.PrivateChat;
+import org.example.model.utils.FriendShipRequest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 public class Player implements Serializable {
 
     static ArrayList<Chat> chats = new ArrayList<>();
+    private ArrayList<FriendShipRequest> friendShipRequests = new ArrayList<FriendShipRequest>();
+    private ArrayList<Player> friends = new ArrayList<>();
     String username;
 
     String password;
@@ -152,4 +155,29 @@ public class Player implements Serializable {
         maxStore = player.maxStore;
         profImage = player.profImage;
     }
+
+
+    public ArrayList<FriendShipRequest> getFriendShipRequests() {
+        return friendShipRequests;
+    }
+
+    public void addFriendShipRequest(FriendShipRequest friendShipRequest) {
+        friendShipRequests.add(friendShipRequest);
+    }
+    public void addFriends(Player friend) {
+        friends.add(friend);
+    }
+
+    public Player getFriendByUsername(String username) {
+        for (Player friend : friends) {
+            if (friend.getUsername().equals(username))
+                return friend;
+        }
+        return null;
+    }
+    public ArrayList<Player> getFriends() {
+        return friends;
+    }
+
+
 }

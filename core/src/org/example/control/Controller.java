@@ -17,6 +17,7 @@ import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
+import org.example.model.utils.FriendShipRequest;
 import org.example.model.utils.Request;
 import org.example.view.enums.Menus;
 //import sun.management.jdp.JdpBroadcaster;
@@ -379,11 +380,12 @@ public class Controller {
 
     private void handleIncomingJson() throws IOException {
         Object json = null;
-        Player playerTest = new Player("ar","ar","ar","ar","ar");
+        Player playerTest = new Player("ar", "ar", "ar", "ar", "ar");
         Game gameTest = new Game();
-        Tile tileTest = new Tile(10,10,TileTypes.BEACH);
-        Map mapTest = new Map(2,2,"mamad");
+        Tile tileTest = new Tile(10, 10, TileTypes.BEACH);
+        Map mapTest = new Map(2, 2, "mamad");
         Request requestTest = new Request("oskol");
+        FriendShipRequest friendShipRequestTest = new FriendShipRequest(playerTest, playerTest);
         System.out.println("truck father");
         try {
             json = ois.readObject();
@@ -395,7 +397,7 @@ public class Controller {
             updatePlayers(((Player) json));
         else if (json.getClass().equals(requestTest.getClass())) {
             Request request = ((Request) json);
-            if (request.getString().equalsIgnoreCase("chats")){
+            if (request.getString().equalsIgnoreCase("chats")) {
                 log.fine("request handled");
                 sendChats();
             }
@@ -408,6 +410,9 @@ public class Controller {
         } else if (json.getClass().equals(tileTest.getClass())) {
             log.fine("tile arrived");
             handleTile(((Tile) json));
+        } else if (json.getClass().equals(friendShipRequestTest.getClass())) {
+            handleFriendShopRequest(((FriendShipRequest) json));
+
         }
 //        System.out.println(json);
 //        try {
@@ -453,6 +458,11 @@ public class Controller {
 //        } catch (RuntimeException ignored) {
 //
 //        }
+    }
+
+    private void handleFriendShopRequest(FriendShipRequest friendShipRequest) {
+        DataBase.getPlayerByUsername(friendShipRequest.getAcceptor().getUsername())
+                .addFriendShipRequest(friendShipRequest);
     }
 
     private void handleTile(Tile tile) {
