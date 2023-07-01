@@ -14,6 +14,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeMap;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.FileOutputStream;
 
 public class DataBase {
     private static final ArrayList<Player> players = new ArrayList<>();
@@ -194,6 +201,32 @@ public class DataBase {
 
     public static ArrayList<Map> getMaps() {
         return maps;
+    }
+
+    public static void addPlayersToExcel() throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        XSSFSheet spreadsheet
+                = workbook.createSheet(" Student Data ");
+
+        XSSFRow row;
+
+        int rowid = 0;
+
+        for (Player player : players) {
+            row = spreadsheet.createRow(rowid++);
+            row.createCell(0).setCellValue(player.getUsername());
+            row.createCell(1).setCellValue(player.getNickname());
+            row.createCell(2).setCellValue(player.getEmail());
+            row.createCell(3).setCellValue(player.getSecurityQuestion());
+            row.createCell(4).setCellValue(player.getSlogan());
+            row.createCell(5).setCellValue(player.getMaxStore());
+            row.createCell(6).setCellValue(player.getProfImage());
+        }
+        FileOutputStream out = new FileOutputStream(
+                "Players.xlsx");
+        workbook.write(out);
+        out.close();
     }
 
     public static boolean isStayLoggedIn() {

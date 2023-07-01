@@ -24,6 +24,7 @@ import org.example.model.utils.FriendShipRequest;
 import org.example.model.utils.Request;
 import org.example.view.enums.Menus;
 
+
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
@@ -206,6 +207,9 @@ public class Controller {
                 log.fine("players updated");
                 if (players.contains(player)) {
                     players.remove(player);
+                    try {
+                        DataBase.addPlayersToExcel();
+                    } catch (IOException ignored) {}
                 } else {
                     players.add(player);
                 }
