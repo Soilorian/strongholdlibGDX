@@ -3,6 +3,7 @@ dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.20'
     implementation 'com.thoughtworks.xstream:xstream:1.4.17'
     implementation 'com.thoughtworks.xstream:xstream:1.4.17'
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
