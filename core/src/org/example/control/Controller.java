@@ -11,7 +11,10 @@ import com.badlogic.gdx.utils.Timer;
 import com.google.gson.Gson;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
-import org.example.model.*;
+import org.example.model.ClipboardImage;
+import org.example.model.DataBase;
+import org.example.model.Game;
+import org.example.model.Player;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
@@ -20,11 +23,11 @@ import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.model.utils.FriendShipRequest;
 import org.example.model.utils.Request;
 import org.example.view.enums.Menus;
-//import sun.management.jdp.JdpBroadcaster;
 
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -194,14 +197,22 @@ public class Controller {
     }
 
     private void updatePlayers(Player player) {
-        log.fine("players updated");
-        if (!DataBase.getPlayerByUsername(player.getUsername()).equals(player))
-            DataBase.getPlayerByUsername(player.getUsername()).update(player);
-        else if (players.contains(player)) {
-            if (players.remove(player)) {
+        Player player1 = DataBase.getPlayerByEmail(player.getEmail());
+        if (player1 != null) {
+            if (!Objects.equals(player1, player)) {
+                log.fine("player info synced");
+                Objects.requireNonNull(player1).update(player);
+            } else {
+                log.fine("players updated");
+                if (players.contains(player)) {
+                    players.remove(player);
+                } else {
+                    players.add(player);
+                }
             }
-        } else {
-            players.add(player);
+        } else{
+            log.fine("player registered");
+            DataBase.addPlayer(player);
         }
     }
 
@@ -388,7 +399,6 @@ public class Controller {
         Map mapTest = new Map(2, 2, "mamad");
         Request requestTest = new Request("oskol");
         FriendShipRequest friendShipRequestTest = new FriendShipRequest(playerTest, playerTest);
-        System.out.println("truck father");
         try {
             json = ois.readObject();
             log.fine("packet received!");

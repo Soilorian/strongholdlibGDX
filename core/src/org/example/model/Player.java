@@ -1,20 +1,26 @@
 package org.example.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.example.Main;
+import org.example.control.Controller;
 import org.example.model.chat.Chat;
 import org.example.model.chat.Group;
 import org.example.model.chat.PrivateChat;
 import org.example.model.utils.FriendShipRequest;
+import org.example.view.enums.Menus;
+import org.example.view.menus.Menu;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @XStreamAlias("player")
 
 public class Player implements Serializable {
 
     static ArrayList<Chat> chats = new ArrayList<>();
-    private ArrayList<FriendShipRequest> friendShipRequests = new ArrayList<FriendShipRequest>();
+    private ArrayList<FriendShipRequest> friendShipRequests = new ArrayList<>();
     private ArrayList<Player> friends = new ArrayList<>();
     String username;
 
@@ -32,6 +38,20 @@ public class Player implements Serializable {
 
     int maxStore = 0;
     int profImage = 0;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return maxStore == player.maxStore && profImage == player.profImage &&
+                Objects.equals(friendShipRequests, player.friendShipRequests) &&
+                Objects.equals(friends, player.friends) && Objects.equals(username, player.username) &&
+                Objects.equals(password, player.password) && Objects.equals(nickname, player.nickname) &&
+                Objects.equals(email, player.email) && Objects.equals(securityQuestion, player.securityQuestion) &&
+                Objects.equals(securityQuestionAnswer, player.securityQuestionAnswer) && Objects.equals(slogan, player.slogan);
+    }
+
 
     public Player(String username, String password, String nickname, String email, String slogan) {
         this.username = username;
@@ -54,25 +74,40 @@ public class Player implements Serializable {
 
     public void updateMaxScore(int score) {
         maxStore = Math.max(score, maxStore);
+        sendPlayersChangesToServer(this);
+    }
+
+    private void sendPlayersChangesToServer(Player player)  {
+//        try {
+//            Controller.getClient().sendPlayer(this);
+//        }
+//        catch (IOException e) {
+//            Main.getController().changeMenu(Menus.RECONNECTING_MENU, ((Menu) Main.getController().getScreen()));
+//        }
     }
 
     public int getMaxStore() {
         return maxStore;
     }
 
-    public String toStringScore(){
+    public String toStringScore() {
         return Integer.valueOf(getMaxStore()).toString();
     }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+        sendPlayersChangesToServer(this);
+
     }
 
     public void setPassword(String password) {
         this.password = DataBase.hashWithApacheCommons(password);
+        sendPlayersChangesToServer(this);
+
     }
 
 
@@ -82,6 +117,8 @@ public class Player implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+        sendPlayersChangesToServer(this);
+
     }
 
     public String getEmail() {
@@ -90,6 +127,8 @@ public class Player implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+        sendPlayersChangesToServer(this);
+
     }
 
     public String getSlogan() {
@@ -98,6 +137,8 @@ public class Player implements Serializable {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+        sendPlayersChangesToServer(this);
+
     }
 
     public int getProfImage() {
@@ -106,10 +147,14 @@ public class Player implements Serializable {
 
     public void setProfImage(int profImage) {
         this.profImage = profImage;
+        sendPlayersChangesToServer(this);
+
     }
 
     public void setSecurityQuestionAnswer(String securityQuestionAnswer) {
         this.securityQuestionAnswer = DataBase.hashWithApacheCommons(securityQuestionAnswer);
+        sendPlayersChangesToServer(this);
+
     }
 
     public String getSecurityQuestion() {
@@ -118,14 +163,21 @@ public class Player implements Serializable {
 
     public void setSecurityQuestion(String securityQuestion) {
         this.securityQuestion = securityQuestion;
+        sendPlayersChangesToServer(this);
     }
 
     public ArrayList<Chat> getChats() {
         return chats;
     }
 
-    public void addChat(Chat chat){
+    public void addChat(Chat chat) {
         chats.add(chat);
+        chat.addMember(this);
+        sendPlayersChangesToServer(this);
+    }
+    public void removeChat(Chat chat) {
+        chats.remove(chat);
+        sendPlayersChangesToServer(this);
     }
 
     public PrivateChat getPrivateChatById(String id) {
@@ -163,9 +215,20 @@ public class Player implements Serializable {
 
     public void addFriendShipRequest(FriendShipRequest friendShipRequest) {
         friendShipRequests.add(friendShipRequest);
+        sendPlayersChangesToServer(this);
     }
+    public void removeFriendShipRequest(FriendShipRequest friendShipRequest) {
+        friendShipRequests.remove(friendShipRequest);
+        sendPlayersChangesToServer(this);
+    }
+
     public void addFriends(Player friend) {
         friends.add(friend);
+        sendPlayersChangesToServer(this);
+    }
+    public void removeFriends(Player friend) {
+        friends.add(friend);
+        sendPlayersChangesToServer(this);
     }
 
     public Player getFriendByUsername(String username) {
@@ -175,6 +238,7 @@ public class Player implements Serializable {
         }
         return null;
     }
+
     public ArrayList<Player> getFriends() {
         return friends;
     }
