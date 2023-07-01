@@ -370,8 +370,7 @@ public class Controller {
         try {
             ois = new ObjectInputStream(in);
             oos = new ObjectOutputStream(out);
-            String j = gson.toJson(DataBase.getPlayers().toArray());
-            out.writeUTF(j);
+            oos.writeObject(DataBase.getPlayers().toArray());
         } catch (IOException e) {
             safeDisconnect();
             return true;
