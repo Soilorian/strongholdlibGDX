@@ -361,7 +361,7 @@ file-dialog-table
   orig: 12, 12
   offset: 0, 0
   index: -1
-file-menu-bar
+file-messageMenu-bar
   rotate: false
   xy: 408, 843
   size: 33, 33
@@ -370,7 +370,7 @@ file-menu-bar
   orig: 33, 33
   offset: 0, 0
   index: -1
-file-menu-button
+file-messageMenu-button
   rotate: false
   xy: 413, 811
   size: 18, 30
@@ -379,7 +379,7 @@ file-menu-button
   orig: 18, 30
   offset: 0, 0
   index: -1
-file-menu-button-over
+file-messageMenu-button-over
   rotate: false
   xy: 335, 694
   size: 18, 30
@@ -388,7 +388,7 @@ file-menu-button-over
   orig: 18, 30
   offset: 0, 0
   index: -1
-file-menu-button-pressed
+file-messageMenu-button-pressed
   rotate: false
   xy: 335, 662
   size: 18, 30
@@ -397,7 +397,7 @@ file-menu-button-pressed
   orig: 18, 30
   offset: 0, 0
   index: -1
-file-menu-list
+file-messageMenu-list
   rotate: false
   xy: 335, 630
   size: 18, 30
@@ -406,7 +406,7 @@ file-menu-list
   orig: 18, 30
   offset: 0, 0
   index: -1
-file-menu-list-button
+file-messageMenu-list-button
   rotate: false
   xy: 98, 382
   size: 30, 30
@@ -415,7 +415,7 @@ file-menu-list-button
   orig: 30, 30
   offset: 0, 0
   index: -1
-file-menu-list-button-over
+file-messageMenu-list-button-over
   rotate: false
   xy: 184, 423
   size: 30, 30
@@ -424,7 +424,7 @@ file-menu-list-button-over
   orig: 30, 30
   offset: 0, 0
   index: -1
-file-menu-list-button-pressed
+file-messageMenu-list-button-pressed
   rotate: false
   xy: 66, 382
   size: 30, 30
