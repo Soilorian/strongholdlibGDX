@@ -21,6 +21,7 @@ import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.enums.TreeTypes;
 import org.example.model.utils.FriendShipRequest;
+import org.example.model.utils.PlayerToken;
 import org.example.model.utils.Request;
 import org.example.view.enums.Menus;
 
@@ -402,6 +403,7 @@ public class Controller {
         Map mapTest = new Map(2, 2, "mamad");
         Request requestTest = new Request("oskol");
         FriendShipRequest friendShipRequestTest = new FriendShipRequest(playerTest, playerTest);
+        PlayerToken playerToken = new PlayerToken("dalghak");
         try {
             json = ois.readObject();
             log.fine("packet received!");
@@ -427,8 +429,8 @@ public class Controller {
             handleTile(((Tile) json));
         } else if (json.getClass().equals(friendShipRequestTest.getClass())) {
             handleFriendShopRequest(((FriendShipRequest) json));
-
-        }
+        }else if (json.getClass().equals(playerToken.getClass()))
+            handleToken(((PlayerToken) json));
 //        System.out.println(json);
 //        try {
 //            player = ((Player) json);
@@ -473,6 +475,10 @@ public class Controller {
 //        } catch (RuntimeException ignored) {
 //
 //        }
+    }
+
+    private void handleToken(PlayerToken playerToken) {
+        log.fine(playerToken.getHash());
     }
 
     private void handleFriendShopRequest(FriendShipRequest friendShipRequest) {
