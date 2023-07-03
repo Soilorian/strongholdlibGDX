@@ -215,18 +215,19 @@ public class Controller {
                     players.remove(player);
                     try {
                         DataBase.addPlayersToExcel();
-                    } catch (IOException ignored) {}
+                    } catch (IOException ignored) {
+                    }
                 } else {
                     players.add(player);
                 }
             }
-        } else{
+        } else {
             log.fine("player registered");
             DataBase.addPlayer(player);
         }
     }
 
-    private void sendPlayer(Player player)  {
+    private void sendPlayer(Player player) {
         try {
             oos.writeObject(player);
         } catch (IOException e) {
@@ -442,7 +443,7 @@ public class Controller {
             handleTile(((Tile) json));
         } else if (json.getClass().equals(friendShipRequestTest.getClass())) {
             handleFriendShopRequest(((FriendShipRequest) json));
-        }else if (json.getClass().equals(playerToken.getClass()))
+        } else if (json.getClass().equals(playerToken.getClass()))
             handleToken(((PlayerToken) json));
 //        System.out.println(json);
 //        try {
