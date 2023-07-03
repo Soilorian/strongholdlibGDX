@@ -199,7 +199,7 @@ public class EntranceMenuController {
     private static String getRandomChar(int randomNumberOrigin, int randomNumberBound) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < 2; i++) {
-            result.append((char) (random.nextInt(randomNumberOrigin, randomNumberBound)));
+            result.append((char) (random.nextInt(randomNumberOrigin)));
         }
         return result.toString();
     }
