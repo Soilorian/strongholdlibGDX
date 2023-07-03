@@ -38,6 +38,7 @@ public class Player implements Serializable {
 
     int maxStore = 0;
     int profImage = 0;
+    private String lastVisit;
 
     @Override
     public boolean equals(Object o) {
@@ -243,5 +244,11 @@ public class Player implements Serializable {
         return friends;
     }
 
+    public String getLastVisit() {
+        return lastVisit;
+    }
 
+    public void setLastVisit(String lastVisit) {
+        this.lastVisit = lastVisit;
+    }
 }

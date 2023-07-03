@@ -29,6 +29,8 @@ import org.example.view.enums.Menus;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
@@ -207,6 +209,9 @@ public class Controller {
             } else {
                 log.fine("players updated");
                 if (players.contains(player)) {
+                    player.setLastVisit(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+                    sendPlayer(player);
+                    sendPlayer(player);
                     players.remove(player);
                     try {
                         DataBase.addPlayersToExcel();
@@ -218,6 +223,14 @@ public class Controller {
         } else{
             log.fine("player registered");
             DataBase.addPlayer(player);
+        }
+    }
+
+    private void sendPlayer(Player player)  {
+        try {
+            oos.writeObject(player);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
