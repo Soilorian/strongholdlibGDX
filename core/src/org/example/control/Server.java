@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import org.example.model.DataBase;
 import org.example.model.Game;
 import org.example.model.Player;
+import org.example.model.Tunnel;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.utils.FriendShipRequest;
@@ -26,18 +27,19 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Server {
-    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
-//    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
+    //    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
+    public final static LinkedBlockingQueue<Tunnel> tunnels = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
     public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
-    private static Map currentMap;
+    private Map currentMap;
     private static Socket socket;
-    private static DataInputStream in;
-    private static DataOutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
     private Player player;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+
 
     public Server() {
         log.setLevel(Level.ALL);
@@ -48,12 +50,12 @@ public class Server {
         setupConnection();
     }
 
-    public static Map getCurrentMap() {
-        return currentMap;
-    }
+    public static Tunnel getTunnelByItsPlayer(Player player) {
+        for (Tunnel tunnel : tunnels)
+            if (tunnel.getPlayer().getUsername().equals(player.getUsername()))
+                return tunnel;
+        return null;
 
-    public static void setCurrentMap(Map currentMap) {
-        Server.currentMap = currentMap;
     }
 
     public static void setSocket(Socket socket) {
@@ -68,14 +70,21 @@ public class Server {
                 Objects.requireNonNull(player1).update(player);
             } else {
                 log.fine("players updated");
-                if (players.remove(player)) {
+//                if (players.remove(player))
+                if (tunnels.remove(getTunnelByItsPlayer(player))) {
                     player.setLastVisit(new SimpleDateFormat("yyyy/MM/dd/_HH/mm/ss").format(Calendar.getInstance().getTime()));
                     try {
                         DataBase.addPlayersToExcel();
                     } catch (IOException ignored) {
                     }
                 } else {
-                    players.add(player);
+//                    players.add(player);
+                    try {
+                        tunnels.add(new Tunnel(socket, player));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
             }
         } else {
@@ -83,7 +92,8 @@ public class Server {
             DataBase.addPlayer(player);
             try {
                 DataBase.updatePlayersXS();
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {}
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {
+            }
         }
     }
 
@@ -145,7 +155,7 @@ public class Server {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        if (json == null){
+        if (json == null) {
             System.out.println("null json");
             return;
         }
@@ -204,7 +214,8 @@ public class Server {
     }
 
     private void safeDisconnect() {
-        if (players.remove(player)) {
+//        if (players.remove(player))
+        if (tunnels.remove(getTunnelByItsPlayer(player))) {
             log.fine("player " + player.getUsername() + " disconnected");
         }
     }
