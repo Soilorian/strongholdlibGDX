@@ -25,9 +25,10 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Server {
-    //    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Tunnel> tunnels = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
@@ -72,7 +73,7 @@ public class Server {
                 log.fine("players updated");
 //                if (players.remove(player))
                 if (tunnels.remove(getTunnelByItsPlayer(player))) {
-                    player.setLastVisit(new SimpleDateFormat("yyyy/MM/dd/_HH/mm/ss").format(Calendar.getInstance().getTime()));
+                    player.setLastVisit(new SimpleDateFormat("HH/mm").format(Calendar.getInstance().getTime()));
                 } else {
 //                    players.add(player);
                     try {
@@ -166,8 +167,10 @@ public class Server {
             if (request.getString().equalsIgnoreCase("chats")) {
                 log.fine("request handled");
                 sendChats();
-            } else if (request.getString().contains("join room"))
+            } else if (request.getString().contains("join room")){
                 log.fine("joining game");
+                joinGame(request);
+            }
         } else if (json.getClass().equals(Map.class)) {
             log.fine("map received");
             Map map = ((Map) json);
@@ -181,6 +184,20 @@ public class Server {
             handleFriendShopRequest(((FriendShipRequest) json));
         } else if (json.getClass().equals(PlayerToken.class))
             handleToken(((PlayerToken) json));
+    }
+
+    private void joinGame(Request request) {
+        String gameId = extractGameId(request.getString());
+        getGameById(gameId).addPlayer(player, socket);
+    }
+
+    private String extractGameId(String string) {
+        Pattern pattern = Pattern.compile("join room \\[(?<ID>.*)]");
+        Matcher matcher = pattern.matcher(string);
+        if (matcher.find()) {
+            return matcher.group("ID");
+        }
+        return null;
     }
 
     private void handleToken(PlayerToken playerToken) {
