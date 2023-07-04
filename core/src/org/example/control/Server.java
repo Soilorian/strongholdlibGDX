@@ -27,6 +27,7 @@ import java.util.logging.SimpleFormatter;
 
 public class Server {
     public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
+//    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
     public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
@@ -68,7 +69,7 @@ public class Server {
             } else {
                 log.fine("players updated");
                 if (players.remove(player)) {
-                    player.setLastVisit(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+                    player.setLastVisit(new SimpleDateFormat("yyyy/MM/dd/_HH/mm/ss").format(Calendar.getInstance().getTime()));
                     try {
                         DataBase.addPlayersToExcel();
                     } catch (IOException ignored) {
