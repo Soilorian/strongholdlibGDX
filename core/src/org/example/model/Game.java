@@ -2,6 +2,7 @@ package org.example.model;
 
 
 import com.badlogic.gdx.utils.Timer;
+import org.apache.poi.ss.formula.functions.T;
 import org.example.control.Server;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
@@ -18,7 +19,7 @@ import java.util.Iterator;
 public class Game extends Thread implements Serializable {
     private final ArrayList<Empire> empires = new ArrayList<>();
     private final ArrayList<Empire> allEmpire = new ArrayList<>();
-    private final HashMap<Player, Tunnel> players = new HashMap<>();
+    private final ArrayList<Tunnel> players = new ArrayList<>();
     private Player owner;
     private int gameSize = 0;
     private String id;
@@ -34,13 +35,13 @@ public class Game extends Thread implements Serializable {
         return empires;
     }
 
-    public HashMap<Player, Tunnel> getPlayers() {
+    public ArrayList<Tunnel> getPlayers() {
         return players;
     }
 
     public void addPlayer(Player player, Socket socket) {
         try {
-            players.put(player, new Tunnel(socket));
+            players.add(new Tunnel(socket, player));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -111,7 +112,7 @@ public class Game extends Thread implements Serializable {
     }
 
     private void removeDisconnected() {
-        Iterator<Tunnel> iterator = players.values().iterator();
+        Iterator<Tunnel> iterator = players.iterator();
         while (iterator.hasNext()) {
             DataOutputStream out = iterator.next().out;
             try {
@@ -123,7 +124,7 @@ public class Game extends Thread implements Serializable {
     }
 
     private void pause() {
-        for (Tunnel tun : players.values()) {
+        for (Tunnel tun : players) {
             DataOutputStream out = tun.out;
             try {
                 out.writeUTF("pause");
@@ -133,7 +134,8 @@ public class Game extends Thread implements Serializable {
     }
 
     private void checkConnection() {
-        for (Player player : players.keySet()) {
+        for (Tunnel tunnel : players) {
+            Player player = tunnel.player;
             if (!Server.players.contains(player)) {
                 return;
             }
@@ -148,7 +150,7 @@ public class Game extends Thread implements Serializable {
     }
 
     private void getInfo() throws IOException {
-        for (Tunnel tun : players.values()) {
+        for (Tunnel tun : players) {
             DataInputStream in = tun.in;
             // TODO: 6/29/2023 apply changes from Update received
             String json = in.readUTF();
@@ -157,7 +159,7 @@ public class Game extends Thread implements Serializable {
     }
 
     private void updateInfo(String json) throws IOException {
-        for (Tunnel tun : players.values()) {
+        for (Tunnel tun : players) {
             DataOutputStream out = tun.out;
             out.writeUTF(json);
         }
