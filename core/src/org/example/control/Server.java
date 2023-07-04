@@ -70,16 +70,12 @@ public class Server {
                 log.fine("players updated");
                 if (players.remove(player)) {
                     player.setLastVisit(new SimpleDateFormat("yyyy/MM/dd/_HH/mm/ss").format(Calendar.getInstance().getTime()));
-                    try {
-                        DataBase.addPlayersToExcel();
-                    } catch (IOException ignored) {
-                    }
                 } else {
                     players.add(player);
-                    try {
-                        DataBase.addPlayersToExcel();
-                    } catch (IOException ignored) {
-                    }
+                }
+                try {
+                    DataBase.addPlayersToExcel();
+                } catch (IOException ignored) {
                 }
             }
         } else {
