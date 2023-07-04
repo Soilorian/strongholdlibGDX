@@ -160,8 +160,6 @@ public class GameMenuController{
         return GameMenuMessages.SUCCEED;
     }
 
-
-    //Todo connect To game buttons
     public void undo() {
         Building building = DataBase.getCurrentEmpire().getBuildings().get(
                 DataBase.getCurrentEmpire().getBuildings().size() - 1);

@@ -28,7 +28,6 @@ public class Server {
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
     public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
-    private static java.util.Timer timer;
     private static Map currentMap;
     private static Socket socket;
     private static DataInputStream in;
@@ -43,7 +42,6 @@ public class Server {
         handler.setLevel(Level.FINER);
         handler.setFormatter(new SimpleFormatter());
         log.addHandler(handler);
-        timer = new java.util.Timer();
         setupConnection();
     }
 
