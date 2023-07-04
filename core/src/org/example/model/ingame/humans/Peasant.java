@@ -1,7 +1,9 @@
 package org.example.model.ingame.humans;
 
 
-//import org.example.control.enums.GameMenuMessages;
+import org.example.control.enums.GameMenuMessages;
+import org.example.control.menucontrollers.SoundPlayer;
+import org.example.model.enums.Sounds;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
 import org.example.model.ingame.castle.Building;
@@ -11,7 +13,6 @@ import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.humans.army.details.Status;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.resourses.Resource;
-import org.example.model.enums.Sounds;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -51,8 +52,34 @@ public class Peasant extends Troop {
         return false;
     }
 
-    public void update() throws CoordinatesOutOfMap, NotInStoragesException {
-
+    public GameMenuMessages update() throws CoordinatesOutOfMap, NotInStoragesException {
+        switch (humanStatus) {
+            case SICK:{
+                humanStatus = Status.NOTHINGNESS;
+                return GameMenuMessages.HEALED;
+            }
+            case RECEIVING : {
+                if (takeFromStockpile()) humanStatus = Status.ON_THE_WAY;
+                else return GameMenuMessages.NOT_ENOUGH_RESOURCE;
+                break;
+            }
+            case DELIVERING : {
+                if (deliverGoods()) humanStatus = Status.RECEIVING;
+                else return GameMenuMessages.STORAGE_FULL;
+                break;
+            }
+            case ON_THE_WAY : {
+                moveAndPatrol();
+                if (destinationBuilding.atBuilding(getCurrentTile().getX(), getCurrentTile().getY())) {
+                    if (destinationBuilding.equals(workplace)) {
+                        workplace.setHolder(movingResource);
+                        movingResource = null;
+                    } else humanStatus = Status.DELIVERING;
+                }
+                break;
+            }
+        }
+        return null;
     }
 
     public void takeDamage(int amount) {
@@ -92,7 +119,7 @@ public class Peasant extends Troop {
         setHumanStatus(Status.ON_THE_WAY);
         setDestinationBuilding(getKing().whereToGet(resource, getCurrentTile().getX(), getCurrentTile().getY()));
         if (destinationBuilding == null) {
-//            SoundPlayer.play(Sounds.AKHEY); //TODO replace with proper sound
+            SoundPlayer.play(Sounds.AKHEY); //TODO replace with proper sound
             setHumanStatus(Status.AT_WORK);
         } else {
             inNeed = resource;

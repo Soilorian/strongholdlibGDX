@@ -1,6 +1,5 @@
 package org.example.model.enums;
 
-import org.example.view.menus.Menu;
 
 public enum Menus {
     ENTRANCE_MENU("entrance menu"),
@@ -29,29 +28,9 @@ public enum Menus {
 
     private final String menuName;
 
-    private Menu menu;
 
     Menus(String menuName) {
         this.menuName = menuName;
     }
 
-    public static String getNameByObj(Menu menu) {
-        for (Menus value : values()) {
-            if (value.getMenu().equals(menu))
-                return value.name();
-        }
-        return null;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
 }

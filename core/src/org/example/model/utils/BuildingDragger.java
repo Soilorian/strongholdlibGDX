@@ -9,7 +9,6 @@ import org.example.control.enums.GameMenuMessages;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ingame.map.enums.Direction;
-import org.example.view.menus.Menu;
 
 import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.zoom;
 
@@ -46,8 +45,5 @@ public class BuildingDragger extends DragListener {
         System.out.println(placingX + "    " + placingY);
         GameMenuMessages message = GameMenuController.dropBuildingGameMenu(placingX, placingY,
                 buildingReturnerAction.buildings, Direction.SOUTH);
-        Menu.showMessage(message.toString());
-//        if(message.equals(GameMenuMessages.SUCCESS))
-//            GameMenu.reload();
     }
 }

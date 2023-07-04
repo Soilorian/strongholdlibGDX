@@ -1,6 +1,6 @@
 package org.example.model.ingame.humans.siege;
 
-import org.example.control.Server;
+import org.example.control.Controller;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.humans.army.Troops;
@@ -16,7 +16,7 @@ public class Ram extends Troop implements SiegeWeapon {
         setSpeed(0);
         int currentX = getCurrentTile().getX();
         int currentY = getCurrentTile().getY();
-        Map map = Server.getCurrentMap();
+        Map map = Controller.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= getRange(); i++) {
             for (int j = 0; j <= i; j++) {

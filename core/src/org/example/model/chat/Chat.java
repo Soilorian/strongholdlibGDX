@@ -1,25 +1,20 @@
 package org.example.model.chat;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import org.example.model.Player;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Chat {
-    private final ArrayList<Player> members;
-    private final ArrayList<Message> messages;
+    private final ArrayList<Player> members = new ArrayList<>();
+    private final ArrayList<Message> messages = new ArrayList<>();
     private final Player owner;
     private final String id;
     private final String name;
-
     public Chat(Player owner, String id, String name) {
         this.owner = owner;
         this.id = id;
         this.name = name;
-        members= new ArrayList<>();
-        messages= new ArrayList<>();
     }
 
     public ArrayList<Player> getMembers() {
@@ -58,9 +53,11 @@ public class Chat {
         return result;
     }
 
-    public void draw(SpriteBatch batch, int x, int y){
 
+    public void draw(SpriteBatch batch, float x, float y, float h) {
+        for (int i = 0; i < h / 160 && messages.size() - 1 > i; i++) {
+            Message message = messages.get(messages.size() - 1 - i);
+            message.draw(batch, x, y + i * 160);
+        }
     }
-
-
 }

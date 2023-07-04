@@ -80,7 +80,7 @@ public class Player implements Serializable {
 
     private void sendPlayersChangesToServer(Player player) {
 //        try {
-//
+//            Controller.getClient().sendPlayer(this);
 //        }
 //        catch (IOException e) {
 //            Main.getController().changeMenu(Menus.RECONNECTING_MENU, ((Menu) Main.getController().getScreen()));

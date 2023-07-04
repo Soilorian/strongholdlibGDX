@@ -1,5 +1,6 @@
 package org.example.model.ingame.humans.specialworkers;
 
+import org.example.control.enums.GameMenuMessages;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.Peasant;
 import org.example.model.ingame.humans.army.details.Status;
@@ -23,8 +24,16 @@ public class Tunneler extends Peasant {
     }
 
     @Override
-    public void update() {
-
+    public GameMenuMessages update() {
+        if (!getHumanStatus().equals(Status.DIGGING)) return GameMenuMessages.NOT_DIGGING;
+        if (movesLeft == 0) return GameMenuMessages.CANT_DIG;
+        if (getCurrentTile().equals(tileDestination)) {
+            tileDestination.getBuilding().destroy();
+            return GameMenuMessages.SUCCEED;
+        }
+        if (getCurrentTile().moveTunnel(tileDestination))
+            movesLeft--;
+        return GameMenuMessages.SUCCEED;
     }
 
     public Tile getTunnelStart() {

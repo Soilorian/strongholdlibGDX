@@ -1,7 +1,6 @@
 import org.example.control.enums.EntranceMenuMessages;
 import org.example.control.enums.ProfileMenuMessages;
 import org.example.control.menucontrollers.ProfileMenuController;
-import org.example.model.DataBase;
 import org.example.model.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

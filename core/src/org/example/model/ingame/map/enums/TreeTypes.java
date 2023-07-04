@@ -1,7 +1,7 @@
 package org.example.model.ingame.map.enums;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Server;
+import org.example.control.Controller;
 import org.example.model.enums.ConsoleColors;
 
 public enum TreeTypes {
@@ -9,7 +9,8 @@ public enum TreeTypes {
     CHERRY_PALM("cherry palm", ConsoleColors.GREEN, "\uD83C\uDF38", "trees/cherry.png"),
     OLIVE_TREE("olive tree", ConsoleColors.GREEN, "\uD83C\uDF43", "trees/olive.png"),
     COCONUT_PALM("coconut palm", ConsoleColors.GREEN, "\uD83C\uDF34", "trees/coconut.png"),
-    DATES("dates", ConsoleColors.GREEN, "൹", "trees/date.png");
+    DATES("dates", ConsoleColors.GREEN, "൹", "trees/date.png"),
+    DEAKHT("derakht", ConsoleColors.GREEN, "+", "trees/Derakht.png");
 
     private final String type;
     private final ConsoleColors colors;
@@ -37,6 +38,6 @@ public enum TreeTypes {
     }
 
     public Texture getTexture() {
-        return Server.getTexture(textureAddress);
+        return null;
     }
 }

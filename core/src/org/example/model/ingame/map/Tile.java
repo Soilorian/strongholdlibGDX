@@ -4,7 +4,9 @@ package org.example.model.ingame.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Server;
+import org.example.Main;
+import org.example.control.Controller;
+import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.DataBase;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Colors;
@@ -37,6 +39,9 @@ public class Tile implements Serializable {
     private boolean isWall = false;
     private Trap trap = null;
     private boolean isTunnel = false;
+    private boolean onFire = false;
+    private boolean illness = false;
+
     private String GameId;
 
 
@@ -59,19 +64,13 @@ public class Tile implements Serializable {
     }
 
     public void setPassable(boolean passable) {
-            isPassable = passable;
-            sendTile();
+        isPassable = passable;
+        sendTile();
     }
 
     public void sendTile() {
-//        try {
-//            Server.getClient().sendPacket(this);
-//        }
-//        catch (Exception e) {
-//            Main.getController().changeMenu(Menus.RECONNECTING_MENU.getMenu(), (Menu) Main.getController().getScreen());
-//        }
-    }
 
+    }
 
 
     public TileTypes getTile() {
@@ -261,7 +260,18 @@ public class Tile implements Serializable {
     }
 
     public boolean moveTunnel(Tile destination) {
-        return false;
+        Tile tile;
+        Map currentMap = GameMenuController.getCurrentGame().getCurrentMap();
+        if (destination.getY() != y) {
+            if (destination.getY() > y)
+                tile = currentMap.getTile(y + 1, x);
+            else tile = currentMap.getTile(y - 1, x);
+        } else if (destination.getX() > x) tile = currentMap.getTile(y, x + 1);
+        else tile = currentMap.getTile(y, x - 1);
+        tile.addTunnelers(tunnelers);
+        tunnelers.clear();
+        sendTile();
+        return !tile.isTunnel();
     }
 
     private void addTunnelers(ArrayList<Tunneler> tunnelers) {
@@ -273,6 +283,17 @@ public class Tile implements Serializable {
     public Texture getTexture(int z) {
         return null;
     }
+
+//    private Pixmap addQuality(Pixmap pixmap, int x, int y, int a){
+//        for (int i = 0; i < a; i++) {
+//            for (int j = 0; j < a; j++) {
+//                pixmap.setColor(tile.getColor().add(new Color(random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f,
+//                        0.3f),random.nextFloat(-0.15f, 0.3f),random.nextFloat(-0.15f, 0.3f))));
+//                pixmap.fillRectangle(x, y, 4, 4);
+//            }
+//        }
+//        return pixmap;
+//    }
 
     public void addTunneler(Tunneler tunneler) {
         tunnelers.add(tunneler);
@@ -288,5 +309,19 @@ public class Tile implements Serializable {
         sendTile();
     }
 
+    public boolean isOnFire() {
+        return onFire;
+    }
 
+    public void setOnFire(boolean onFire) {
+        this.onFire = onFire;
+    }
+
+    public boolean isIllness() {
+        return illness;
+    }
+
+    public void setIllness(boolean illness) {
+        this.illness = illness;
+    }
 }

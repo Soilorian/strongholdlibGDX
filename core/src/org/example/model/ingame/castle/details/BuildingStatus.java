@@ -1,8 +1,5 @@
 package org.example.model.ingame.castle.details;
 
-import java.util.Arrays;
-import java.util.List;
-
 public enum BuildingStatus {
     WAITING_FOR_RESOURCE("waiting for resource"),
     STARTING_PRODUCTION("starting production"),
