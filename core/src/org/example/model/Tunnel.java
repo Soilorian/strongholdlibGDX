@@ -10,10 +10,12 @@ public class Tunnel {
     public Socket socket;
     public DataOutputStream out;
     public DataInputStream in;
+    public Player player;
 
-    public Tunnel(Socket socket) throws IOException {
+    public Tunnel(Socket socket, Player player) throws IOException {
         this.socket = socket;
         this.out = new DataOutputStream(socket.getOutputStream());
         this.in = new DataInputStream(socket.getInputStream());
+        this.player= player;
     }
 }
