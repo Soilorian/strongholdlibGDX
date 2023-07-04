@@ -3,7 +3,7 @@ package org.example.model.ingame.map;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Controller;
+import org.example.control.Server;
 import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Castle;
 import org.example.model.ingame.castle.Empire;
@@ -258,11 +258,11 @@ public class Map implements Serializable {
         }
         for (Integer integer : castles.keySet()) {
             Castle castle = castles.get(integer);
-            Texture textureShield = Controller.getShield();
+            Texture textureShield = Server.getShield();
             if (!textureShield.getTextureData().isPrepared())
                 textureShield.getTextureData().prepare();
             pixmap.drawPixmap(textureShield.getTextureData().consumePixmap(), i * castle.getX(), i * castle.getY());
-            Texture textureNumber = Controller.getPictureOf(integer);
+            Texture textureNumber = Server.getPictureOf(integer);
             if (!textureNumber.getTextureData().isPrepared())
                 textureNumber.getTextureData().prepare();
             pixmap.drawPixmap(textureNumber.getTextureData().consumePixmap(), i * castle.getX(), i * castle.getY());

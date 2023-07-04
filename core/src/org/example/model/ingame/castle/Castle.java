@@ -1,8 +1,6 @@
 package org.example.model.ingame.castle;
 
-import org.example.control.Controller;
-import org.example.control.enums.GameMenuMessages;
-import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.Server;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.map.Map;
@@ -21,11 +19,10 @@ public class Castle extends Building {
     }
 
     public void setTile() {
-        super.setTileUnder(Controller.getCurrentMap().getTile(y, x));
+        super.setTileUnder(Server.getCurrentMap().getTile(y, x));
     }
 
     public void setLord() {
-        lord = new Troop(Troops.LORD, empire, GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x));
     }
 
     public Empire getEmpire() {
@@ -55,35 +52,6 @@ public class Castle extends Building {
     }
 
     public void setStorages(Buildings stockpile) {
-        Tile tile = getTileUnder();
-        int currentX = tile.getX();
-        int currentY = tile.getY();
-        Map map = GameMenuController.getCurrentGame().getCurrentMap();
-        for (int i = 0; i <= 5; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (map.isInRange(currentX + j, currentY + i - j)) {
-                    tile = map.getTile(currentY + i - j, currentX + j);
-                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
-                        return;
-                }
-                if (map.isInRange(currentX + j, currentY - i + j)) {
-                    tile = map.getTile(currentY - i + j, currentX + j);
-                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
-                        return;
-
-                }
-                if (map.isInRange(currentX - j, currentY + i - j)) {
-                    tile = map.getTile(currentY + i - j, currentX - j);
-                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
-                        return;
-                }
-                if (map.isInRange(currentX - j, currentY - i + j)) {
-                    tile = map.getTile(currentY - i + j, currentX - j);
-                    if (tile.getBuilding() == null && build(stockpile, tile) == GameMenuMessages.SUCCESS)
-                        return;
-                }
-            }
-        }
 
     }
 }

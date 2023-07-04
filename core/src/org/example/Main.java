@@ -1,27 +1,22 @@
 package org.example;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
-import org.example.control.Controller;
+import org.example.control.Server;
 
-import java.io.IOException;
 import java.net.Socket;
 
 public class Main {
-    Controller controller;
+    Server server;
 
     public Main(Socket socket) {
-        Controller.setSocket(socket);
+        Server.setSocket(socket);
     }
 
     public void create() {
-        controller = new Controller();
-        controller.handleServer();
+        server = new Server();
+        server.handleServer();
     }
-    public Controller getController() {
-        return controller;
+    public Server getController() {
+        return server;
     }
 
 

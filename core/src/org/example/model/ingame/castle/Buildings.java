@@ -2,12 +2,12 @@ package org.example.model.ingame.castle;
 
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Controller;
+import org.example.control.Server;
 import org.example.model.ingame.castle.details.Durability;
 import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
-import org.example.view.enums.Menus;
+import org.example.model.enums.Menus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -302,7 +302,7 @@ public enum Buildings {
     }
 
     public Texture getTexture() {
-        return Controller.getTexture(pictureAddress);
+        return Server.getTexture(pictureAddress);
     }
 
     public String getTextureAddress() {

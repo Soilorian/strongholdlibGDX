@@ -2,7 +2,9 @@ package org.example.model.utils;
 
 import org.example.model.Player;
 
-public class FriendShipRequest {
+import java.io.Serializable;
+
+public class FriendShipRequest  implements Serializable {
     private Player sender;
     private Player acceptor;
 

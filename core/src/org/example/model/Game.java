@@ -2,7 +2,7 @@ package org.example.model;
 
 
 import com.badlogic.gdx.utils.Timer;
-import org.example.control.Controller;
+import org.example.control.Server;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
 
@@ -94,7 +94,7 @@ public class Game extends Thread implements Serializable {
 
     private void disconnect() {
         Timer.instance().clear();
-        Controller.log.fine("player disconnected");
+        Server.log.fine("player disconnected");
         pause();
         Timer.schedule(new Timer.Task() {
             @Override
@@ -134,13 +134,13 @@ public class Game extends Thread implements Serializable {
 
     private void checkConnection() {
         for (Player player : players.keySet()) {
-            if (!Controller.players.contains(player)) {
+            if (!Server.players.contains(player)) {
                 return;
             }
         }
         Timer.instance().clear();
         try {
-            updateInfo(Controller.gson.toJson(currentMap));
+            updateInfo(Server.gson.toJson(currentMap));
         } catch (IOException e) {
             disconnect();
         }

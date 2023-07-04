@@ -6,7 +6,7 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
-import org.example.view.enums.commands.Slogans;
+import org.example.model.enums.commands.Slogans;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -14,9 +14,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeMap;
-import org.apache.poi.ss.usermodel.Cell;
+
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -168,7 +166,7 @@ public class DataBase {
             objectOutputStream.writeObject(player);
             ObjectInputStream objectInputStream = xstream.createObjectInputStream(
                     Files.newInputStream(Paths.get("stayLogged.txt")));
-            currentPlayer = (Player) objectInputStream.readObject();
+            setCurrentPlayer((Player) objectInputStream.readObject());
         } catch (EOFException ignored) {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

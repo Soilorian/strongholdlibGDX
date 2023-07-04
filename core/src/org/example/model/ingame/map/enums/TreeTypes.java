@@ -1,8 +1,8 @@
 package org.example.model.ingame.map.enums;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Controller;
-import org.example.view.enums.ConsoleColors;
+import org.example.control.Server;
+import org.example.model.enums.ConsoleColors;
 
 public enum TreeTypes {
     CACTUS("cactus", ConsoleColors.GREEN, "\uD83C\uDF40", "trees/cactus1.png"),
@@ -37,6 +37,6 @@ public enum TreeTypes {
     }
 
     public Texture getTexture() {
-        return Controller.getTexture(textureAddress);
+        return Server.getTexture(textureAddress);
     }
 }

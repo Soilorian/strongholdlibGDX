@@ -1,7 +1,7 @@
 package org.example.model.ingame.map.enums;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.view.enums.ConsoleColors;
+import org.example.model.enums.ConsoleColors;
 
 import java.util.ArrayList;
 import java.util.List;

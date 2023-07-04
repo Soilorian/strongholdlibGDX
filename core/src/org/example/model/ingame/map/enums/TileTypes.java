@@ -1,7 +1,7 @@
 package org.example.model.ingame.map.enums;
 
 import com.badlogic.gdx.graphics.Color;
-import org.example.view.enums.ConsoleColors;
+import org.example.model.enums.ConsoleColors;
 
 public enum TileTypes {
     GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD, "tiles/ground.jpg"),

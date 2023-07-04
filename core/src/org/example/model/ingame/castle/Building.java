@@ -1,10 +1,7 @@
 package org.example.model.ingame.castle;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.Main;
-import org.example.control.Controller;
-import org.example.control.enums.GameMenuMessages;
-import org.example.control.menucontrollers.GameMenuController;
+import org.example.control.Server;
 import org.example.model.DataBase;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
@@ -18,7 +15,7 @@ import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.Direction;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
-import org.example.view.enums.Menus;
+import org.example.model.enums.Menus;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -71,31 +68,8 @@ public class Building {
         producingAmount = buildings.getProducingAmount();
     }
 
-    public static GameMenuMessages build(Buildings building, Tile tile) {
-        if (tile.getBuilding() != null) {
-            return GameMenuMessages.ALREADY_BUILDING;
-        }
-        ArrayList<Resource> requirements = building.getRequirements();
-        Empire currentEmpire = DataBase.getCurrentEmpire();
-        for (Resource resource : requirements)
-            if (currentEmpire.isThereNotResource(resource))
-                return GameMenuMessages.NOT_ENOUGH_RESOURCE;
-        for (Resource requirement : requirements) currentEmpire.takeResource(requirement);
-        if (!building.getPlacableOn().contains(tile.getTile())) return GameMenuMessages.NOT_PLACEABLE_TILE;
-        if (building.equals(Buildings.CAGED_WAR_DOGS))
-            tile.setTrap(new DogCage(DataBase.getCurrentEmpire()));
-        else if (building.equals(Buildings.KILLING_PIT))
-            tile.setTrap(new KillingPit(DataBase.getCurrentEmpire()));
-        else {
-            Building building1 = new Building(building, tile);
-            currentEmpire.addBuilding(building1);
-            tile.setBuilding(building1);
-            if (building.equals(Buildings.CATHEDRAL) || building.equals(Buildings.CHURCH))
-                DataBase.getCurrentEmpire().addChurch();
-            if (building.equals(Buildings.HOVEL)) GameMenuController.addPeasant();
-        }
+    public static void build(Buildings building, Tile tile) {
 
-        return GameMenuMessages.SUCCESS;
     }
 
     public String onClick() throws IOException, UnsupportedAudioFileException, LineUnavailableException, CoordinatesOutOfMap, NotInStoragesException {
@@ -144,39 +118,9 @@ public class Building {
         return workers.size() == workersRequired;
     }
 
-    public void update() throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException, LineUnavailableException, IOException {
-        if (onFire) takeDamage(100);
-        final ArrayList<Troop> troops = GameMenuController.lookAround(tileUnder.getX(), tileUnder.getY(), owner, 5);
-        switch (buildingStatus) {
-            case WAITING_FOR_RESOURCE : {
-                if (holder.getResourceName().equals(consumingResource)) buildingStatus =
-                        BuildingStatus.goNext(buildingStatus);
-                else employ();
-                break;
-            }
-            case STARTING_PRODUCTION: case IN_THE_MIDDLE_OF_PRODUCTION:case FINISHING_PRODUCTION : {
-                if (isWorking()) buildingStatus =  BuildingStatus.goNext(buildingStatus);
-                else employ();
-                break;
-            }
-            case DELIVERING_GOODS : {
-                if (isWorking()) {
-                    if (!workers.isEmpty())
-                        workers.get(0).sendToGet(new Resource(consumingResource, 1), new Resource(producingResource, producingAmount));
-                } else employ();
-                break;
-            }
-            case OPEN : {
-                if (!troops.isEmpty())
-                    GameMenuController.getCurrentGame().getCurrentMap().closeGate(tileUnder.getX(), tileUnder.getY(), direction);
-                break;
-            }
-            case CLOSE : {
-                if (troops.isEmpty())
-                    GameMenuController.getCurrentGame().getCurrentMap().openGate(tileUnder.getX(), tileUnder.getY(), direction);
-                break;
-            }
-        }
+    public void update() throws CoordinatesOutOfMap, NotInStoragesException, UnsupportedAudioFileException,
+            LineUnavailableException, IOException {
+
     }
 
     private void employ() {
@@ -272,7 +216,7 @@ public class Building {
     }
 
     public boolean atBuilding(int x, int y) {
-        return GameMenuController.getCurrentGame().getCurrentMap().getTile(y, x).equals(tileUnder);
+        return false;
     }
 
     public void setHolder(Resource holder) {
@@ -280,18 +224,7 @@ public class Building {
     }
 
     public void destroy() {
-        tileUnder.setBuilding(null);
-        if (GameMenuController.isWall(this))
-            GameMenuController.getCurrentGame().getCurrentMap().destroyWall(tileUnder.getX(), tileUnder.getY());
-        else if (GameMenuController.isGate(building))
-            GameMenuController.getCurrentGame().getCurrentMap().destroyGate(tileUnder.getX(), tileUnder.getY(), direction);
-        else if (GameMenuController.isChurch(building))
-            owner.churchDestroyed();
-        else if (building.equals(Buildings.HOVEL))
-            owner.hovelDestroyed();
-        else if (Storage.IsStorage(this))
-            owner.storageDestroyed(this);
-        tileUnder.setBuilding(null);
+
     }
 
 
@@ -308,6 +241,6 @@ public class Building {
     }
 
     public Texture getTexture() {
-        return Controller.getTexture(building.getTextureAddress());
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 package org.example.model.ingame.humans.army;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.example.control.Controller;
+import org.example.control.Server;
 import org.example.model.ingame.humans.army.details.*;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
@@ -110,6 +110,6 @@ public enum Troops {
     }
 
     public Texture getTexture() {
-        return Controller.resizer(20, 20, Controller.getTexture(address));
+        return Server.resizer(20, 20, Server.getTexture(address));
     }
 }

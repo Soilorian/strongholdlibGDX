@@ -1,16 +1,11 @@
 package org.example.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import org.example.Main;
-import org.example.control.Controller;
 import org.example.model.chat.Chat;
 import org.example.model.chat.Group;
 import org.example.model.chat.PrivateChat;
 import org.example.model.utils.FriendShipRequest;
-import org.example.view.enums.Menus;
-import org.example.view.menus.Menu;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -50,9 +45,14 @@ public class Player implements Serializable {
                 Objects.equals(friends, player.friends) && Objects.equals(username, player.username) &&
                 Objects.equals(password, player.password) && Objects.equals(nickname, player.nickname) &&
                 Objects.equals(email, player.email) && Objects.equals(securityQuestion, player.securityQuestion) &&
-                Objects.equals(securityQuestionAnswer, player.securityQuestionAnswer) && Objects.equals(slogan, player.slogan);
+                Objects.equals(securityQuestionAnswer, player.securityQuestionAnswer) &&
+                Objects.equals(slogan, player.slogan) && Objects.equals(lastVisit, player.lastVisit);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(friendShipRequests, friends, username, password, nickname, email, securityQuestion, securityQuestionAnswer, slogan, maxStore, profImage, lastVisit);
+    }
 
     public Player(String username, String password, String nickname, String email, String slogan) {
         this.username = username;
@@ -78,9 +78,9 @@ public class Player implements Serializable {
         sendPlayersChangesToServer(this);
     }
 
-    private void sendPlayersChangesToServer(Player player)  {
+    private void sendPlayersChangesToServer(Player player) {
 //        try {
-//            Controller.getClient().sendPlayer(this);
+//
 //        }
 //        catch (IOException e) {
 //            Main.getController().changeMenu(Menus.RECONNECTING_MENU, ((Menu) Main.getController().getScreen()));
@@ -176,6 +176,7 @@ public class Player implements Serializable {
         chat.addMember(this);
         sendPlayersChangesToServer(this);
     }
+
     public void removeChat(Chat chat) {
         chats.remove(chat);
         sendPlayersChangesToServer(this);
@@ -207,6 +208,7 @@ public class Player implements Serializable {
         slogan = player.slogan;
         maxStore = player.maxStore;
         profImage = player.profImage;
+        lastVisit = player.lastVisit;
     }
 
 
@@ -218,6 +220,7 @@ public class Player implements Serializable {
         friendShipRequests.add(friendShipRequest);
         sendPlayersChangesToServer(this);
     }
+
     public void removeFriendShipRequest(FriendShipRequest friendShipRequest) {
         friendShipRequests.remove(friendShipRequest);
         sendPlayersChangesToServer(this);
@@ -227,6 +230,7 @@ public class Player implements Serializable {
         friends.add(friend);
         sendPlayersChangesToServer(this);
     }
+
     public void removeFriends(Player friend) {
         friends.add(friend);
         sendPlayersChangesToServer(this);

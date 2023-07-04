@@ -1,7 +1,6 @@
 package org.example.model.ingame.castle;
 
 
-import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.Player;
 import org.example.model.exceptions.CoordinatesOutOfMap;
 import org.example.model.exceptions.NotInStoragesException;
@@ -11,8 +10,8 @@ import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.humans.army.details.Status;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
-import org.example.view.enums.FoodRateDetail;
-import org.example.view.enums.TaxDetail;
+import org.example.model.enums.FoodRateDetail;
+import org.example.model.enums.TaxDetail;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,7 +67,6 @@ public class Empire {
                 subset.add(peasant);
                 pop++;
             }
-            GameMenuController.removeSubsetFromPeasant(peasants, subset);
         }
     }
 
@@ -251,7 +249,6 @@ public class Empire {
     }
 
     private Building findClosest(int x, int y, ArrayList<Building> findIn) throws UnknownError, CoordinatesOutOfMap {
-        if (!GameMenuController.getCurrentGame().getCurrentMap().isInRange(x, y)) throw new CoordinatesOutOfMap();
         if (findIn.isEmpty()) return null;
         long distance = 1000000;
         Building building = null;
@@ -292,7 +289,6 @@ public class Empire {
                 deads.add(peasant);
             }
         }
-        GameMenuController.removeSubsetFromTroop(troops, deads);
     }
 
     public void addTroop(Troop troop1) {

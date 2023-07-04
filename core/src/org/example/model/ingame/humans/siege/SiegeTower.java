@@ -1,6 +1,6 @@
 package org.example.model.ingame.humans.siege;
 
-import org.example.control.Controller;
+import org.example.control.Server;
 import org.example.control.menucontrollers.GameMenuController;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.Troop;
@@ -18,7 +18,7 @@ public class SiegeTower extends Troop implements SiegeWeapon {
         int currentX = getCurrentTile().getX();
         int currentY = getCurrentTile().getY();
         Troop enemy;
-        Map map = Controller.getCurrentMap();
+        Map map = Server.getCurrentMap();
         Tile tile;
         for (int i = 0; i <= getRange(); i++) {
             for (int j = 0; j <= i; j++) {
