@@ -12,6 +12,8 @@ import org.example.model.utils.FriendShipRequest;
 import org.example.model.utils.PlayerToken;
 import org.example.model.utils.Request;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -65,10 +67,8 @@ public class Server {
                 Objects.requireNonNull(player1).update(player);
             } else {
                 log.fine("players updated");
-                if (players.contains(player)) {
+                if (players.remove(player)) {
                     player.setLastVisit(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
-                    sendPlayer(player);
-                    players.remove(player);
                     try {
                         DataBase.addPlayersToExcel();
                     } catch (IOException ignored) {
@@ -80,6 +80,9 @@ public class Server {
         } else {
             log.fine("player registered");
             DataBase.addPlayer(player);
+            try {
+                DataBase.updatePlayersXS();
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {}
         }
     }
 
@@ -95,16 +98,16 @@ public class Server {
         DataBase.generateInfoFromJson();
         log.fine("started handling");
         if (sendData()) {
-            log.fine("connection lost!");
+            log.fine("connection lost during data sending!");
             return;
         }
         while (true) {
             try {
                 handleIncomingJson();
             } catch (IOException e) {
-                log.fine("connection lost!");
+                log.fine("connection lost during handling!");
                 safeDisconnect();
-                break;
+                return;
             }
         }
     }
@@ -141,6 +144,10 @@ public class Server {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        if (json == null){
+            System.out.println("null json");
+            return;
+        }
         if (json.getClass().equals(Player.class))
             updatePlayers(((Player) json));
         else if (json.getClass().equals(Request.class)) {
@@ -162,50 +169,6 @@ public class Server {
             handleFriendShopRequest(((FriendShipRequest) json));
         } else if (json.getClass().equals(PlayerToken.class))
             handleToken(((PlayerToken) json));
-//        System.out.println(json);
-//        try {
-//            player = ((Player) json);
-//            if (player == null) {
-//                throw new RuntimeException();
-//            }
-//            updatePlayers(player);
-//            return;
-//        } catch (RuntimeException ignored) {
-//        }
-//        try {
-//            Request request = ((Request) json);
-//            if (request == null) {
-//                throw new RuntimeException();
-//            }
-//            if (request.getString().equalsIgnoreCase("chats")){
-//                System.out.println("yay");
-//                sendChats();
-//            }
-//        }catch (RuntimeException ignored){}
-//        try {
-//            Map map = gson.fromJson(((String) json), Map.class);
-//            if (map == null) {
-//                throw new RuntimeException();
-//            }
-//            return;
-//        } catch (RuntimeException ignored){}
-//        try {
-//            Game game = ((Game) json);
-//            if (game == null) {
-//                throw new RuntimeException();
-//            }
-//            handleGame(game);
-//
-//            return;
-//        } catch (RuntimeException ignored) {
-//        }
-//        try {
-//            Tile tile = gson.fromJson(in.readUTF(), Tile.class);
-//            handleTile(tile);
-//
-//        } catch (RuntimeException ignored) {
-//
-//        }
     }
 
     private void handleToken(PlayerToken playerToken) {
@@ -243,13 +206,6 @@ public class Server {
         if (players.remove(player)) {
             log.fine("player " + player.getUsername() + " disconnected");
         }
-//        try {
-//            socket.shutdownInput();
-//            socket.shutdownOutput();
-//            socket.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     private void setupConnection() {
