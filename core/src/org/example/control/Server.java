@@ -73,10 +73,6 @@ public class Server {
 //                if (players.remove(player))
                 if (tunnels.remove(getTunnelByItsPlayer(player))) {
                     player.setLastVisit(new SimpleDateFormat("yyyy/MM/dd/_HH/mm/ss").format(Calendar.getInstance().getTime()));
-                    try {
-                        DataBase.addPlayersToExcel();
-                    } catch (IOException ignored) {
-                    }
                 } else {
 //                    players.add(player);
                     try {
@@ -85,6 +81,10 @@ public class Server {
                         throw new RuntimeException(e);
                     }
 
+                }
+                try {
+                    DataBase.addPlayersToExcel();
+                } catch (IOException ignored) {
                 }
             }
         } else {
@@ -166,7 +166,8 @@ public class Server {
             if (request.getString().equalsIgnoreCase("chats")) {
                 log.fine("request handled");
                 sendChats();
-            }
+            } else if (request.getString().contains("join room"))
+                log.fine("joining game");
         } else if (json.getClass().equals(Map.class)) {
             log.fine("map received");
             Map map = ((Map) json);
