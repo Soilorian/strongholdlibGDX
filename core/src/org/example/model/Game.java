@@ -136,7 +136,7 @@ public class Game extends Thread implements Serializable {
     private void checkConnection() {
         for (Tunnel tunnel : players) {
             Player player = tunnel.player;
-            if (!Server.players.contains(player)) {
+            if (Server.getTunnelByItsPlayer(player) != null) {
                 return;
             }
         }

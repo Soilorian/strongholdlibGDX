@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import org.example.model.DataBase;
 import org.example.model.Game;
 import org.example.model.Player;
+import org.example.model.Tunnel;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.utils.FriendShipRequest;
@@ -24,19 +25,22 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Server {
-    public final static LinkedBlockingQueue<Player> players = new LinkedBlockingQueue<>();
+    public final static LinkedBlockingQueue<Tunnel> tunnels = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
     public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
-    private static Map currentMap;
+    private Map currentMap;
     private static Socket socket;
-    private static DataInputStream in;
-    private static DataOutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
     private Player player;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+
 
     public Server() {
         log.setLevel(Level.ALL);
@@ -47,12 +51,12 @@ public class Server {
         setupConnection();
     }
 
-    public static Map getCurrentMap() {
-        return currentMap;
-    }
+    public static Tunnel getTunnelByItsPlayer(Player player) {
+        for (Tunnel tunnel : tunnels)
+            if (tunnel.getPlayer().getUsername().equals(player.getUsername()))
+                return tunnel;
+        return null;
 
-    public static void setCurrentMap(Map currentMap) {
-        Server.currentMap = currentMap;
     }
 
     public static void setSocket(Socket socket) {
@@ -67,14 +71,21 @@ public class Server {
                 Objects.requireNonNull(player1).update(player);
             } else {
                 log.fine("players updated");
-                if (players.remove(player)) {
-                    player.setLastVisit(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
-                    try {
-                        DataBase.addPlayersToExcel();
-                    } catch (IOException ignored) {
-                    }
+//                if (players.remove(player))
+                if (tunnels.remove(getTunnelByItsPlayer(player))) {
+                    player.setLastVisit(new SimpleDateFormat("HH/mm").format(Calendar.getInstance().getTime()));
                 } else {
-                    players.add(player);
+//                    players.add(player);
+                    try {
+                        tunnels.add(new Tunnel(socket, player));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+                try {
+                    DataBase.addPlayersToExcel();
+                } catch (IOException ignored) {
                 }
             }
         } else {
@@ -82,7 +93,8 @@ public class Server {
             DataBase.addPlayer(player);
             try {
                 DataBase.updatePlayersXS();
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {}
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {
+            }
         }
     }
 
@@ -144,7 +156,7 @@ public class Server {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        if (json == null){
+        if (json == null) {
             System.out.println("null json");
             return;
         }
@@ -155,6 +167,9 @@ public class Server {
             if (request.getString().equalsIgnoreCase("chats")) {
                 log.fine("request handled");
                 sendChats();
+            } else if (request.getString().contains("join room")){
+                log.fine("joining game");
+                joinGame(request);
             }
         } else if (json.getClass().equals(Map.class)) {
             log.fine("map received");
@@ -169,6 +184,20 @@ public class Server {
             handleFriendShopRequest(((FriendShipRequest) json));
         } else if (json.getClass().equals(PlayerToken.class))
             handleToken(((PlayerToken) json));
+    }
+
+    private void joinGame(Request request) {
+        String gameId = extractGameId(request.getString());
+        getGameById(gameId).addPlayer(player, socket);
+    }
+
+    private String extractGameId(String string) {
+        Pattern pattern = Pattern.compile("join room \\[(?<ID>.*)]");
+        Matcher matcher = pattern.matcher(string);
+        if (matcher.find()) {
+            return matcher.group("ID");
+        }
+        return null;
     }
 
     private void handleToken(PlayerToken playerToken) {
@@ -203,7 +232,8 @@ public class Server {
     }
 
     private void safeDisconnect() {
-        if (players.remove(player)) {
+//        if (players.remove(player))
+        if (tunnels.remove(getTunnelByItsPlayer(player))) {
             log.fine("player " + player.getUsername() + " disconnected");
         }
     }
