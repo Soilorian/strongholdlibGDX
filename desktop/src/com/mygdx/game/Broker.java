@@ -21,13 +21,18 @@ public class Broker {
             return;
         }
         System.out.println("Starting Broker service...");
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         while (true) {
             try {
-                ServerSocket serverSocket = new ServerSocket(port);
                 Socket socket = serverSocket.accept();
                 Connection connection = new Connection(socket);
                 connection.start();
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) { break; }
         }
     }
 

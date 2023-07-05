@@ -7,10 +7,7 @@ import org.example.control.Server;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.map.Map;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +16,7 @@ import java.util.Iterator;
 public class Game extends Thread implements Serializable {
     private final ArrayList<Empire> empires = new ArrayList<>();
     private final ArrayList<Empire> allEmpire = new ArrayList<>();
-    private final ArrayList<Tunnel> players = new ArrayList<>();
+    private ArrayList<Tunnel> players = new ArrayList<>();
     private Player owner;
     private int gameSize = 0;
     private String id;
@@ -39,12 +36,9 @@ public class Game extends Thread implements Serializable {
         return players;
     }
 
-    public void addPlayer(Player player, Socket socket) {
-        try {
-            players.add(new Tunnel(socket, player));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void addPlayer(Player player, Socket socket, DataOutputStream out, DataInputStream in,
+                          ObjectOutputStream oos, ObjectInputStream ois) {
+        players.add(new Tunnel(socket, out, in, oos, ois, player));
         Empire empire = new Empire(player);
         empires.add(empire);
         allEmpire.add(empire);
@@ -95,7 +89,7 @@ public class Game extends Thread implements Serializable {
 
     private void disconnect() {
         Timer.instance().clear();
-        Server.log.fine("player disconnected");
+        System.out.println("player disconnected");
         pause();
         Timer.schedule(new Timer.Task() {
             @Override
@@ -208,5 +202,19 @@ public class Game extends Thread implements Serializable {
 
     public int getPlayersLength() {
         return players.size();
+    }
+
+    public boolean hasPlayer(Player currentPlayer) {
+        for (Tunnel player : players) {
+            if (player.player.equals(currentPlayer))
+                return true;
+        }
+        return false;
+    }
+
+    public void update(Game game) {
+        owner = game.owner;
+        isPrivate = game.isPrivate;
+        players = game.players;
     }
 }

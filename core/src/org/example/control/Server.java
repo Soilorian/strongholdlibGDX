@@ -19,6 +19,8 @@ import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
@@ -32,9 +34,9 @@ public class Server {
     public final static LinkedBlockingQueue<Tunnel> tunnels = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
     public static final Gson gson = new Gson();
-    public static final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
+    public final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
     private Map currentMap;
-    private static Socket socket;
+    private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
     private Player player;
@@ -48,7 +50,6 @@ public class Server {
         handler.setLevel(Level.FINER);
         handler.setFormatter(new SimpleFormatter());
         log.addHandler(handler);
-        setupConnection();
     }
 
     public static Tunnel getTunnelByItsPlayer(Player player) {
@@ -59,8 +60,9 @@ public class Server {
 
     }
 
-    public static void setSocket(Socket socket) {
-        Server.socket = socket;
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        setupConnection();
     }
 
     private void updatePlayers(Player player) {
@@ -69,18 +71,14 @@ public class Server {
             if (!Objects.equals(player1, player)) {
                 log.fine("player info synced");
                 Objects.requireNonNull(player1).update(player);
+                sendToAll(player);
             } else {
                 log.fine("players updated");
-//                if (players.remove(player))
                 if (tunnels.remove(getTunnelByItsPlayer(player))) {
                     player.setLastVisit(new SimpleDateFormat("HH/mm").format(Calendar.getInstance().getTime()));
+                    sendToAll(player);
                 } else {
-//                    players.add(player);
-                    try {
-                        tunnels.add(new Tunnel(socket, player));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    tunnels.add(new Tunnel(socket,out, in, oos, ois, player));
 
                 }
                 try {
@@ -91,18 +89,11 @@ public class Server {
         } else {
             log.fine("player registered");
             DataBase.addPlayer(player);
+            sendToAll(player);
             try {
                 DataBase.updatePlayersXS();
             } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {
             }
-        }
-    }
-
-    private void sendPlayer(Player player) {
-        try {
-            oos.writeObject(player);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -124,10 +115,27 @@ public class Server {
         }
     }
 
+    public <T> void sendToAll(T t){
+        sendToSome(t, tunnels);
+    }
+
+    public <T> void sendToSome(T t, Collection<Tunnel> tunnels){
+        Iterator<Tunnel> iterator = tunnels.iterator();
+        while (iterator.hasNext()) {
+            Tunnel tunnel = iterator.next();
+            try {
+                tunnel.oos.writeObject(t);
+            } catch (IOException e) {
+                iterator.remove();
+            }
+        }
+    }
+
     private boolean sendData() {
         try {
             ois = new ObjectInputStream(in);
             oos = new ObjectOutputStream(out);
+            System.out.println(DataBase.getPlayers());
             for (Player player1 : DataBase.getPlayers()) oos.writeObject(player1);
             log.fine("data sent");
         } catch (IOException e) {
@@ -139,8 +147,11 @@ public class Server {
 
     private void sendGames() {
         try {
-            Game[] toSendGame = (Game[]) games.toArray();
-            oos.writeUTF(gson.toJson(toSendGame, Game[].class));
+            if (games.isEmpty())
+                oos.writeObject(null);
+            for (Game game : games) {
+                oos.writeObject(game);
+            }
         } catch (Exception e) {
             safeDisconnect();
         }
@@ -165,11 +176,16 @@ public class Server {
         else if (json.getClass().equals(Request.class)) {
             Request request = ((Request) json);
             if (request.getString().equalsIgnoreCase("chats")) {
-                log.fine("request handled");
                 sendChats();
+                log.fine("request handled");
             } else if (request.getString().contains("join room")){
-                log.fine("joining game");
                 joinGame(request);
+                log.fine("joining game");
+            } else if (request.getString().equals("games")){
+                sendGames();
+                log.fine("games sent");
+            } else {
+                sendOnlineState(request);
             }
         } else if (json.getClass().equals(Map.class)) {
             log.fine("map received");
@@ -186,9 +202,23 @@ public class Server {
             handleToken(((PlayerToken) json));
     }
 
+    private void sendOnlineState(Request request) {
+        try {
+            oos.writeObject(getTunnelByItsPlayer(DataBase.getPlayerByUsername(request.getString())) != null);
+        } catch (IOException e) {
+            safeDisconnect();
+        }
+    }
+
     private void joinGame(Request request) {
         String gameId = extractGameId(request.getString());
-        getGameById(gameId).addPlayer(player, socket);
+        Game gameById = getGameById(gameId);
+        gameById.addPlayer(player, socket, out, in ,oos ,ois);
+        try {
+            oos.writeObject(gameById);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String extractGameId(String string) {
@@ -224,10 +254,12 @@ public class Server {
         if ((searchedGame = getGameById(game.getGameId())) == null)
             games.add(game);
         else {
-
-            games.remove(searchedGame);
-            if (game.getPlayersLength() != 0)
-                games.add(game);
+            if (searchedGame.equals(game))
+                games.remove(searchedGame);
+            else if (game.getPlayersLength() != 0)
+                games.remove(searchedGame);
+            else
+                searchedGame.update(game);
         }
     }
 
@@ -258,5 +290,13 @@ public class Server {
             if (game.getGameId().equals(id))
                 return game;
         return null;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public boolean sendReflection() {
+        return false;
     }
 }

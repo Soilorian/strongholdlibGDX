@@ -1,6 +1,8 @@
 package org.example.model.enums;
 
-public enum TaxDetail {
+import java.io.Serializable;
+
+public enum TaxDetail  implements Serializable {
     _THREE(-3, 7, -1.0),
     _TWO(-2, 5, -0.8),
     _ONE(-1, 3, -0.6),

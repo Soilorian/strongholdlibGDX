@@ -1,8 +1,9 @@
 package org.example.model.ingame.map.resourses;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Resource {
+public class Resource implements Serializable {
     private final Resources resourceName;
     private int amount;
 

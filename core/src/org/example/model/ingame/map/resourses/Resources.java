@@ -1,6 +1,8 @@
 package org.example.model.ingame.map.resourses;
 
-public enum Resources {
+import java.io.Serializable;
+
+public enum Resources implements Serializable {
 
     WHEAT("Wheat", 15),
     FLOUR("Flour", 25),

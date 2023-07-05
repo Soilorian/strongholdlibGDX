@@ -8,7 +8,9 @@ import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 
-public class Castle extends Building {
+import java.io.Serializable;
+
+public class Castle extends Building  implements Serializable {
     private final int x;
     private final int y;
     private Empire empire;

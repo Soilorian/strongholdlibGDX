@@ -1,7 +1,9 @@
 package org.example.model.enums;
 
 
-public enum Menus {
+import java.io.Serializable;
+
+public enum Menus  implements Serializable {
     ENTRANCE_MENU("entrance menu"),
     MAIN_MENU("main menu"),
     MAP_EDIT_MENU("map edit menu"),

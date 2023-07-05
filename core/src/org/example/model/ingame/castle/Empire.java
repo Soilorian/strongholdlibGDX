@@ -14,11 +14,12 @@ import org.example.model.ingame.humans.army.details.Status;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Empire {
+public class Empire implements Serializable {
     private final Player owner;
     private final ArrayList<Resource> resources = new ArrayList<>();
     private final ArrayList<Building> stockpiles = new ArrayList<>();

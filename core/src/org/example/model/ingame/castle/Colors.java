@@ -2,7 +2,9 @@ package org.example.model.ingame.castle;
 
 import com.badlogic.gdx.graphics.Color;
 
-public enum Colors {
+import java.io.Serializable;
+
+public enum Colors  implements Serializable {
     YELLOW("yellow", Color.YELLOW),
     RED("red", Color.RED),
     BLACK("black", Color.BLACK),

@@ -1,6 +1,8 @@
 package org.example.model.ingame.map.enums;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction  implements Serializable {
     NORTH("north", 0),
     EAST("east", 1),
     SOUTH("south", 2),

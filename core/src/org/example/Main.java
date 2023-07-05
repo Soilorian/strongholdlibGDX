@@ -8,11 +8,11 @@ public class Main {
     Server server;
 
     public Main(Socket socket) {
-        Server.setSocket(socket);
+        server = new Server();
+        server.setSocket(socket);
     }
 
     public void create() {
-        server = new Server();
         server.handleServer();
     }
     public Server getController() {

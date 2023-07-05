@@ -17,8 +17,9 @@ import org.example.model.ingame.map.resourses.Resource;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Peasant extends Troop {
+public class Peasant extends Troop implements Serializable {
     private Building workplace = null;
     private Resource movingResource = null;
     private Resource inNeed = null;

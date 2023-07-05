@@ -1,6 +1,8 @@
 package org.example.model.enums;
 
-public enum FoodRateDetail {
+import java.io.Serializable;
+
+public enum FoodRateDetail  implements Serializable {
     _TWO(-2, 0, -8),
     _ONE(-1, 0.5, -4),
     ZERO(0, 1.0, 0),

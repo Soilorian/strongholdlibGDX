@@ -22,10 +22,11 @@ import org.example.model.ingame.map.resourses.Resources;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Building {
+public class Building implements Serializable {
     protected final Buildings building;
     protected final String buildingName;
     protected final Resources consumingResource;

@@ -11,10 +11,11 @@ import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.enums.TileTypes;
 
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Troop {
+public class Troop implements Serializable {
     private final int damage;
     private final Empire King;
     private final Troops troop;

@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Status {
+import java.io.Serializable;
+
+public enum Status implements Serializable {
     AT_WORK("at work"),
     ON_THE_WAY("on the way"),
     DELIVERING("delivering"),

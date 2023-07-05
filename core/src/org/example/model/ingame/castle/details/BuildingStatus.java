@@ -1,6 +1,8 @@
 package org.example.model.ingame.castle.details;
 
-public enum BuildingStatus {
+import java.io.Serializable;
+
+public enum BuildingStatus  implements Serializable {
     WAITING_FOR_RESOURCE("waiting for resource"),
     STARTING_PRODUCTION("starting production"),
     IN_THE_MIDDLE_OF_PRODUCTION("in the middle of production"),

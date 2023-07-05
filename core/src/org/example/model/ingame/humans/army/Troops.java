@@ -6,10 +6,11 @@ import org.example.model.ingame.humans.army.details.*;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Troops {
+public enum Troops  implements Serializable {
     ARABIAN_SWORDSMAN("Arabian Swordsman", Speed.VERY_FAST, Price.EXPENSIVE, HP.HIGH, Range.VERY_LOW,
             Damage.HIGH, "troops/arabSwordman.png", new ArrayList<>()),
     ARCHER("Archer", Speed.FAST, Price.FREE, HP.LOW, Range.HIGH,

@@ -9,10 +9,11 @@ import org.example.model.ingame.map.enums.TileTypes;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Buildings {
+public enum Buildings implements Serializable {
     APPLE_FARM("apple farm", Durability.LOW, null, null, Resources.APPLE,
             0, 1, new Resource[]{new Resource(Resources.WOOD, 5)},
             new TileTypes[]{TileTypes.GRASS, TileTypes.DENSE_GRASS_LAND, TileTypes.GRASS_LAND, TileTypes.PLAIN}, 5,

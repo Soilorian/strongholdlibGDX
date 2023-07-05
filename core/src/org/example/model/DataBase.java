@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileOutputStream;
+import java.util.Objects;
 
 public class DataBase {
     private static final ArrayList<Player> players = new ArrayList<>();
@@ -146,10 +147,16 @@ public class DataBase {
             while (true) {
                 if (bol) {
                     object = objectInputStream.readObject();
-                    players.add((Player) object);
+                    Player player = (Player) object;
+                    if (getPlayerByEmail(player.getEmail()) == null) {
+                        players.add(player);
+                    }
                 } else {
                     object = objectInputStream.readObject();
-                    maps.add((Map) object);
+                    Map map = (Map) object;
+                    if (getMapById(map.getId()) == null) {
+                        maps.add(map);
+                    }
                 }
             }
         } catch (EOFException ignored) {
