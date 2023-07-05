@@ -204,7 +204,7 @@ public class Server {
     }
 
     private void startStreaming(StreamSetup json) {
-        // TODO: 7/5/2023  
+        // TODO: 7/5/2023
     }
 
     private void sendOnlineState(Request request) {
@@ -218,7 +218,7 @@ public class Server {
     private void joinGame(Request request) {
         String gameId = extractGameId(request.getString());
         Game gameById = getGameById(gameId);
-        gameById.addPlayer(player, socket, out, in ,oos ,ois);
+//        gameById.addPlayer(player, socket, out, in ,oos ,ois);
         try {
             oos.writeObject(gameById);
         } catch (IOException e) {

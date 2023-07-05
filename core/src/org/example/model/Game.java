@@ -13,16 +13,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class Game extends Thread implements Serializable {
-    private final ArrayList<Empire> empires = new ArrayList<>();
-    private final ArrayList<Empire> allEmpire = new ArrayList<>();
+public class Game implements Serializable {
+
+    transient private final ArrayList<Empire> empires = new ArrayList<>();
+    transient private final ArrayList<Empire> allEmpire = new ArrayList<>();
     private ArrayList<Tunnel> players = new ArrayList<>();
     private Player owner;
     private int gameSize = 0;
     private String id;
     private boolean isPrivate = false;
-    int playerTurn = 0;
-    private Map currentMap;
+    transient int playerTurn = 0;
+    transient private Map currentMap;
 
     public ArrayList<Empire> getAllEmpires() {
         return allEmpire;
@@ -39,10 +40,8 @@ public class Game extends Thread implements Serializable {
     public void addPlayer(Player player, Socket socket, DataOutputStream out, DataInputStream in,
                           ObjectOutputStream oos, ObjectInputStream ois) {
         players.add(new Tunnel(socket, out, in, oos, ois, player));
-        Empire empire = new Empire(player);
-        empires.add(empire);
-        allEmpire.add(empire);
     }
+
 
     public void removeAClientFromPlayersAndEmpires(Player player) {
         allEmpire.remove(getEmpireByItsPlayer(player));
@@ -62,7 +61,6 @@ public class Game extends Thread implements Serializable {
         return playerTurn;
     }
 
-    @Override
     public void run() {
         handleGame();
     }
