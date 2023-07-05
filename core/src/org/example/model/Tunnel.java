@@ -12,6 +12,8 @@ public class Tunnel {
     public DataInputStream in;
     public Player player;
 
+
+
     public Tunnel(Socket socket,Player player) throws IOException {
         this.socket = socket;
         this.out = new DataOutputStream(socket.getOutputStream());

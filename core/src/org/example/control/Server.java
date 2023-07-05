@@ -41,7 +41,6 @@ public class Server {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-
     public Server() {
         log.setLevel(Level.ALL);
         ConsoleHandler handler = new ConsoleHandler();
@@ -56,7 +55,6 @@ public class Server {
             if (tunnel.getPlayer().getUsername().equals(player.getUsername()))
                 return tunnel;
         return null;
-
     }
 
     public static void setSocket(Socket socket) {
