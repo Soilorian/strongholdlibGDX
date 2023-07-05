@@ -7,6 +7,8 @@ import org.example.model.DataBase;
 import org.example.model.Game;
 import org.example.model.Player;
 import org.example.model.Tunnel;
+import org.example.model.chat.Chat;
+import org.example.model.chat.Message;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 import org.example.model.utils.FriendShipRequest;
@@ -19,10 +21,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -34,6 +33,7 @@ import java.util.regex.Pattern;
 public class Server {
     public final static LinkedBlockingQueue<Tunnel> tunnels = new LinkedBlockingQueue<>();
     public final static LinkedBlockingQueue<Game> games = new LinkedBlockingQueue<>();
+    public final static ArrayList<Chat> chats = new ArrayList<>();
     public static final Gson gson = new Gson();
     public final Logger log = Logger.getLogger(Thread.currentThread().getName() + ".logger");
     private Map currentMap;
@@ -201,10 +201,28 @@ public class Server {
             handleToken(((PlayerToken) json));
         else if (json.getClass().equals(StreamSetup.class))
             startStreaming(((StreamSetup) json));
+        else if (json.getClass().equals(Message.class))
+            forwardMessage(((Message) json));
+        else if (json.getClass().equals(Chat.class)){
+
+        }
+    }
+
+    private void forwardMessage(Message json) {
+        chats.get(chats.indexOf(json.getChat())).addMessage(json);
     }
 
     private void startStreaming(StreamSetup json) {
-        // TODO: 7/5/2023
+        try {
+            Tunnel tunnelByItsPlayer = getTunnelByItsPlayer(json.getStreamer());
+            Tunnel tunnelByItsPlayer1 = getTunnelByItsPlayer(json.getWatcher());
+            json.setStreamerIp(tunnelByItsPlayer.socket.getInetAddress().getHostAddress());
+            json.setWatcherIp(tunnelByItsPlayer1.socket.getInetAddress().getHostAddress());
+            Objects.requireNonNull(tunnelByItsPlayer).oos.writeObject(json);
+            Objects.requireNonNull(tunnelByItsPlayer1).oos.writeObject(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void sendOnlineState(Request request) {

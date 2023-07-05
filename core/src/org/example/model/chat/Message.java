@@ -8,7 +8,7 @@ import org.example.model.Player;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Message  implements Serializable {
+public class Message implements Serializable {
     private final Player owner;
     private String content;
     private String timeSent;
@@ -16,9 +16,9 @@ public class Message  implements Serializable {
     private ArrayList<String> emojis;
     private Label label, bottomLabel;
     private Texture resized;
+    private Chat chat;
 
-    public Message(Player owner, String content, Player owner1) {
-
+    public Message(Player owner, String content, Chat chat, Player owner1) {
         this.owner = owner1;
     }
 
@@ -67,5 +67,9 @@ public class Message  implements Serializable {
         batch.draw(resized, x + resized.getWidth() / 2f, y + resized.getHeight() / 2f);
         label.setPosition(x + resized.getWidth(), y + 40);
         bottomLabel.setPosition(x + resized.getWidth(), y);
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 }
