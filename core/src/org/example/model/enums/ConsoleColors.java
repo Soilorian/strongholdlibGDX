@@ -1,6 +1,8 @@
 package org.example.model.enums;
 
-public enum ConsoleColors {
+import java.io.Serializable;
+
+public enum ConsoleColors implements Serializable {
     RESET("\033[0m"),// Text Reset
 
     /* Regular Colors */

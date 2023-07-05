@@ -1,6 +1,8 @@
 package org.example.model.enums.commands;
 
-public enum Musics {
+import java.io.Serializable;
+
+public enum Musics  implements Serializable {
     BLEED_IT_OUT("src\\main\\resources\\Music\\04 - Bleed it Out.wav"),
     DAY_ONE("src\\main\\resources\\Music\\Hans Zimmer - Day One.wav"),
     //    CATCH("src\\main\\resources\\Music\\@SOULNICE - The Catch - Koan.wav"),

@@ -4,10 +4,11 @@ import org.example.model.ingame.castle.Building;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.map.resourses.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Storage {
+public enum Storage implements Serializable {
     STOCKPILE("stockpile", Buildings.STOCKPILE, new Resources[]{Resources.WOOD, Resources.STONE,
             Resources.PITCH, Resources.IRON, Resources.FLOUR, Resources.HOPS, Resources.OIL, Resources.ALE}),
     GRANARY("granary", Buildings.GRANARY, new Resources[]{Resources.MEAT, Resources.BREAD, Resources.APPLE, Resources.CHEESE}),

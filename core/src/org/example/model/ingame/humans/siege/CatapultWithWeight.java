@@ -7,7 +7,9 @@ import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 
-public class CatapultWithWeight extends Troop implements SiegeWeapon {
+import java.io.Serializable;
+
+public class CatapultWithWeight extends Troop implements SiegeWeapon, Serializable {
     public CatapultWithWeight(Empire empire, Tile tile) {
         super(Troops.CATAPULT_WITH_WEIGHT, empire, tile);
     }

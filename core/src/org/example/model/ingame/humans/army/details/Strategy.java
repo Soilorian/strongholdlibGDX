@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Strategy {
+import java.io.Serializable;
+
+public enum Strategy implements Serializable {
     DEFENDING("defend"),
     ATTACKING("attacking"),
     NEUTRAL("neutral");

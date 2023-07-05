@@ -1,4 +1,6 @@
 package org.example.model.ingame.humans.siege;
 
-public interface SiegeWeapon {
+import java.io.Serializable;
+
+public interface SiegeWeapon extends Serializable {
 }

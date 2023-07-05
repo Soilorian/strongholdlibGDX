@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Range {
+import java.io.Serializable;
+
+public enum Range implements Serializable {
     VERY_LOW(0),
     LOW(5),
     MEDIUM(10),

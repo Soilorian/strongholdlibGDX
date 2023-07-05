@@ -12,6 +12,7 @@ import org.example.model.ingame.map.Tile;
 import org.example.model.utils.FriendShipRequest;
 import org.example.model.utils.PlayerToken;
 import org.example.model.utils.Request;
+import org.example.model.utils.StreamSetup;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -198,6 +199,12 @@ public class Server {
             handleFriendShopRequest(((FriendShipRequest) json));
         } else if (json.getClass().equals(PlayerToken.class))
             handleToken(((PlayerToken) json));
+        else if (json.getClass().equals(StreamSetup.class))
+            startStreaming(((StreamSetup) json));
+    }
+
+    private void startStreaming(StreamSetup json) {
+        // TODO: 7/5/2023  
     }
 
     private void sendOnlineState(Request request) {

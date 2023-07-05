@@ -7,9 +7,10 @@ import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.Troop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class KillingPit extends Building implements Trap {
+public class KillingPit extends Building implements Trap, Serializable {
     private final Empire empire;
 
     public KillingPit(Empire empire) {

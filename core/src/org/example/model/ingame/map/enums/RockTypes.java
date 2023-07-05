@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.model.enums.ConsoleColors;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum RockTypes {
+public enum RockTypes implements Serializable {
     BIG_ROCK("big rock", ConsoleColors.BLACK_BACKGROUND_BRIGHT, new String[]{"][", "⎶⎶"}, "rocks/collection70.png"),
     ROUND_STONE("round stone", ConsoleColors.BLACK_BACKGROUND_BRIGHT, new String[]{"○"}, "rocks/collection77.png"),
     TRIANGULAR("triangular", ConsoleColors.BLACK_BACKGROUND_BRIGHT, new String[]{"◁◁", "△△", "▽▽", "▷▷"}, "rocks/collection72.png"),

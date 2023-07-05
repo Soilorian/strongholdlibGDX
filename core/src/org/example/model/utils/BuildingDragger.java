@@ -10,9 +10,11 @@ import org.example.control.menucontrollers.GameMenuController;
 import org.example.control.menucontrollers.inGameControllers.MapViewMenuController;
 import org.example.model.ingame.map.enums.Direction;
 
+import java.io.Serializable;
+
 import static org.example.control.menucontrollers.inGameControllers.MapViewMenuController.zoom;
 
-public class BuildingDragger extends DragListener {
+public class BuildingDragger extends DragListener implements Serializable {
     Image clone;
     @Override
     public void dragStart(InputEvent event, float x, float y, int pointer) {

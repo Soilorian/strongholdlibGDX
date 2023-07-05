@@ -3,9 +3,10 @@ package org.example.model.chat;
 import org.example.model.DataBase;
 import org.example.model.Player;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PrivateChat extends Chat{
+public class PrivateChat extends Chat implements Serializable {
     public PrivateChat(Player admin, String id, String name) {
         super(admin, id, name);
         addMember(admin);

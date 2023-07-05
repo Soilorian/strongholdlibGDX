@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum MapBuilderMenuCommands {
+public enum MapBuilderMenuCommands implements Serializable {
     ROCK_LAND("rock land"),
     ISLAND("island"),
     BASE_LAND("base land");

@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum HP {
+import java.io.Serializable;
+
+public enum HP implements Serializable {
     VERY_LOW(500),
     LOW(1000),
     MEDIUM(5000),

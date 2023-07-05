@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum GameMenuCommands {
+public enum GameMenuCommands implements Serializable {
     SHOW_MAP("^show map$"),
     SHOW_POPULARITY_FACTORS("^show popularity factors$"),
     SHOW_POPULARITY("^show popularity$"),

@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import org.example.Main;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Avatars extends ImageButton {
+public class Avatars extends ImageButton  implements Serializable {
     private final Texture firstPic = new Texture("pictures/first.jpg");
     private final Texture secondPic = new Texture("pictures/second.jpg");
     private final Texture thirdPic = new Texture("pictures/third.jpg");

@@ -3,9 +3,10 @@ package org.example.model.utils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import org.example.model.ingame.map.Tile;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class GetTileAction extends Action {
+public class GetTileAction extends Action implements Serializable {
     private final Tile tile;
     private static Action action = null;
 

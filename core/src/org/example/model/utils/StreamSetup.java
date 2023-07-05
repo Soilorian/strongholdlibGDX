@@ -3,7 +3,9 @@ package org.example.model.utils;
 
 import org.example.model.Player;
 
-public class StreamSetup {
+import java.io.Serializable;
+
+public class StreamSetup implements Serializable {
     Player streamer;
     Player watcher;
 

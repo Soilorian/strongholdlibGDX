@@ -1,6 +1,8 @@
 package org.example.model.ingame.castle.details;
 
-public enum Durability {
+import java.io.Serializable;
+
+public enum Durability  implements Serializable {
 
     VERY_LOW(5000),
     LOW(20000),

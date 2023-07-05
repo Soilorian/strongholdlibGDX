@@ -1,6 +1,8 @@
 package org.example.model.enums;
 
-public enum Sounds {
+import java.io.Serializable;
+
+public enum Sounds  implements Serializable {
     WAIT_A_MOMENT("Project-Voices\\Jeopardy Theme - DJ Lunatique.wav"),
     BENAZAM("Project-Voices\\Benazam.wav"),
     ESHQ("src\\main\\resources\\Project-Voices\\eshq.wav"),

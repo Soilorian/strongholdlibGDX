@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.example.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Message {
+public class Message  implements Serializable {
     private final Player owner;
     private String content;
     private String timeSent;

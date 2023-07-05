@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Price {
+import java.io.Serializable;
+
+public enum Price implements Serializable {
 
     FREE(0),
     VERY_CHEAP(80),

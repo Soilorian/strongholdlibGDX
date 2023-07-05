@@ -6,7 +6,9 @@ import org.example.model.ingame.humans.Peasant;
 import org.example.model.ingame.humans.army.details.Status;
 import org.example.model.ingame.map.Tile;
 
-public class Tunneler extends Peasant {
+import java.io.Serializable;
+
+public class Tunneler extends Peasant implements Serializable {
     private Tile tunnelStart;
     private Tile tileDestination;
     private int movesLeft = 5;

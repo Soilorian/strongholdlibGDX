@@ -8,9 +8,10 @@ import org.example.model.ingame.castle.Empire;
 import org.example.model.ingame.humans.army.Troop;
 import org.example.model.ingame.humans.army.Troops;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DogCage extends Building implements Trap {
+public class DogCage extends Building implements Trap, Serializable {
     private final Empire empire;
 
     public DogCage(Empire empire) {

@@ -21,7 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileOutputStream;
 import java.util.Objects;
 
-public class DataBase {
+public class DataBase implements Serializable {
     private static final ArrayList<Player> players = new ArrayList<>();
     private static final ArrayList<Map> maps = new ArrayList<>();
     private static final ArrayList<String> slogans = new ArrayList<>();

@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum InGameMenuCommands {
+public enum InGameMenuCommands implements Serializable {
     PAUSE("^pause$"),
     RESUME("^resume$"),
     RANDOM_SONG("^play random song$"),

@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum MapEditorMenuCommands {
+public enum MapEditorMenuCommands implements Serializable {
     SET_TEXTURE("^set texture(?: (-x) (?<X>(\\S*)|(\"[^\"]*\"))()"
             + "| (-y) (?<Y>(\\S*)|(\"[^\"]*\"))()| (-t) (?<Type>(\\S*)|(\"[^\"]*\"))()){3}\\5\\10\\15$"),
     SET_TEXTURE_RECTANGLE("^set texture(?: (-x1) (?<FromX>(\\S*)|(\"[^\"]*\"))()| (-y1) (?<FromY>(\\S*)|(\"[^\"]*\"))()"

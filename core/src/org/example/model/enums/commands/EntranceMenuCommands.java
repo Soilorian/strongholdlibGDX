@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum EntranceMenuCommands {
+public enum EntranceMenuCommands implements Serializable {
     CREATE_USER("^create user(?: (-u) (?<Username>(\\S*)|(\"[^\"]*\"))()| (-p) (?<Password>(\\S*)|(\"[^\"]*\"))()"
             + "| (-c) (?<PasswordConfirmation>(\\S*)|(\"[^\"]*\"))()| (-e) (?<Email>(\\S*)|(\"[^\"]*\"))()"
             + "| (-n) (?<Nickname>(\\S*)|(\"[^\"]*\"))()| (-s) (?<Slogan>(\\S*)|(\"[^\"]*\"))()){6}\\5\\10\\15\\20\\25\\30$"),

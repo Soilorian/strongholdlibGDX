@@ -3,7 +3,9 @@ package org.example.model.utils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import org.example.model.ingame.castle.Buildings;
 
-public class BuildingReturnerAction extends Action {
+import java.io.Serializable;
+
+public class BuildingReturnerAction extends Action implements Serializable {
     Buildings buildings;
 
     public BuildingReturnerAction(Buildings buildings) {

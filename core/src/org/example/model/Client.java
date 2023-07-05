@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Client extends Thread {
+public class Client extends Thread implements Serializable {
     private final Gson gson = new Gson();
     private ObjectOutputStream oos;
     private ObjectInputStream ois;

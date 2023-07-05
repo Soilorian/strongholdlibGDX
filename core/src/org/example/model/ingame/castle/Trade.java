@@ -2,7 +2,9 @@ package org.example.model.ingame.castle;
 
 import org.example.model.ingame.map.resourses.Resource;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade  implements Serializable {
 
     private static int lastId = 0;
     private final Empire sender;

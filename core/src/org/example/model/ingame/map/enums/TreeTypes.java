@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import org.example.control.Controller;
 import org.example.model.enums.ConsoleColors;
 
-public enum TreeTypes {
+import java.io.Serializable;
+
+public enum TreeTypes implements Serializable {
     CACTUS("cactus", ConsoleColors.GREEN, "\uD83C\uDF40", "trees/cactus1.png"),
     CHERRY_PALM("cherry palm", ConsoleColors.GREEN, "\uD83C\uDF38", "trees/cherry.png"),
     OLIVE_TREE("olive tree", ConsoleColors.GREEN, "\uD83C\uDF43", "trees/olive.png"),

@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum GameStartUpMenuCommands {
+public enum GameStartUpMenuCommands implements Serializable {
     SELECT_SIZE("^select\\s+size(?: (-w) (?<Width>(\\S*)|(\"[^\"]*\"))()| (-h) (?<Height>(\\S*)|(\"[^\"]*\"))()){2}\\5\\10$"),
     ADD_PLAYER("^add player (-u) (?<Username>(\\S*)|(\"[^\"]*\"))$"),
     SELECT_COLOR("^select color (-c) (?<Color>(\\S*)|(\"[^\"]*\"))$"),

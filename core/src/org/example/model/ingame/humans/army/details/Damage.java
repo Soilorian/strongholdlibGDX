@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Damage {
+import java.io.Serializable;
+
+public enum Damage implements Serializable {
     VERY_LOW(840),
     LOW(1200),
     MEDIUM(1500),

@@ -3,10 +3,11 @@ package org.example.model.ingame.humans.army.details;
 import org.example.model.ingame.castle.Buildings;
 import org.example.model.ingame.humans.army.Troops;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum TrainingPlace {
+public enum TrainingPlace implements Serializable {
     BARRACK(new Troops[]{Troops.SPEARMAN, Troops.ARCHER, Troops.PIKEMAN, Troops.MACEMAN,
             Troops.SWORDSMAN, Troops.KNIGHT, Troops.CROSSBOWMAN, Troops.SLAVE}, Buildings.BARRACK),
     MERCENARY_POST(new Troops[]{Troops.ASSASSIN, Troops.ARABIAN_SWORDSMAN, Troops.HORSE_ARCHER,

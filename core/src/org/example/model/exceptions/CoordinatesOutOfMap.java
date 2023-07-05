@@ -1,6 +1,8 @@
 package org.example.model.exceptions;
 
-public class CoordinatesOutOfMap extends Exception {
+import java.io.Serializable;
+
+public class CoordinatesOutOfMap extends Exception  implements Serializable {
     public CoordinatesOutOfMap() {
         super("the coordinates are out of map");
     }

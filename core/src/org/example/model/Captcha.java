@@ -5,8 +5,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Captcha {
+public class Captcha implements Serializable {
 
 
 //    String[] picture = {"", "", "", "", "", "", ""};

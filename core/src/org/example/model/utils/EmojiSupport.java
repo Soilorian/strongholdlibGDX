@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.StringBuilder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,7 +63,7 @@ import java.util.HashMap;
 *  - v.1.0 - Initial release
 */
 
-public class EmojiSupport
+public class EmojiSupport implements Serializable
 {
     private final static String VERSION = "1.2";    // Current version of EmojiSupport helper
 

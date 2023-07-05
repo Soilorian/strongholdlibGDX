@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Player implements Serializable {
 
     static ArrayList<Chat> chats = new ArrayList<>();
-    private ArrayList<FriendShipRequest> friendShipRequests = new ArrayList<>();
+    private final ArrayList<FriendShipRequest> friendShipRequests = new ArrayList<>();
     private ArrayList<Player> friends = new ArrayList<>();
     String username;
 

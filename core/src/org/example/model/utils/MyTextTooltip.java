@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import org.example.model.ingame.map.Tile;
 
-public class MyTextTooltip extends TextTooltip {
+import java.io.Serializable;
+
+public class MyTextTooltip extends TextTooltip  implements Serializable {
     private final Tile tile;
     public MyTextTooltip(String s, Skin skin, Tile tile) {
         super(s, skin);

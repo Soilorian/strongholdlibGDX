@@ -4,7 +4,9 @@ package org.example.model.utils;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class AnimatedSprite extends Sprite {
+import java.io.Serializable;
+
+public class AnimatedSprite extends Sprite  implements Serializable {
     // Attributes
     private Texture[] frames; // Your frames
     private int currentFrame; // This value will iterate over frames to display the right frame

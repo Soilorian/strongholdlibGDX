@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum SettingsMenuCommands {
+public enum SettingsMenuCommands  implements Serializable {
     // TODO: 5/11/2023 in Graphics
     ;
 

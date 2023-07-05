@@ -3,7 +3,9 @@ package org.example.model.ingame.map.enums;
 import com.badlogic.gdx.graphics.Color;
 import org.example.model.enums.ConsoleColors;
 
-public enum TileTypes {
+import java.io.Serializable;
+
+public enum TileTypes implements Serializable {
     GROUND("ground", ConsoleColors.BLACK, "OO", Color.GOLDENROD, "tiles/ground.jpg"),
     GRAVEL_GROUND("gravel ground", ConsoleColors.BLACK_BACKGROUND_BRIGHT, "::", Color.GOLD, "tiles/gravel-ground.png"),
     STONE("stone", ConsoleColors.BLACK_BACKGROUND, "##", Color.DARK_GRAY, "tiles/stone.png"),

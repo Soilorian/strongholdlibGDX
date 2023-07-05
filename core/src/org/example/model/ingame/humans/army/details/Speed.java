@@ -1,6 +1,8 @@
 package org.example.model.ingame.humans.army.details;
 
-public enum Speed {
+import java.io.Serializable;
+
+public enum Speed  implements Serializable {
     VERY_SLOW(1),
     SLOW(2),
     MEDIUM(3),

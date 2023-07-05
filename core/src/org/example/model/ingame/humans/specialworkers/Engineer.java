@@ -12,7 +12,9 @@ import org.example.model.ingame.map.Tile;
 import org.example.model.ingame.map.resourses.Resource;
 import org.example.model.ingame.map.resourses.Resources;
 
-public class Engineer extends Peasant {
+import java.io.Serializable;
+
+public class Engineer extends Peasant  implements Serializable {
     private static final String name = "engineer";
     private boolean oil = false;
 

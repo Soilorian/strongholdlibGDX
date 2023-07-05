@@ -2,7 +2,9 @@ package org.example.model.enums.commands;
 
 import org.example.control.menucontrollers.inGameControllers.MusicMenuController;
 
-public enum Slogans {
+import java.io.Serializable;
+
+public enum Slogans  implements Serializable {
     EZIO("Nothing is true, everything is permitted"),
     LEO("Where's Everyone going? Bingo?"),
     SCORPION("get over here"),

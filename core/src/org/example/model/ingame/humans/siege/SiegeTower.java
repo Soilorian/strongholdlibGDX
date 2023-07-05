@@ -8,7 +8,9 @@ import org.example.model.ingame.humans.army.Troops;
 import org.example.model.ingame.map.Map;
 import org.example.model.ingame.map.Tile;
 
-public class SiegeTower extends Troop implements SiegeWeapon {
+import java.io.Serializable;
+
+public class SiegeTower extends Troop implements SiegeWeapon, Serializable {
     public SiegeTower(Empire empire, Tile tile) {
         super(Troops.SIEGE_TOWER, empire, tile);
     }

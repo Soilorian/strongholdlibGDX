@@ -1,9 +1,10 @@
 package org.example.model.enums.commands;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum ProfileMenuCommands {
+public enum ProfileMenuCommands implements Serializable {
     CHANGE_USERNAME("Username"),
     CHANGE_NICKNAME("Nickname"),
     CHANGE_PASSWORD("Password"),

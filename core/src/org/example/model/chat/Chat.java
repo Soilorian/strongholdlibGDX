@@ -3,9 +3,10 @@ package org.example.model.chat;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.example.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Chat {
+public class Chat implements Serializable {
     private final ArrayList<Player> members = new ArrayList<>();
     private final ArrayList<Message> messages = new ArrayList<>();
     private final Player owner;
