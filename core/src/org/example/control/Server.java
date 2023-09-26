@@ -183,7 +183,9 @@ public class Server {
             } else if (request.getString().equals("games")){
                 sendGames();
                 log.fine("games sent");
-            } else {
+            }else if (request.getString().equals("removeAll"))
+                chats.clear();
+            else {
                 sendOnlineState(request);
             }
         } else if (json.getClass().equals(Map.class)) {
@@ -204,7 +206,8 @@ public class Server {
         else if (json.getClass().equals(Message.class))
             forwardMessage(((Message) json));
         else if (json.getClass().equals(Chat.class)){
-
+            if (!chats.remove(((Chat) json)))
+                chats.add(((Chat) json));
         }
     }
 
@@ -287,10 +290,7 @@ public class Server {
     }
 
     private void safeDisconnect() {
-//        if (players.remove(player))
-        if (tunnels.remove(getTunnelByItsPlayer(player))) {
-            log.fine("player " + player.getUsername() + " disconnected");
-        }
+
     }
 
     private void setupConnection() {
